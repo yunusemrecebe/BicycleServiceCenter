@@ -7,6 +7,6 @@ namespace Entities.Concrete
         public int EmployeeId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public long Phone { get; set; }
+        public long? Phone { get; set; }
     }
 }
