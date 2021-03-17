@@ -7,12 +7,12 @@ namespace Business.Concrete
 {
     public class ProcessManager : IProcessService
     {
-        public void Add(Process process)
+        public IResult Add(Process process)
         {
             throw new System.NotImplementedException();
         }
 
-        public void Delete(Process process)
+        public IResult Delete(Process process)
         {
             throw new System.NotImplementedException();
         }
@@ -27,7 +27,7 @@ namespace Business.Concrete
             throw new System.NotImplementedException();
         }
 
-        public void Update(Process process)
+        public IResult Update(Process process)
         {
             throw new System.NotImplementedException();
         }

@@ -4,7 +4,7 @@ namespace Entities.Concrete
 {
     public class BicycleBrand : IEntity
     {
-        public int BrandId { get; set; }
+        public int BicycleBrandId { get; set; }
         public string Name { get; set; }
     }
 }

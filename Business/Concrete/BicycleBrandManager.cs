@@ -7,12 +7,12 @@ namespace Business.Concrete
 {
     public class BicycleBrandManager : IBicycleBrandService
     {
-        public void Add(BicycleBrand bicycleBrand)
+        public IResult Add(BicycleBrand bicycleBrand)
         {
             throw new System.NotImplementedException();
         }
 
-        public void Delete(BicycleBrand bicycleBrand)
+        public IResult Delete(BicycleBrand bicycleBrand)
         {
             throw new System.NotImplementedException();
         }
@@ -27,7 +27,7 @@ namespace Business.Concrete
             throw new System.NotImplementedException();
         }
 
-        public void Update(BicycleBrand bicycleBrand)
+        public IResult Update(BicycleBrand bicycleBrand)
         {
             throw new System.NotImplementedException();
         }

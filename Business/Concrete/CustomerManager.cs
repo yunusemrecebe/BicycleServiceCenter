@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Utilities.Results;
+using DataAccess.Abstract;
 using Entities.Concrete;
 using System.Collections.Generic;
 
@@ -7,12 +8,20 @@ namespace Business.Concrete
 {
     public class CustomerManager : ICustomerService
     {
-        public void Add(Customer customer)
+        ICustomerDal _customerDal;
+
+        public CustomerManager(ICustomerDal customerDal)
         {
-            throw new System.NotImplementedException();
+            _customerDal = customerDal;
         }
 
-        public void Delete(Customer customer)
+        public IResult Add(Customer customer)
+        {
+            _customerDal.Add(customer);
+            return new SuccessResult();
+        }
+
+        public IResult Delete(Customer customer)
         {
             throw new System.NotImplementedException();
         }
@@ -27,7 +36,7 @@ namespace Business.Concrete
             throw new System.NotImplementedException();
         }
 
-        public void Update(Customer customer)
+        public IResult Update(Customer customer)
         {
             throw new System.NotImplementedException();
         }

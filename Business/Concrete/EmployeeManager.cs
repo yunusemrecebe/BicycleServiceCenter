@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Utilities.Results;
+using DataAccess.Abstract;
 using Entities.Concrete;
 using System.Collections.Generic;
 
@@ -7,12 +8,20 @@ namespace Business.Concrete
 {
     public class EmployeeManager : IEmployeeService
     {
-        public void Add(Employee employee)
+        IEmpoloyeeDal _empoloyeeDal;
+
+        public EmployeeManager(IEmpoloyeeDal empoloyeeDal)
         {
-            throw new System.NotImplementedException();
+            _empoloyeeDal = empoloyeeDal;
         }
 
-        public void Delete(Employee employee)
+        public IResult Add(Employee employee)
+        {
+            _empoloyeeDal.Add(employee);
+            return new SuccessResult();
+        }
+
+        public IResult Delete(Employee employee)
         {
             throw new System.NotImplementedException();
         }
@@ -27,7 +36,7 @@ namespace Business.Concrete
             throw new System.NotImplementedException();
         }
 
-        public void Update(Employee employee)
+        public IResult Update(Employee employee)
         {
             throw new System.NotImplementedException();
         }

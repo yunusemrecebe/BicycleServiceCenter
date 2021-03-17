@@ -5,7 +5,7 @@ namespace Entities.Concrete
 {
     public class Process : IEntity
     {
-        public int ServiceId { get; set; }
+        public int ProcessId { get; set; }
         public int EmployeeId { get; set; }
         public int CustomerId { get; set; }
         public int BicycleId { get; set; }

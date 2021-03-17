@@ -7,12 +7,12 @@ namespace Business.Concrete
 {
     public class BicycleModelManager : IBicycleModelService
     {
-        public void Add(BicycleModel bicycleModel)
+        public IResult Add(BicycleModel bicycleModel)
         {
             throw new System.NotImplementedException();
         }
 
-        public void Delete(BicycleModel bicycleModel)
+        public IResult Delete(BicycleModel bicycleModel)
         {
             throw new System.NotImplementedException();
         }
@@ -27,7 +27,7 @@ namespace Business.Concrete
             throw new System.NotImplementedException();
         }
 
-        public void Update(BicycleModel bicycleModel)
+        public IResult Update(BicycleModel bicycleModel)
         {
             throw new System.NotImplementedException();
         }

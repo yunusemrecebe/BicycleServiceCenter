@@ -7,12 +7,12 @@ namespace Business.Concrete
 {
     public class ConsumedPartManager : IConsumedPartService
     {
-        public void Add(ConsumedPart consumedPart)
+        public IResult Add(ConsumedPart consumedPart)
         {
             throw new System.NotImplementedException();
         }
 
-        public void Delete(ConsumedPart consumedPart)
+        public IResult Delete(ConsumedPart consumedPart)
         {
             throw new System.NotImplementedException();
         }
@@ -27,7 +27,7 @@ namespace Business.Concrete
             throw new System.NotImplementedException();
         }
 
-        public void Update(ConsumedPart consumedPart)
+        public IResult Update(ConsumedPart consumedPart)
         {
             throw new System.NotImplementedException();
         }
