@@ -4,7 +4,7 @@ Bisiklet Teknik Servis Hizmeti Sunan İşletmeler İçin İş Takip Otomasyonu
 ## Proje Tanımı Proje Tanımı
 Bir bisiklet firmasının teknik servis bölümünde hizmet verdiği bisikletlerin takibinin yapılmasını sağlayan bir yazılımdır. 
 
-##### Yazılım üzerinde;
+#### Yazılım üzerinde;
 - Servis hizmetini sağlayan usta hakkında bilgileri 
 - Servis hizmeti verilen müşteri hakkında bilgileri
 - Servis hizmeti verilen müşterinin bisikleti ya da bisikletleri hakkında bilgileri 
@@ -13,7 +13,7 @@ Bir bisiklet firmasının teknik servis bölümünde hizmet verdiği bisikletler
 
 takip etmeyi sağlar.
 
-## Kullanılacak Teknolojiler ve Yapılar
+## Kullanılan Teknolojiler ve Yapılar
   
 -  ASP.NET Core 5 Web API
 -  ReactJS
