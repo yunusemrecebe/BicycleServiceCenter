@@ -8,9 +8,9 @@ namespace Business.Abstract
     {
         IDataResult<List<BicycleBrand>> GetAll();
         IDataResult<BicycleBrand> GetById(int id);
-        void Add(BicycleBrand bicycleBrand);
-        void Update(BicycleBrand bicycleBrand);
-        void Delete(BicycleBrand bicycleBrand);
+        IResult Add(BicycleBrand bicycleBrand);
+        IResult Update(BicycleBrand bicycleBrand);
+        IResult Delete(BicycleBrand bicycleBrand);
     }
 
 

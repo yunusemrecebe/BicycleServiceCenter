@@ -8,9 +8,9 @@ namespace Business.Abstract
     {
         IDataResult<List<Employee>> GetAll();
         IDataResult<Employee> GetById(int id);
-        void Add(Employee employee);
-        void Update(Employee employee);
-        void Delete(Employee employee);
+        IResult Add(Employee employee);
+        IResult Update(Employee employee);
+        IResult Delete(Employee employee);
     }
 
 

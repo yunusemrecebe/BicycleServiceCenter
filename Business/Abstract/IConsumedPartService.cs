@@ -8,9 +8,9 @@ namespace Business.Abstract
     {
         IDataResult<List<ConsumedPart>> GetAll();
         IDataResult<ConsumedPart> GetById(int id);
-        void Add(ConsumedPart consumedPart);
-        void Update(ConsumedPart consumedPart);
-        void Delete(ConsumedPart consumedPart);
+        IResult Add(ConsumedPart consumedPart);
+        IResult Update(ConsumedPart consumedPart);
+        IResult Delete(ConsumedPart consumedPart);
     }
 
 

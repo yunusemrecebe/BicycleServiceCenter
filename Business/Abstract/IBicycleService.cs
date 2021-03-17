@@ -12,8 +12,8 @@ namespace Business.Abstract
     {
         IDataResult<List<Bicycle>> GetAll();
         IDataResult<Bicycle> GetById(int id);
-        void Add(Bicycle bicycle);
-        void Update(Bicycle bicycle);
-        void Delete(Bicycle bicycle);
+        IResult Add(Bicycle bicycle);
+        IResult Update(Bicycle bicycle);
+        IResult Delete(Bicycle bicycle);
     }
 }

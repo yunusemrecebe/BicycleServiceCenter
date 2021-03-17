@@ -8,9 +8,9 @@ namespace Business.Abstract
     {
         IDataResult<List<Process>> GetAll();
         IDataResult<Process> GetById(int id);
-        void Add(Process process);
-        void Update(Process process);
-        void Delete(Process process);
+        IResult Add(Process process);
+        IResult Update(Process process);
+        IResult Delete(Process process);
     }
 
 
