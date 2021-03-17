@@ -16,6 +16,6 @@ namespace DataAccess.Concrete.EntityFramework.Abstract
         public DbSet<ConsumedPart> ConsumedParts { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Employee> Employees { get; set; }
-        public DbSet<Service> Services { get; set; }
+        public DbSet<Process> Processes { get; set; }
     }
 }

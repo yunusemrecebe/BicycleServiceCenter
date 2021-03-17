@@ -3,7 +3,7 @@ using System;
 
 namespace Entities.Concrete
 {
-    public class Service : IEntity
+    public class Process : IEntity
     {
         public int ServiceId { get; set; }
         public int EmployeeId { get; set; }

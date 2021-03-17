@@ -4,7 +4,7 @@ using Entities.Concrete;
 
 namespace DataAccess.Concrete.EntityFramework.Concrete
 {
-    public class EfServiceDal : EfEntityRepositoryBase<Service, BicycleServiceCenterContext>, IServiceDal
+    public class EfProcessDal : EfEntityRepositoryBase<Process, BicycleServiceCenterContext>, IProcessDal
     {
 
     }

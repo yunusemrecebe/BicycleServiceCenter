@@ -2,7 +2,7 @@
 
 namespace DataAccess.Abstract
 {
-    public interface IServiceDal : IEntityRepository<Service>
+    public interface IProcessDal : IEntityRepository<Process>
     {
 
     }
