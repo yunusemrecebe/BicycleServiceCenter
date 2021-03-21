@@ -23,22 +23,26 @@ namespace Business.Concrete
 
         public IResult Delete(Employee employee)
         {
-            throw new System.NotImplementedException();
+            _empoloyeeDal.Delete(employee);
+            return new SuccessResult();
         }
 
         public IDataResult<List<Employee>> GetAll()
         {
-            throw new System.NotImplementedException();
+            var result = _empoloyeeDal.GetAll();
+            return new SuccessDataResult<List<Employee>>(result);
         }
 
         public IDataResult<Employee> GetById(int id)
         {
-            throw new System.NotImplementedException();
+            var result = _empoloyeeDal.Get(x => x.EmployeeId == id);
+            return new SuccessDataResult<Employee>(result);
         }
 
         public IResult Update(Employee employee)
         {
-            throw new System.NotImplementedException();
+            _empoloyeeDal.Update(employee);
+            return new SuccessResult();
         }
     }
 
