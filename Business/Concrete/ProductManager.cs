@@ -5,29 +5,29 @@ using System.Collections.Generic;
 
 namespace Business.Concrete
 {
-    public class ProductManager : IProcessService
+    public class ProductManager : IProductService
     {
-        public IResult Add(Process process)
+        public IResult Add(Product product)
         {
             throw new System.NotImplementedException();
         }
 
-        public IResult Delete(Process process)
+        public IResult Delete(Product product)
         {
             throw new System.NotImplementedException();
         }
 
-        public IDataResult<List<Process>> GetAll()
+        public IDataResult<List<Product>> GetAll()
         {
             throw new System.NotImplementedException();
         }
 
-        public IDataResult<Process> GetById(int id)
+        public IDataResult<Product> GetById(int id)
         {
             throw new System.NotImplementedException();
         }
 
-        public IResult Update(Process process)
+        public IResult Update(Product product)
         {
             throw new System.NotImplementedException();
         }
