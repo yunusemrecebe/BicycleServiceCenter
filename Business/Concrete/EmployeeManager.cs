@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Constants;
 using Business.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -18,13 +19,13 @@ namespace Business.Concrete
         public IResult Add(Employee employee)
         {
             _empoloyeeDal.Add(employee);
-            return new SuccessResult();
+            return new SuccessResult(Messages.UserAdded);
         }
 
         public IResult Delete(Employee employee)
         {
             _empoloyeeDal.Delete(employee);
-            return new SuccessResult();
+            return new SuccessResult(Messages.UserDeleted);
         }
 
         public IDataResult<List<Employee>> GetAll()
@@ -42,7 +43,7 @@ namespace Business.Concrete
         public IResult Update(Employee employee)
         {
             _empoloyeeDal.Update(employee);
-            return new SuccessResult();
+            return new SuccessResult(Messages.UserUpdated);
         }
     }
 

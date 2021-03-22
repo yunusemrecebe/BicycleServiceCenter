@@ -13,7 +13,7 @@ export default class AddEmployee extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
 
-    fetch("/api/employee/add", {
+    fetch("/api/employee/ekle", {
       method: "POST",
       headers: {
         Accept: "application/json",

@@ -20,7 +20,7 @@ namespace WebAPI.Controllers
             _employeeService = employeeService;
         }
 
-        [HttpPost("add")]
+        [HttpPost("ekle")]
         public IActionResult Add(Employee employee)
         {
             var result = _employeeService.Add(employee);
@@ -31,10 +31,44 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getall")]
+        [HttpPost("guncelle")]
+        public IActionResult Update(Employee employee)
+        {
+            var result = _employeeService.Update(employee);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost("sil")]
+        public IActionResult Delete(int id)
+        {
+            var employee = _employeeService.GetById(id);
+            var result = _employeeService.Delete(employee.Data);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("listele")]
         public IActionResult GetAll()
         {
             var result = _employeeService.GetAll();
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("personelibul")]
+        public IActionResult GetById(int id)
+        {
+            var result = _employeeService.GetById(id);
             if (result.Success)
             {
                 return Ok(result.Data);

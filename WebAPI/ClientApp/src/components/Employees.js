@@ -17,7 +17,7 @@ export default class Employees extends Component {
   }
 
   getEmployees() {
-    let url = "/api/employee/getall";
+    let url = "/api/employee/listele";
     fetch(url)
       .then((response) => response.json())
       .then((data) => this.setState({ employees: data }));
