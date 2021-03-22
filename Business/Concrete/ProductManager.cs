@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Business.Concrete
 {
-    public class ProcessManager : IProcessService
+    public class ProductManager : IProcessService
     {
         public IResult Add(Process process)
         {

@@ -12,6 +12,4 @@ namespace Business.Abstract
         IResult Update(Process process);
         IResult Delete(Process process);
     }
-
-
 }
