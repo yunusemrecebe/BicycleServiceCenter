@@ -20,7 +20,7 @@ takip etmeyi sağlar.
 -  Entity Framework Core
 -  Fluent Validation 
 -  Autofac IoC Container
--  JWT (JSON Web Token) Authentication
+-  JWT (JSON Web Token) Authorization
 -  AOP (Aspect Oriented Programming) 
 -  Generic Repository Design Pattern
 -  N-Tier Architecture
