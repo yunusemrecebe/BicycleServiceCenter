@@ -8,11 +8,6 @@ using Core.Utilities.Security.Jwt;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.EntityFramework.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.DependencyResolvers.Autofac
 {
@@ -20,8 +15,8 @@ namespace Business.DependencyResolvers.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-            //builder.RegisterType<BicycleBrandManager>().As<IBicycleBrandService>().SingleInstance();
-            //builder.RegisterType<EfBicycleBrandDal>().As<IBicycleBrandDal>().SingleInstance();
+            builder.RegisterType<BicycleBrandManager>().As<IBicycleBrandService>().SingleInstance();
+            builder.RegisterType<EfBicycleBrandDal>().As<IBicycleBrandDal>().SingleInstance();
 
             //builder.RegisterType<BicycleModelManager>().As<IBicycleModelService>().SingleInstance();
             //builder.RegisterType<EfBicycleModelDal>().As<IBicycleModelDal>().SingleInstance();
