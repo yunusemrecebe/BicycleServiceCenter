@@ -15,10 +15,13 @@ takip etmeyi sağlar.
 
 ## Kullanılan Teknolojiler ve Yapılar
   
--  ASP.NET Core 5 Web API
+-  ASP.NET 5 Web API
 -  ReactJS
 -  Entity Framework Core
+-  Fluent Validation 
 -  Autofac IoC Container
+-  JWT (JSON Web Token) Authentication
+-  AOP (Aspect Oriented Programming) 
 -  Generic Repository Design Pattern
 -  N-Tier Architecture
 -  SOLID Principles
