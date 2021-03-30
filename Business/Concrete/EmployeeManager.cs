@@ -1,9 +1,10 @@
 ﻿using Business.Abstract;
 using Business.Constants;
-using Business.Utilities.Results;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Business.Concrete
 {
@@ -28,10 +29,9 @@ namespace Business.Concrete
             return new SuccessResult(Messages.UserDeleted);
         }
 
-        public IDataResult<List<Employee>> GetAll()
+        public IDataResult<List<Employee>> GetList()
         {
-            var result = _empoloyeeDal.GetAll();
-            return new SuccessDataResult<List<Employee>>(result);
+            return new SuccessDataResult<List<Employee>>(_empoloyeeDal.GetList().ToList());
         }
 
         public IDataResult<Employee> GetById(int id)

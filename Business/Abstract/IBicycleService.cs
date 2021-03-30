@@ -1,4 +1,4 @@
-﻿using Business.Utilities.Results;
+﻿using Core.Utilities.Results;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace Business.Abstract
 {
     public interface IBicycleService
     {
-        IDataResult<List<Bicycle>> GetAll();
+        IDataResult<List<Bicycle>> GetList();
         IDataResult<Bicycle> GetById(int id);
         IResult Add(Bicycle bicycle);
         IResult Update(Bicycle bicycle);

@@ -57,7 +57,7 @@ namespace WebAPI.Controllers
         [HttpGet("listele")]
         public IActionResult GetAll()
         {
-            var result = _employeeService.GetAll();
+            var result = _employeeService.GetList();
             if (result.Success)
             {
                 return Ok(result.Data);
