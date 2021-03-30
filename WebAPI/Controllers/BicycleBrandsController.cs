@@ -35,8 +35,7 @@ namespace WebAPI.Controllers
         [HttpPost("delete")]
         public IActionResult Delete(int id)
         {
-            var bicycleBrand = _bicycleBrandService.GetById(id);
-            var result = _bicycleBrandService.Delete(bicycleBrand.Data);
+            var result = _bicycleBrandService.Delete(id);
 
             if (result.Success)
             {
@@ -60,8 +59,7 @@ namespace WebAPI.Controllers
         [HttpGet("get")]
         public IActionResult Get(int id)
         {
-            var bicycleBrand = _bicycleBrandService.GetById(id);
-            var result = _bicycleBrandService.Delete(bicycleBrand.Data);
+            var result = _bicycleBrandService.GetById(id);
 
             if (result.Success)
             {

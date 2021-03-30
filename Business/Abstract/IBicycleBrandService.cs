@@ -10,7 +10,7 @@ namespace Business.Abstract
         IDataResult<BicycleBrand> GetById(int id);
         IResult Add(BicycleBrand bicycleBrand);
         IResult Update(BicycleBrand bicycleBrand);
-        IResult Delete(BicycleBrand bicycleBrand);
+        IResult Delete(int id);
     }
 
 

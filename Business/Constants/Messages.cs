@@ -25,5 +25,6 @@ namespace Business.Constants
         public static string BicycleBrandDeleted = "Marka Silindi!";
         public static string BicycleBrandUpdated = "Marka Güncellendi!";
         public static string BrandAlreadyExists = "Sistemde Kayıtlı Olan Bir Marka Adı Girdiniz!";
+        public static string IdValueIsInvalid = "İşlem Yapmak İstediğiniz Kayıt Bulunamadı!";
     }
 }

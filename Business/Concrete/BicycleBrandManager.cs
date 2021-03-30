@@ -37,9 +37,17 @@ namespace Business.Concrete
         }
 
         [CacheRemoveAspect("IBicycleBrandService.Get")]
-        public IResult Delete(BicycleBrand bicycleBrand)
+        public IResult Delete(int id)
         {
-            _bicycleBrandDal.Delete(bicycleBrand);
+            IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
+
+            if (result != null)
+            {
+                return result;
+            }
+
+            var bicyleBrand = _bicycleBrandDal.Get(b => b.BicycleBrandId == id);
+            _bicycleBrandDal.Delete(bicyleBrand);
             return new SuccessResult(Messages.BicycleBrandDeleted);
         }
 
@@ -51,6 +59,13 @@ namespace Business.Concrete
 
         public IDataResult<BicycleBrand> GetById(int id)
         {
+            IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
+
+            if (result != null)
+            {
+                return new ErrorDataResult<BicycleBrand>(Messages.IdValueIsInvalid);
+            }
+
             return new SuccessDataResult<BicycleBrand>(_bicycleBrandDal.Get(b => b.BicycleBrandId == id));
         }
 
@@ -58,7 +73,7 @@ namespace Business.Concrete
         [CacheRemoveAspect("IBicycleBrandService.Get")]
         public IResult Update(BicycleBrand bicycleBrand)
         {
-            IResult result = BusinessRules.Run(CheckIfBicycleBrandIsExists(bicycleBrand.Name));
+            IResult result = BusinessRules.Run(CheckIfBicycleBrandIsExists(bicycleBrand.Name), CheckIdValueIsTrue(bicycleBrand.BicycleBrandId));
 
             if (result != null)
             {
@@ -76,6 +91,18 @@ namespace Business.Concrete
             if (result)
             {
                 return new ErrorResult(Messages.BrandAlreadyExists);
+            }
+
+            return new SuccessResult();
+        }
+
+        private IResult CheckIdValueIsTrue(int id)
+        {
+            var result = _bicycleBrandDal.Get(x => x.BicycleBrandId == id);
+
+            if (result == null)
+            {
+                return new ErrorResult(Messages.IdValueIsInvalid);
             }
 
             return new SuccessResult();
