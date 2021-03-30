@@ -15,7 +15,7 @@ takip etmeyi sağlar.
 
 ## Kullanılan Teknolojiler ve Yapılar
   
--  ASP.NET 5 Web API
+-  ASP.NET Core 5 Web API
 -  ReactJS
 -  Entity Framework Core
 -  Fluent Validation 
