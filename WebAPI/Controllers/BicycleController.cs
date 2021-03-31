@@ -1,30 +1,24 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BicycleModelsController : ControllerBase
+    public class BicyclesController : ControllerBase
     {
-        IBicycleModelService _bicycleModelService;
+        IBicycleService _bicycleService;
 
-        public BicycleModelsController(IBicycleModelService bicycleModelService)
+        public BicyclesController(IBicycleService bicycleService)
         {
-            _bicycleModelService = bicycleModelService;
+            _bicycleService = bicycleService;
         }
 
         [HttpPost("add")]
-        public IActionResult Add(BicycleModel bicycleModel)
+        public IActionResult Add(Bicycle bicycle)
         {
-            var result = _bicycleModelService.Add(bicycleModel);
-
+            var result = _bicycleService.Add(bicycle);
             if (result.Success)
             {
                 return Ok(result.Message);
@@ -35,8 +29,7 @@ namespace WebAPI.Controllers
         [HttpPost("delete")]
         public IActionResult Delete(int id)
         {
-            var result = _bicycleModelService.Delete(id);
-
+            var result = _bicycleService.Delete(id);
             if (result.Success)
             {
                 return Ok(result.Message);
@@ -45,10 +38,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update(BicycleModel bicycleModel)
+        public IActionResult Update(Bicycle bicycle)
         {
-            var result = _bicycleModelService.Update(bicycleModel);
-
+            var result = _bicycleService.Update(bicycle);
             if (result.Success)
             {
                 return Ok(result.Message);
@@ -59,8 +51,7 @@ namespace WebAPI.Controllers
         [HttpGet("get")]
         public IActionResult Get(int id)
         {
-            var result = _bicycleModelService.GetById(id);
-
+            var result = _bicycleService.GetById(id);
             if (result.Success)
             {
                 return Ok(result.Data);
@@ -69,10 +60,20 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getall")]
-        public IActionResult GetList()
+        public IActionResult GetAll(int id)
         {
-            var result = _bicycleModelService.GetList();
+            var result = _bicycleService.GetList();
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
 
+        [HttpGet("getdetails")]
+        public IActionResult GetBicycleDetails(int id)
+        {
+            var result = _bicycleService.GetBicycleDetails();
             if (result.Success)
             {
                 return Ok(result.Data);

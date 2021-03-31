@@ -34,5 +34,10 @@ namespace Business.Constants
         public static string BicycleModelDeleted = "Model Silindi!";
         public static string BicycleModelUpdated = "Model Güncellendi!";
         public static string BicycleModelExists = "Sistemde Kayıtlı Olan Bir Model Adı Girdiniz!";
+
+        public static string BicycleAdded = "Bisiklet Eklendi!";
+        public static string BicycleDeleted = "Bisiklet Eklendi!";
+        public static string BicycleUpdated = "Bisiklet Eklendi!";
+        public static string BicycleExists = "Sistemde Kayıtlı Olan Bir Bisiklet Girdiniz!";
     }
 }
