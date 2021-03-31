@@ -10,8 +10,6 @@ namespace Business.Abstract
         IDataResult<BicycleModel> GetById(int id);
         IResult Add(BicycleModel bicycleModel);
         IResult Update(BicycleModel bicycleModel);
-        IResult Delete(BicycleModel bicycleModel);
+        IResult Delete(int id);
     }
-
-
 }

@@ -8,6 +8,9 @@ namespace Business.Constants
 {
     public static class Messages
     {
+        //General Messages
+        public static string IdValueIsInvalid = "İşlem Yapmak İstediğiniz Kayıt Bulunamadı!";
+
         //User Messages
         public static string UserAdded = "Kullanıcı Eklendi!";
         public static string UserDeleted = "Kullanıcı Silindi!";
@@ -25,6 +28,11 @@ namespace Business.Constants
         public static string BicycleBrandDeleted = "Marka Silindi!";
         public static string BicycleBrandUpdated = "Marka Güncellendi!";
         public static string BrandAlreadyExists = "Sistemde Kayıtlı Olan Bir Marka Adı Girdiniz!";
-        public static string IdValueIsInvalid = "İşlem Yapmak İstediğiniz Kayıt Bulunamadı!";
+
+        //Bicycle Model Messages
+        public static string BicycleModelAdded = "Model Eklendi!";
+        public static string BicycleModelDeleted = "Model Silindi!";
+        public static string BicycleModelUpdated = "Model Güncellendi!";
+        public static string BicycleModelExists = "Sistemde Kayıtlı Olan Bir Model Adı Girdiniz!";
     }
 }

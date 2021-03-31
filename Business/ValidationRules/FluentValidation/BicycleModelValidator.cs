@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Business.ValidationRules.FluentValidation
 {
-    class BicycleBrandValidator : AbstractValidator<BicycleBrand>
+    public class BicycleModelValidator : AbstractValidator<BicycleModel>
     {
-        public BicycleBrandValidator()
+        public BicycleModelValidator()
         {
-            RuleFor(p => p.Name)
+            RuleFor(x => x.Name)
                 .NotEmpty()
                 .Length(2, 50)
-                .Matches(@"^[a-zA-Z0-9_ğüşıöçĞÜŞİÖÇ ]*$").WithMessage("Marka bilgisi özel karakter içeremez!");
+                .Matches(@"^[a-zA-Z0-9_ğüşıöçĞÜŞİÖÇ ]*$").WithMessage("Model bilgisi özel karakter içeremez!");
         }
     }
 }

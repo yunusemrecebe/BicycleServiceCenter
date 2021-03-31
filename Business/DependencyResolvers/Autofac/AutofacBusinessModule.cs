@@ -18,8 +18,8 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<BicycleBrandManager>().As<IBicycleBrandService>().SingleInstance();
             builder.RegisterType<EfBicycleBrandDal>().As<IBicycleBrandDal>().SingleInstance();
 
-            //builder.RegisterType<BicycleModelManager>().As<IBicycleModelService>().SingleInstance();
-            //builder.RegisterType<EfBicycleModelDal>().As<IBicycleModelDal>().SingleInstance();
+            builder.RegisterType<BicycleModelManager>().As<IBicycleModelService>().SingleInstance();
+            builder.RegisterType<EfBicycleModelDal>().As<IBicycleModelDal>().SingleInstance();
 
             //builder.RegisterType<BicycleManager>().As<IBicycleService>().SingleInstance();
             //builder.RegisterType<EfBicycleDal>().As<IBicycleDal>().SingleInstance();
