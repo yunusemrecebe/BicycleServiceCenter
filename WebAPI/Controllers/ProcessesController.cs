@@ -79,5 +79,17 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result.Message);
         }
+
+        [HttpGet("getprocessdetails")]
+        public IActionResult GetProcessDetails()
+        {
+            var result = _processService.GetProcessDetails();
+
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
     }
 }
