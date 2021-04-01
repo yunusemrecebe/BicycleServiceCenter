@@ -10,6 +10,6 @@ namespace Business.Abstract
         IDataResult<Process> GetById(int id);
         IResult Add(Process process);
         IResult Update(Process process);
-        IResult Delete(Process process);
+        IResult Delete(int id);
     }
 }

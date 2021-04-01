@@ -51,5 +51,10 @@ namespace Business.Constants
         public static string CustomerDeleted = "Müşteri Silindi!";
         public static string CustomerUpdated = "Müşteri Bilgileri Güncellendi!";
         public static string CustomerAlreadyExists = "Sistemde Bu Numara İle Kayıt Edilmiş Bir Kullanıcı Zaten Mevcut!";
+
+        //Process Messages
+        public static string ProcessAdded = "Servis Hizmeti Eklendi!";
+        public static string ProcessDeleted = "Servis Hizmeti Silindi!";
+        public static string ProcessUpdated = "Servis Hizmeti Güncellendi!";
     }
 }

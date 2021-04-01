@@ -11,6 +11,6 @@ namespace Entities.Concrete
         public int BicycleId { get; set; }
         public DateTime StartingDate { get; set; }
         public string CompletionDate { get; set; }
-        public string? RepairsToBeMade { get; set; }
+        public string? Diagnostics { get; set; }
     }
 }
