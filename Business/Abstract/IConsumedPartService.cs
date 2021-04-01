@@ -10,7 +10,7 @@ namespace Business.Abstract
         IDataResult<ConsumedPart> GetById(int id);
         IResult Add(ConsumedPart consumedPart);
         IResult Update(ConsumedPart consumedPart);
-        IResult Delete(ConsumedPart consumedPart);
+        IResult Delete(int id);
     }
 
 
