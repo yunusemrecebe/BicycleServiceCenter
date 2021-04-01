@@ -65,6 +65,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Process>>(_processDal.GetList().ToList());
         }
 
+        [CacheAspect]
         public IDataResult<List<ProcessDetailDto>> GetProcessDetails()
         {
             return new SuccessDataResult<List<ProcessDetailDto>>(_processDal.GetProcessDetails().ToList());
@@ -85,7 +86,6 @@ namespace Business.Concrete
             return new SuccessResult(Messages.ProcessUpdated);
         }
 
-        [CacheAspect]
         private IResult CheckIdValueIsTrue(int id)
         {
             var result = _processDal.Get(x => x.ProcessId == id);
