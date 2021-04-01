@@ -27,8 +27,8 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<ConsumedPartManager>().As<IConsumedPartService>().SingleInstance();
             builder.RegisterType<EfConsumedPartDal>().As<IConsumedPartDal>().SingleInstance();
 
-            //builder.RegisterType<CustomerManager>().As<ICustomerService>().SingleInstance();
-            //builder.RegisterType<EfCustomerDal>().As<ICustomerDal>().SingleInstance();
+            builder.RegisterType<CustomerManager>().As<ICustomerService>().SingleInstance();
+            builder.RegisterType<EfCustomerDal>().As<ICustomerDal>().SingleInstance();
 
             builder.RegisterType<EmployeeManager>().As<IEmployeeService>().SingleInstance();
             builder.RegisterType<EfEmployeeDal>().As<IEmpoloyeeDal>().SingleInstance();

@@ -45,5 +45,11 @@ namespace Business.Constants
         public static string ConsumedPartAdded = "İşlemde Kullanılan Ürün Eklendi!";
         public static string ConsumedPartDeleted = "İşlemde Kullanılan Ürün Silindi!";
         public static string ConsumedPartUpdated = "İşlemde Kullanılan Ürün Güncellendi!";
+
+        //Customer Messages
+        public static string CustomerAdded = "Müşteri Eklendi!";
+        public static string CustomerDeleted = "Müşteri Silindi!";
+        public static string CustomerUpdated = "Müşteri Bilgileri Güncellendi!";
+        public static string CustomerAlreadyExists = "Sistemde Bu Numara İle Kayıt Edilmiş Bir Kullanıcı Zaten Mevcut!";
     }
 }
