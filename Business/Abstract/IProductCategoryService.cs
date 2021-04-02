@@ -10,7 +10,7 @@ namespace Business.Abstract
         IDataResult<ProductCategory> GetById(int id);
         IResult Add(ProductCategory productCategory);
         IResult Update(ProductCategory productCategory);
-        IResult Delete(ProductCategory productCategory);
+        IResult Delete(int id);
     }
 
 
