@@ -42,6 +42,13 @@ namespace Business.Concrete
         [CacheRemoveAspect("IProductBrandService.Get")]
         public IResult Delete(int id)
         {
+            IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
+
+            if (result != null)
+            {
+                return result;
+            }
+
             var productBrand = _productBrandDal.Get(p => p.ProductBrandId == id);
             _productBrandDal.Delete(productBrand);
             return new SuccessResult(Messages.ProductBrandDeleted);
