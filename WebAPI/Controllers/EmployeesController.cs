@@ -1,11 +1,6 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
@@ -20,10 +15,11 @@ namespace WebAPI.Controllers
             _employeeService = employeeService;
         }
 
-        [HttpPost("ekle")]
+        [HttpPost("add")]
         public IActionResult Add(Employee employee)
         {
             var result = _employeeService.Add(employee);
+
             if (result.Success)
             {
                 return Ok(result);
@@ -31,10 +27,11 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("guncelle")]
+        [HttpPost("update")]
         public IActionResult Update(Employee employee)
         {
             var result = _employeeService.Update(employee);
+
             if (result.Success)
             {
                 return Ok(result);
@@ -42,11 +39,11 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("sil")]
+        [HttpPost("delete")]
         public IActionResult Delete(int id)
         {
-            var employee = _employeeService.GetById(id);
-            var result = _employeeService.Delete(employee.Data);
+            var result = _employeeService.Delete(id);
+
             if (result.Success)
             {
                 return Ok(result);
@@ -54,10 +51,11 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("listele")]
-        public IActionResult GetAll()
+        [HttpGet("getall")]
+        public IActionResult GetList()
         {
             var result = _employeeService.GetList();
+
             if (result.Success)
             {
                 return Ok(result.Data);
@@ -65,10 +63,11 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("personelibul")]
-        public IActionResult GetById(int id)
+        [HttpGet("get")]
+        public IActionResult Get(int id)
         {
             var result = _employeeService.GetById(id);
+
             if (result.Success)
             {
                 return Ok(result.Data);

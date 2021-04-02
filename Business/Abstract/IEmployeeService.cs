@@ -10,6 +10,6 @@ namespace Business.Abstract
         IDataResult<Employee> GetById(int id);
         IResult Add(Employee employee);
         IResult Update(Employee employee);
-        IResult Delete(Employee employee);
+        IResult Delete(int id);
     }
 }
