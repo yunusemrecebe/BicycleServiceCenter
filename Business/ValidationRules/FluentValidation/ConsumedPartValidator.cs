@@ -17,7 +17,7 @@ namespace Business.ValidationRules.FluentValidation
 
             RuleFor(c => c.Quantity)
                 .NotEmpty()
-                .GreaterThan(0).WithMessage("Miktar 0'dan büyük olmalıdır!");
+                .LessThan(0).WithMessage("Miktar 0'dan küçük olmamalıdır!");
 
             RuleFor(c => c.UnitPrice)
                 .NotEmpty()
@@ -26,7 +26,7 @@ namespace Business.ValidationRules.FluentValidation
 
             RuleFor(c => c.Discount)
                 .NotEmpty()
-                .GreaterThan(0).WithMessage("Bu alan mutlaka seçilmelidir!");
+                .LessThan(0).WithMessage("İndirim oranı 0'dan küçük olmamalıdır!");
 
         }
     }

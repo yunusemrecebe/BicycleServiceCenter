@@ -12,6 +12,4 @@ namespace Business.Abstract
         IResult Update(ConsumedPart consumedPart);
         IResult Delete(int id);
     }
-
-
 }
