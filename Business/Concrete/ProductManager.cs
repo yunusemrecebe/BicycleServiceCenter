@@ -7,6 +7,7 @@ using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,6 +69,12 @@ namespace Business.Concrete
         public IDataResult<List<Product>> GetList()
         {
             return new SuccessDataResult<List<Product>>(_productDal.GetList().ToList());
+        }
+
+        [CacheAspect]
+        public IDataResult<List<ProductDetailDto>> GetProductDetails()
+        {
+            return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails().ToList());
         }
 
         [ValidationAspect(typeof(ProductValidator))]
