@@ -56,5 +56,11 @@ namespace Business.Constants
         public static string ProcessAdded = "Servis Hizmeti Eklendi!";
         public static string ProcessDeleted = "Servis Hizmeti Silindi!";
         public static string ProcessUpdated = "Servis Hizmeti Güncellendi!";
+
+        //Product Brand Messages
+        public static string ProductBrandAdded = "Ürün Markası Eklendi!";
+        public static string ProductBrandDeleted= "Ürün Markası Silindi!";
+        public static string ProductBrandUpdated = "Ürün Markası Güncellendi!";
+        public static string ProductBrandAlreadyExists = "Sistemde Kayıtlı Olan Bir Ürün Markası Girdiniz!";
     }
 }
