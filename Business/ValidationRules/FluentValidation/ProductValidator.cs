@@ -1,10 +1,5 @@
 ﻿using Entities.Concrete;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.ValidationRules.FluentValidation
 {
@@ -12,10 +7,25 @@ namespace Business.ValidationRules.FluentValidation
     {
         public ProductValidator()
         {
-            RuleFor(p => p.Name).NotEmpty();
-            RuleFor(p => p.Name).Length(2, 50);
-            RuleFor(p => p.UnitPrice).NotEmpty();
-            RuleFor(p => p.UnitPrice).GreaterThanOrEqualTo(1);
+            RuleFor(p => p.BrandId)
+                .NotEmpty()
+                .GreaterThan(0).WithMessage("Bu alan mutlaka seçilmelidir!");
+
+            RuleFor(p => p.CategoryId)
+                .NotEmpty()
+                .GreaterThan(0).WithMessage("Bu alan mutlaka seçilmelidir!");
+
+            RuleFor(p => p.Name)
+                .NotEmpty()
+                .Matches(@"^[a-zA-Z0-9ğüşıöçĞÜŞİÖÇ ]*$").WithMessage("Ürün Adı bilgisi özel karakter içeremez!");
+
+            RuleFor(p => p.UnitsInStock)
+                .NotEmpty()
+                .GreaterThanOrEqualTo(1);         
+
+            RuleFor(p => p.UnitPrice)
+                .NotEmpty()
+                .GreaterThanOrEqualTo(1);
         }
     }
 }

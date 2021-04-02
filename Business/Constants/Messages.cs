@@ -68,5 +68,11 @@ namespace Business.Constants
         public static string ProductCategoryDeleted = "Ürün Kategorisi Silindi!";
         public static string ProductCategoryUpdated = "Ürün Kategorisi Güncellendi!";
         public static string ProductCategoryAlreadyExists = "Sistemde Kayıtlı Olan Bir Ürün Kategorisi Girdiniz!";
+
+        //Product Messages
+        public static string ProductAdded = "Ürün Eklendi!";
+        public static string ProductDeleted = "Ürün Silindi!";
+        public static string ProductUpdated = "Ürün Güncellendi!";
+        public static string ProductAlreadyExists = "Sistemde Kayıtlı Olan Bir Ürün Girdiniz!";
     }
 }
