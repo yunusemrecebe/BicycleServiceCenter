@@ -32,7 +32,7 @@ export default class Employees extends Component {
           <Col md="8">
                     <ListGroup>
                         {this.state.employees.map((emp) => (
-                            <ListGroupItem className="mb-3">{emp.firstName + " " + emp.lastName}</ListGroupItem>
+                            <ListGroupItem key={emp.employeeId} className="mb-3">{emp.firstName + " " + emp.lastName}</ListGroupItem>
                         ))}
                     </ListGroup>
           </Col>
