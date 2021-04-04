@@ -14,9 +14,18 @@ export default class AddEmployee extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
 
+
+    let token = localStorage.getItem('token');
+    if(token == null){
+      alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
+      this.props.history.push("/login")
+    }
+
     const requestOptions = {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`
+                  },
       body: JSON.stringify({
         firstName: this.state.firstName,
         lastName: this.state.lastName,

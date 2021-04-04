@@ -32,6 +32,9 @@ export default class AddEmployee extends Component {
           return Promise.reject(error);
         }
         
+        let token = data.token;
+        localStorage.setItem('token', data.token);
+
         Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
         this.setState({ eMail: "", password: ""});
         alertify.success("Giriş Başarılı!");

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router";
 import {
   Container,
   Row,
@@ -16,12 +17,24 @@ export default class Employees extends Component {
     this.getEmployees();
   }
 
+
   getEmployees() {
+    let token = localStorage.getItem('token');
+    if(token == null){
+      alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
+      this.props.history.push("/login")
+    }
+    
     let url = "/api/employees/getall";
-    fetch(url)
+    fetch(url, {
+      method: 'get',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
       .then((response) => response.json())
       .then((data) => this.setState({ employees: data }));
-  }
+  };
 
   render() {
     return (

@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
@@ -23,6 +24,7 @@ namespace Business.Concrete
             _empoloyeeDal = empoloyeeDal;
         }
 
+        [SecuredOperation("Employee.Add")]
         [ValidationAspect(typeof(EmployeeValidator))]
         [CacheRemoveAspect("IEmployeeService.Get")]
         public IResult Add(Employee employee)
@@ -53,6 +55,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.UserDeleted);
         }
 
+        [SecuredOperation("Employee.Get")]
         [CacheAspect]
         public IDataResult<List<Employee>> GetList()
         {
