@@ -46,8 +46,11 @@ export default class AddEmployee extends Component {
             }
           }
         }
+        if(responseError.message){
+          alertify.error(responseError.message)
+        }
         else{
-          alertify.error("Tüm alanlar doldurulmalı.")
+          alertify.error("Tüm alanlar doldurulmalıdır!")
         }
       });
   };

@@ -96,7 +96,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.UserUpdated);
         }
 
-        private IResult CheckIfEmployeeIsExists(long? phone)
+        private IResult CheckIfEmployeeIsExists(string? phone)
         {
             if (phone != null)
             {
@@ -123,7 +123,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        private IResult CheckPhoneNumberIsUsed(long? phone)
+        private IResult CheckPhoneNumberIsUsed(string? phone)
         {
             if (phone != null)
             {
