@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import Container from "reactstrap/lib/Container";
+import alertify from "alertifyjs";
 
 export default class AddEmployee extends Component {
-  state = { firstName: "", lastName: "", phone: "" };
+  state = { firstName: "", lastName: "", phone: "", validationError: "" };
 
   handleChange = (event) => {
     let name = event.target.name;
@@ -13,37 +14,50 @@ export default class AddEmployee extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
 
-    fetch("/api/employees/add", {
+    const requestOptions = {
       method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         firstName: this.state.firstName,
         lastName: this.state.lastName,
         phone: this.state.phone,
       }),
-    })
-      .then(response => {
-        if (response.ok) {
-          Array.from(document.querySelectorAll("input")).forEach(
-            input => (input.value = "")
-          );
-            this.setState({ firstName: "", lastName: "", phone: "" });
-            alert('Personel Eklendi!');
-          return response.json();
-        } else {
-          alert('Bir Hata Oluþtu!');
-        }});
-      
+    };
+
+    fetch("/api/employees/add", requestOptions)
+      .then(async (response) => {
+        const data = await response.json();
+
+        if (!response.ok) {
+          const error = data;
+          return Promise.reject(error);
+        }
+
+        Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
+        this.setState({ firstName: "", lastName: "", phone: "" });
+        alertify.success("Personel Eklendi!");
+      })
+
+      .catch((responseError) => {
+        if (responseError.Errors) {
+          if (responseError.Errors.length > 0) {
+            for (let i = 0; i < responseError.Errors.length; i++) {
+              alertify.error(responseError.Errors[i].ErrorMessage);
+            }
+          }
+        }
+        else{
+          alertify.error("TÃ¼m alanlar doldurulmalÄ±.")
+        }
+      });
   };
 
   render() {
     return (
       <Container>
+        <div id="12">{this.state.validationError}</div>
         <form onSubmit={this.handleSubmit}>
-          <label htmlFor="firstName">Ýsim</label>
+          <label htmlFor="firstName">Ä°sim</label>
           <input
             id="firstName"
             onChange={this.handleChange}

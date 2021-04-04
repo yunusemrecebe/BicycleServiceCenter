@@ -31,13 +31,13 @@ export class NavMenu extends Component {
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
+                  <NavLink tag={Link} className="text-dark" to="/">Anasayfa</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/employees">Employees</NavLink>
+                  <NavLink tag={Link} className="text-dark" to="/employees">Personeller</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/addEmployee">Add Employee</NavLink>
+                  <NavLink tag={Link} className="text-dark" to="/addEmployee">Personel Ekle</NavLink>
                 </NavItem>
               </ul>
             </Collapse>
