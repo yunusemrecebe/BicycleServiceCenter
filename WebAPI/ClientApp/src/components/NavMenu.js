@@ -26,7 +26,7 @@ export class NavMenu extends Component {
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
           <Container>
-            <NavbarBrand tag={Link} to="/">WebAPI</NavbarBrand>
+            <NavbarBrand tag={Link} to="/">Bicycle Service Center</NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">
@@ -34,16 +34,19 @@ export class NavMenu extends Component {
                   <NavLink tag={Link} className="text-dark" to="/">Anasayfa</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/employees">Personeller</NavLink>
+                  <NavLink tag={Link} className="text-dark" to="/personeller">Personeller</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/addEmployee">Personel Ekle</NavLink>
+                  <NavLink tag={Link} className="text-dark" to="/personelEkle">Personel Ekle</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/login">Giriş Yap</NavLink>
+                  <NavLink tag={Link} className="text-dark" to="/girisYap">Giriş Yap</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/register">Kayıt Ol</NavLink>
+                  <NavLink tag={Link} className="text-dark" to="/kayitOl">Kayıt Ol</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/cikisYap">Çıkış Yap</NavLink>
                 </NavItem>
               </ul>
             </Collapse>

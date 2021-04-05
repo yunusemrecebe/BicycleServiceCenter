@@ -59,7 +59,7 @@ export default class AddEmployee extends Component {
           alertify.error(responseError.message)
         }
         else{
-          alertify.error("Tüm alanlar doldurulmalıdır!")
+          alertify.error("Bir hata oluştu!")
         }
       });
   };

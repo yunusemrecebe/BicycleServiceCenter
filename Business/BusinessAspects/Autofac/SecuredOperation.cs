@@ -3,6 +3,7 @@ using Castle.DynamicProxy;
 using Core.Extensions;
 using Core.Utilities.Interceptors.Autofac;
 using Core.Utilities.IoC;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -34,7 +35,7 @@ namespace Business.BusinessAspects.Autofac
                     return;
                 }
             }
-            throw new Exception(Messages.AuthorizationDenied);
+            throw new ValidationException(Messages.AuthorizationDenied);
         }
     }
 }

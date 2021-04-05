@@ -20,11 +20,11 @@ export default class Employees extends Component {
 
   getEmployees() {
     let token = localStorage.getItem('token');
-    if(token == null){
+    if (token == null) {
       alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
       this.props.history.push("/login")
     }
-    
+
     let url = "/api/employees/getall";
     fetch(url, {
       method: 'get',
@@ -36,18 +36,25 @@ export default class Employees extends Component {
       .then((data) => this.setState({ employees: data }));
   };
 
+  ListEmployees() {
+    return (
+      <ListGroup>
+        {this.state.employees.length > 0 ? this.state.employees.map((emp) =>
+          (<ListGroupItem key={emp.employeeId} className="mb-3">{emp.firstName + " " + emp.lastName}</ListGroupItem>))
+          : <h3 className="text-center">Listelenecek personel bulunamadı!</h3>
+        }
+      </ListGroup>
+    )
+  }
+
   render() {
     return (
       <div>
-            <Row>
-                <h1>Personeller</h1>
+        <Row>
+          <h1>Personeller</h1>
           <Col md="2"></Col>
           <Col md="8">
-                    <ListGroup>
-                        {this.state.employees.map((emp) => (
-                            <ListGroupItem key={emp.employeeId} className="mb-3">{emp.firstName + " " + emp.lastName}</ListGroupItem>
-                        ))}
-                    </ListGroup>
+            {this.ListEmployees()}
           </Col>
           <Col md="2"></Col>
         </Row>

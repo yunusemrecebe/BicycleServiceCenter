@@ -5,9 +5,10 @@ import { Home } from './components/Home';
 import Employees from './components/Employees';
 import Login from './components/Login';
 import Register from './components/Register';
+import Logout from './components/Logout';
 import AddEmployee from './components/AddEmployee';
+import Menu from './components/Menu';
 
-import './custom.css'
 
 
 export default class App extends Component {
@@ -17,10 +18,12 @@ export default class App extends Component {
     return (
       <Layout>
         <Route exact path='/' component={Home} />
-        <Route exact path='/employees' component={Employees} />
-        <Route exact path='/addEmployee' component={AddEmployee} />
-        <Route exact path='/login' component={Login} />
-        <Route exact path='/register' component={Register} />
+        <Route exact path='/personeller' component={Employees} />
+        <Route exact path='/personelEkle' component={AddEmployee} />
+        <Route exact path='/girisYap' component={Login} />
+        <Route exact path='/kayitOl' component={Register} />
+        <Route exact path='/cikisYap' component={Logout} />
+        <Route exact path='/menu' component={Menu}/>
       </Layout>
     );
   }
