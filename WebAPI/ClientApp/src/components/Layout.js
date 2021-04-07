@@ -13,9 +13,7 @@ export class Layout extends Component {
         <Row>
           <Col md="2"><Menu /></Col>
           <Col md="10">
-            <Container>
               {this.props.children}
-            </Container>
           </Col>
         </Row>
         

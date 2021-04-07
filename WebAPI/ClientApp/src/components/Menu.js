@@ -29,16 +29,10 @@ export default class Menu extends Component {
             <div>
                 <ListGroup>
                     {this.state.categories.map(category => (
-                        <ListGroupItem key={category[0]} active={category[0] == this.state.currentCategory?true:false}>
-                            <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
-                                <NavbarToggler onClick={this.toggleNavbar } className="mr-2" />
-                                    <ul className="navbar-nav flex-grow">
+                        <ListGroupItem key={category[0]} active={category[0] == this.state.currentCategory?true:false} >
                                         <NavItem>
-                                            <NavLink tag={Link} className="text-dark" to={category[2]}>{category[1]}</NavLink>
+                                            <NavLink tag={Link} className="text-dark" to={category[2]}>{category[1]} </NavLink>
                                         </NavItem>
-                                    </ul>
-                               
-                            </Navbar>
                         </ListGroupItem>
                     ))}
                 </ListGroup>

@@ -9,14 +9,17 @@ import Register from './components/Register';
 import Logout from './components/Logout';
 import AddEmployee from './components/AddEmployee';
 import ProductBrand from './components/Product/ProductBrand';
-
-
-
+import ProductBrandUpdate from './components/Product/UpdateProduct';
 
 export default class App extends Component {
   static displayName = App.name;
+  state = { selectedBrand: undefined };
 
-  render () {
+  setProductBrand = async (brand) => {
+    await this.setState({ selectedBrand: brand });
+  };
+
+  render() {
     return (
       <Layout>
         <Route exact path='/' component={Home} />
@@ -25,8 +28,30 @@ export default class App extends Component {
         <Route exact path='/girisYap' component={Login} />
         <Route exact path='/kayitOl' component={Register} />
         <Route exact path='/cikisYap' component={Logout} />
-        <Route exact path='/menu' component={Menu}/>
-        <Route exact path='/ürünMarkası' component={ProductBrand} />
+        <Route exact path='/menu' component={Menu} />
+        {/* <Route exact path='/ürünMarkası'><ProductBrand setProductBrand={this.setProductBrand}/></Route> */}
+        <Route
+                  exact
+                  path="/ürünMarkası"
+                  render={props => (
+                    <ProductBrand
+                      {...props}
+                      setProductBrand={this.setProductBrand}
+                    />
+                  )}
+                />
+        {/* <Route exact path='/ürünMarkası' setProductBrand={this.setProductBrand} component={ProductBrand} /> */}
+        {/* <Route exact path='/ÜrünMarkasıGüncelle' getProductBrand={this.state.selectedBrand} component={ProductBrandUpdate} /> */}
+        <Route
+                  exact
+                  path="/ÜrünMarkasıGüncelle"
+                  render={props => (
+                    <ProductBrandUpdate
+                      {...props}
+                      getProductBrand={this.state.selectedBrand}
+                    />
+                  )}
+                />
       </Layout>
     );
   }

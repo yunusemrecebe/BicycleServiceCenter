@@ -2,11 +2,13 @@
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,6 +74,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<ProductBrand>>(_productBrandDal.GetList().ToList());
         }
 
+        [TransactionScopeAspect]
         [ValidationAspect(typeof(ProductBrandValidator))]
         [CacheRemoveAspect("IProductBrandService.Get")]
         public IResult Update(ProductBrand productBrand)
@@ -84,6 +87,14 @@ namespace Business.Concrete
             }
 
             _productBrandDal.Update(productBrand);
+
+            IResult result2 = BusinessRules.Run(CheckPhoneNumberIsUsed(productBrand.Name));
+
+            if (result2 != null)
+            {
+                throw new ValidationException(result2.Message);
+            }
+
             return new SuccessResult(Messages.ProductBrandUpdated);
         }
 
@@ -107,6 +118,18 @@ namespace Business.Concrete
             {
                 return new ErrorResult(Messages.IdValueIsInvalid);
             }
+
+            return new SuccessResult();
+        }
+
+        private IResult CheckPhoneNumberIsUsed(string name)
+        {
+                var result = _productBrandDal.GetList(p => p.Name == name);
+
+                if (result.Count > 1)
+                {
+                    return new ErrorResult(Messages.ProductBrandAlreadyExists);
+                }
 
             return new SuccessResult();
         }
