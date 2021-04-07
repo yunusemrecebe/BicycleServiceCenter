@@ -18,7 +18,7 @@ export default class AddEmployee extends Component {
     let token = localStorage.getItem('token');
     if(token == null){
       alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-      this.props.history.push("/login")
+      this.props.history.push("/girisYap")
     }
 
     const requestOptions = {

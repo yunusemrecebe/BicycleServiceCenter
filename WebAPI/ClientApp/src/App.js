@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
+import Menu from './components/Menu';
 import Employees from './components/Employees';
 import Login from './components/Login';
 import Register from './components/Register';
 import Logout from './components/Logout';
 import AddEmployee from './components/AddEmployee';
-import Menu from './components/Menu';
+import ProductBrand from './components/Product/ProductBrand';
+
 
 
 
@@ -24,6 +26,7 @@ export default class App extends Component {
         <Route exact path='/kayitOl' component={Register} />
         <Route exact path='/cikisYap' component={Logout} />
         <Route exact path='/menu' component={Menu}/>
+        <Route exact path='/ürünMarkası' component={ProductBrand} />
       </Layout>
     );
   }

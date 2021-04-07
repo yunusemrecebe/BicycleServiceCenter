@@ -13,7 +13,7 @@ namespace Business.ValidationRules.FluentValidation
         public ProductBrandValidator()
         {
             RuleFor(p => p.Name)
-                .NotEmpty()
+                .NotEmpty().WithMessage("Marka ismi boş bırakılamaz!")
                 .Matches(@"^[a-zA-Z0-9ğüşıöçĞÜŞİÖÇ ]*$").WithMessage("Marka Adı bilgisi özel karakter içeremez!");
         }
     }
