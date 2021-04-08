@@ -13,17 +13,19 @@ namespace Business.ValidationRules.FluentValidation
         public CustomerValidator()
         {
             RuleFor(c => c.FirstName)
-                .NotEmpty()
-                .Length(2, 50)
-                 .Matches(@"^[a-zA-Z0-9_ğüşıöçĞÜŞİÖÇ ]*$").WithMessage("Model bilgisi özel karakter içeremez!");
+                .NotEmpty().WithMessage("Müşteri adı boş bırakılamaz!")
+                .Length(2, 50).WithMessage("Müşteri adı alanı en az 2, en fazla 50 karakter içermelidir!")
+                .Matches(@"^[a-zA-Z0-9ğüşıöçĞÜŞİÖÇ ]*$").WithMessage("Müşteri adı bilgisi özel karakter içeremez!");
 
             RuleFor(c => c.LastName)
-                .NotEmpty()
-                .Length(2, 50)
-                 .Matches(@"^[a-zA-Z0-9_ğüşıöçĞÜŞİÖÇ ]*$").WithMessage("Model bilgisi özel karakter içeremez!");
+                .NotEmpty().WithMessage("Müşteri soyadı boş bırakılamaz!")
+                .Length(2, 50).WithMessage("Müşteri soyadı alanı en az 2, en fazla 50 karakter içermelidir!")
+                .Matches(@"^[a-zA-Z0-9ğüşıöçĞÜŞİÖÇ ]*$").WithMessage("Müşteri soyadı bilgisi özel karakter içeremez!");
 
             RuleFor(c => c.Phone)
-                .NotEmpty();
+                .NotEmpty().WithMessage("Telefon numarası alanı boş bırakılamaz!")
+                .Length(10).WithMessage("Telefon numarası alanı 10 karakterden oluşmalıdır! (5XX-XXX-XXXX)")
+                .Matches(@"^[0-9]*$").WithMessage("Telefon numarası alanı yalnızca rakamlardan oluşmalıdır!");
         }
     }
 }

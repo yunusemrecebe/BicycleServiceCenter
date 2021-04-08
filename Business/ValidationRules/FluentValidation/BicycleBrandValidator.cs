@@ -13,9 +13,9 @@ namespace Business.ValidationRules.FluentValidation
         public BicycleBrandValidator()
         {
             RuleFor(p => p.Name)
-                .NotEmpty()
-                .Length(2, 50)
-                .Matches(@"^[a-zA-Z0-9_ğüşıöçĞÜŞİÖÇ ]*$").WithMessage("Marka bilgisi özel karakter içeremez!");
+                .NotEmpty().WithMessage("Marka adı boş bırakılamaz!")
+                .Length(2, 50).WithMessage("Marka adı alanı en az 2, en fazla 50 karakter içermelidir!")
+                .Matches(@"^[a-zA-Z0-9ğüşıöçĞÜŞİÖÇ ]*$").WithMessage("Marka adı bilgisi özel karakter içeremez!");
         }
     }
 }

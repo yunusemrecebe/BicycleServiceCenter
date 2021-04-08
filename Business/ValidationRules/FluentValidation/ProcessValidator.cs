@@ -24,7 +24,7 @@ namespace Business.ValidationRules.FluentValidation
                 .MaximumLength(50);
 
             RuleFor(p => p.Diagnostics)
-                .Matches(@"^[a-zA-Z0-9_ğüşıöçĞÜŞİÖÇ ]*$").WithMessage("Model bilgisi özel karakter içeremez!");
+                .Matches(@"^[a-zA-Z0-9ğüşıöçĞÜŞİÖÇ ]*$").WithMessage("Teşhis bilgisi özel karakter içeremez!");
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Business.ValidationRules.FluentValidation
                 .GreaterThan(0).WithMessage("Bu alan mutlaka seçilmelidir!");
 
             RuleFor(x => x.SerialNumber)
-                .Matches(@"^[a-zA-Z0-9_ğüşıöçĞÜŞİÖÇ -]*$").WithMessage("Model bilgisi özel karakter içeremez!");
+                .Matches(@"^[a-zA-Z0-9_ğüşıöçĞÜŞİÖÇ -]*$").WithMessage("Seri Numarası yalnızca harfler, sayılar, '_' veya '-' işareti içerebilir!");
         }
     }
 }
