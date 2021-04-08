@@ -53,7 +53,7 @@ namespace WebAPI.Controllers
             {
                 return Ok(result);
             }
-            return BadRequest(result.);
+            return BadRequest(result);
         }
 
         [HttpGet("get")]

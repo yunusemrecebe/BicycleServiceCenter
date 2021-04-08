@@ -98,7 +98,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CustomerUpdated);
         }
 
-        private IResult CheckIfCustomerIsExists(long phone)
+        private IResult CheckIfCustomerIsExists(string phone)
         {
             var result = _customerDal.GetList(c => c.Phone == phone).Any();
 
@@ -122,7 +122,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        private IResult CheckPhoneNumberIsUsed(long phone)
+        private IResult CheckPhoneNumberIsUsed(string phone)
         {
             var result = _customerDal.GetList(c => c.Phone == phone);
 
