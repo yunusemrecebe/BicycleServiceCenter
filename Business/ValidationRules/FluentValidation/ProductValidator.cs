@@ -15,7 +15,7 @@ namespace Business.ValidationRules.FluentValidation
 
             RuleFor(p => p.Name)
                 .NotEmpty().WithMessage("Ürün adı mutlaka girilmelidir!")
-                .Matches(@"^[a-zA-Z0-9ğüşıöçĞÜŞİÖÇ ]*$").WithMessage("Ürün Adı bilgisi özel karakter içeremez!");
+                .Matches(@"^[a-zA-Z0-9ğüşıöçĞÜŞİÖÇ- ]*$").WithMessage("Ürün Adı bilgisi özel karakter içeremez!");
 
             RuleFor(p => p.UnitsInStock)
                 .GreaterThanOrEqualTo(0).WithMessage("Stoktaki ürün miktarı 0'dan az olamaz!")
