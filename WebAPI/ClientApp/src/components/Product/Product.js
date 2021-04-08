@@ -161,12 +161,12 @@ export default class ProductCategory extends Component {
 
                 <FormGroup>
                     <Label for="unitPrice">Birim Fiyat</Label>
-                    <Input type="text" name="unitPrice" id="unitPrice" onChange={this.handleChange} />
+                    <Input type="number" name="unitPrice" id="unitPrice" onChange={this.handleChange} min="0.00" step="0.001" max="999999999.00" presicion={2}/>
                 </FormGroup>
 
                 <FormGroup>
                     <Label for="unitsInStock">Stoktaki Miktar</Label>
-                    <Input type="number" name="unitsInStock" id="unitsInStock" onChange={this.handleChange} />
+                    <Input type="number" name="unitsInStock" id="unitsInStock" onChange={this.handleChange} min="0"/>
                 </FormGroup>
 
                 <Button>Ekle</Button>
