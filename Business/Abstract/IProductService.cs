@@ -9,6 +9,7 @@ namespace Business.Abstract
     {
         IDataResult<List<Product>> GetList();
         IDataResult<List<ProductDetailDto>> GetProductDetails();
+        IDataResult<List<ProductDetailDto>> GetProductDetailsById(int id);
         IDataResult<Product> GetById(int id);
         IResult Add(Product product);
         IResult Update(Product product);

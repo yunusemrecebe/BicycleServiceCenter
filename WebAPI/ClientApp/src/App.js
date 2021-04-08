@@ -8,16 +8,20 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Logout from './components/Logout';
 import AddEmployee from './components/AddEmployee';
+import Products from './components/Product/Product';
+import ProductUpdate from './components/Product/UpdateProduct';
 import ProductBrand from './components/Product/ProductBrand';
 import ProductBrandUpdate from './components/Product/UpdateProductBrand';
 import ProductCategory from './components/Product/ProductCategory';
 import ProductCategoryUpdate from './components/Product/UpdateProductCategory';
+import Test from './test';
 
 export default class App extends Component {
   static displayName = App.name;
   state = { 
     selectedBrand: undefined,
-    selectedCategory: undefined 
+    selectedCategory: undefined,
+    selectedProduct: undefined,
   };
 
   setProductBrand = async (brand) => {
@@ -26,6 +30,10 @@ export default class App extends Component {
 
   setProductCategory = async (category) => {
     await this.setState({ selectedCategory: category });
+  };
+
+  setProduct = async (product) => {
+    await this.setState({ selectedProduct: product });
   };
 
   render() {
@@ -38,12 +46,16 @@ export default class App extends Component {
         <Route exact path='/kayitOl' component={Register} />
         <Route exact path='/cikisYap' component={Logout} />
         <Route exact path='/menu' component={Menu} />
+        <Route exact path='/test' component={Test} />
 
         <Route exact path="/ürünMarkası" render={props => (<ProductBrand {...props} setProductBrand={this.setProductBrand}/>)}/>
         <Route exact path="/ÜrünMarkasıGüncelle" render={props => (<ProductBrandUpdate {...props} getProductBrand={this.state.selectedBrand}/>)}/>
 
         <Route exact path="/ürünKategorisi" render={props => (<ProductCategory {...props} setProductCategory={this.setProductCategory}/>)}/>
         <Route exact path="/ÜrünKategorisiGüncelle" render={props => (<ProductCategoryUpdate {...props} getProductCategory={this.state.selectedCategory}/>)}/>
+
+        <Route exact path="/ürünler" render={props => (<Products {...props} setProduct={this.setProduct}/>)}/>
+        <Route exact path="/ÜrünGüncelle" render={props => (<ProductUpdate {...props} getProduct={this.state.selectedProduct}/>)}/>
       </Layout>
     );
   }

@@ -7,7 +7,8 @@ export default class Menu extends Component {
         categories: [
             [1, "Anasayfa", "/"],
             [2, "Ürün Markası", "/ürünMarkası"],
-            [3, "Ürün Kategorisi", "/ürünKategorisi"]
+            [3, "Ürün Kategorisi", "/ürünKategorisi"],
+            [3, "Ürünler", "/ürünler"]
             // [3, "Personel", "/personeller"],
             // [4, "Personel Ekle", "/personelEkle"],
             // [5, "Giriş Yap", "/girisYap"],
@@ -31,9 +32,14 @@ export default class Menu extends Component {
                 <ListGroup>
                     {this.state.categories.map(category => (
                         <ListGroupItem key={category[0]} active={category[0] == this.state.currentCategory?true:false} >
-                                        <NavItem>
+                            <ul>
+                                <li>
+                                <NavItem>
                                             <NavLink tag={Link} className="text-dark" to={category[2]}>{category[1]} </NavLink>
                                         </NavItem>
+                                </li>
+                            </ul>
+                                        
                         </ListGroupItem>
                     ))}
                 </ListGroup>

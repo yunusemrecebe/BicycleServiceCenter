@@ -62,7 +62,12 @@ namespace Business.Concrete
                 return new ErrorDataResult<Product>(Messages.IdValueIsInvalid);
             }
 
-            return new SuccessDataResult<Product>(_productDal.Get(p => p.CategoryId == id));
+            return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == id));
+        }
+
+        public IDataResult<List<ProductDetailDto>> GetProductDetailsById(int id)
+        {
+            return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetailsById(id).ToList());
         }
 
         [CacheAspect]
@@ -115,5 +120,6 @@ namespace Business.Concrete
 
             return new SuccessResult();
         }
+
     }
 }

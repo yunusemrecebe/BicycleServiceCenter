@@ -25,9 +25,40 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                              select new ProductDetailDto
                              {
                                  ProductId = product.ProductId,
+                                 CategoryId = productCategory.ProductCategoryId,
+                                 BrandId = productBrand.ProductBrandId,
                                  ProductName = product.Name,
-                                 Brand = productBrand.Name,
-                                 Category = productCategory.Name,
+                                 BrandName = productBrand.Name,
+                                 CategoryName = productCategory.Name,
+                                 UnitPrice = product.UnitPrice,
+                                 UnitsInStock = product.UnitsInStock
+                             };
+                return result.ToList();
+            }
+        }
+
+        public List<ProductDetailDto> GetProductDetailsById(int id)
+        {
+            using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
+            {
+                var result = from product in context.Products
+
+                             join productBrand in context.ProductBrands
+                             on product.BrandId equals productBrand.ProductBrandId
+
+                             join productCategory in context.ProductCategories
+                             on product.CategoryId equals productCategory.ProductCategoryId
+
+                             where product.ProductId == id
+
+                             select new ProductDetailDto
+                             {
+                                 ProductId = product.ProductId,
+                                 CategoryId = productCategory.ProductCategoryId,
+                                 BrandId = productBrand.ProductBrandId,
+                                 ProductName = product.Name,
+                                 BrandName = productBrand.Name,
+                                 CategoryName = productCategory.Name,
                                  UnitPrice = product.UnitPrice,
                                  UnitsInStock = product.UnitsInStock
                              };
