@@ -8,7 +8,7 @@ namespace Business.ValidationRules.FluentValidation
         public ProductCategoryValidator()
         {
             RuleFor(p => p.Name)
-                .NotEmpty()
+                .NotEmpty().WithMessage("Kategori adı boş bırakılamaz!")
                 .Matches(@"^[a-zA-Z0-9ğüşıöçĞÜŞİÖÇ ]*$").WithMessage("Kategori Adı bilgisi özel karakter içeremez!");
         }
     }

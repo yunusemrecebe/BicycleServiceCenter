@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import alertify from "alertifyjs";
 import {Button, Table, FormGroup, Row, Col} from "reactstrap";
 
-export default class UpdateProduct extends Component {
+export default class UpdateProductBrand extends Component {
 
     state = {
         productBrand: [],
@@ -60,7 +60,7 @@ export default class UpdateProduct extends Component {
                     return Promise.reject(error);
                 }
 
-                alertify.warning("Ürün Markası Güncellendi!");
+                alertify.success("Ürün Markası Güncellendi!");
                 this.props.history.push("/ÜrünMarkası");
             })
 
@@ -74,9 +74,6 @@ export default class UpdateProduct extends Component {
                     else{
                         alertify.error(responseError.Message);
                     }
-                }
-                else{
-                    console.log("sa");
                 }
             }); 
     }

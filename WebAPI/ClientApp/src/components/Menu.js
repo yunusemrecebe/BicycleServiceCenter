@@ -7,11 +7,12 @@ export default class Menu extends Component {
         categories: [
             [1, "Anasayfa", "/"],
             [2, "Ürün Markası", "/ürünMarkası"],
-            [3, "Personel", "/personeller"],
-            [4, "Personel Ekle", "/personelEkle"],
-            [5, "Giriş Yap", "/girisYap"],
-            [6, "Kayıt Ol", "/kayitOl"],
-            [7, "Çıkış Yap", "/cikisYap"]
+            [3, "Ürün Kategorisi", "/ürünKategorisi"]
+            // [3, "Personel", "/personeller"],
+            // [4, "Personel Ekle", "/personelEkle"],
+            // [5, "Giriş Yap", "/girisYap"],
+            // [6, "Kayıt Ol", "/kayitOl"],
+            // [7, "Çıkış Yap", "/cikisYap"]
         ],
         collapsed: true,
         currentCategory: 0

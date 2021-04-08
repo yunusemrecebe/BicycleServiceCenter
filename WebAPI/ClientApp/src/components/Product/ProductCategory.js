@@ -2,14 +2,14 @@ import React, { Component, useState } from "react";
 import alertify from "alertifyjs";
 import {Button, Table, FormGroup, Row, Col} from "reactstrap";
 
-export default class ProductBrand extends Component {
+export default class ProductCategory extends Component {
     state = {
-        productBrands: [],
+        productCategories: [],
         name: "",
     };
 
     componentDidMount() {
-        this.getProductBrands();
+        this.getProductCategories();
     }
 
     //form verilerini state içerisine aktaran fonksiyon
@@ -19,8 +19,8 @@ export default class ProductBrand extends Component {
         this.setState({ [name]: value });
     };
 
-    // Marka Adı Ekleme
-    addProduct = (event) => {
+    // Ürün Kategorisi Ekleme
+    addProductCategory = (event) => {
         event.preventDefault();
 
         const requestOptions = {
@@ -30,10 +30,8 @@ export default class ProductBrand extends Component {
                 name: this.state.name,
             }),
         };
-
-
         
-        fetch("/api/productbrands/add", requestOptions)
+        fetch("/api/productcategories/add", requestOptions)
             .then(async (response) => {
                 const data = await response.json();
 
@@ -42,10 +40,10 @@ export default class ProductBrand extends Component {
                     return Promise.reject(error);
                 }
 
-                this.getProductBrands();
+                this.getProductCategories();
                 Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
                 this.setState({ name: "" });
-                alertify.success("Ürün Markası Eklendi!");
+                alertify.success("Ürün Kategorisi Eklendi!");
             })
 
             .catch((responseError) => {
@@ -65,15 +63,15 @@ export default class ProductBrand extends Component {
             });
     };
 
-    //Marka isimlerini Db'den Çekme
-    getProductBrands() {
+    //Ürün Kategorilerini Db'den Çekme
+    getProductCategories() {
         let token = localStorage.getItem('token');
         if (token == null) {
             alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
             this.props.history.push("/login")
         }
 
-        let url = "/api/productbrands/getall";
+        let url = "/api/productcategories/getall";
         fetch(url, {
             method: 'get',
             headers: {
@@ -81,18 +79,18 @@ export default class ProductBrand extends Component {
             }
         })
             .then((response) => response.json())
-            .then((data) => this.setState({ productBrands: data }));
+            .then((data) => this.setState({ productCategories: data }));
     };
 
-    //Marka İsmi Silme
-    deleteProductBrand(id){
+    //Ürün Kategorisi Silme
+    deleteProductCategory(id){
 
         const requestOptions = {
             method: "POST",
             headers: { "Content-Type": "application/json" },
         };
         
-        fetch("/api/productbrands/delete?id="+id, requestOptions)
+        fetch("/api/productcategories/delete?id="+id, requestOptions)
             .then(async (response) => {
                 const data = await response.json();
 
@@ -101,8 +99,8 @@ export default class ProductBrand extends Component {
                     return Promise.reject(error);
                 }
 
-                this.getProductBrands();
-                alertify.warning("Ürün Markası Silindi!");
+                this.getProductCategories();
+                alertify.warning("Ürün Kategorisi Silindi!");
             })
 
             .catch((responseError) => {
@@ -116,38 +114,35 @@ export default class ProductBrand extends Component {
             });  
     };
 
-    //Marka ismi güncellemek için Marka İd gönderen fonksiyon
-    setProductBrand=(id)=>{
-        this.props.setProductBrand(id);
+    //Ürün Kategorisi güncellemek için Kategori İd gönderen fonksiyon
+    setProductCategory=(id)=>{
+        this.props.setProductCategory(id);
     }
 
-    //Marka İsmi Güncelleme
-    updateProductBrand(id){
-        //this.props.setProductBrand(id)
-        this.setProductBrand(id);
-        //localStorage.setItem('productBrandId',id)
-        this.props.history.push("/ÜrünMarkasıGüncelle");
+    //Ürün Kategorisi Güncelleme
+    updateProductCategory(id){
+        this.setProductCategory(id);
+        this.props.history.push("/ÜrünKategorisiGüncelle");
     };
 
-    //Db'Den çekilmiş marka isimlerini listeleme
-    ListProductBrands() {
+    //Db'Den çekilmiş kategorileri listeleme
+    ListProductCategory() {
         return (
             <Table hover>
                 <thead>
                     <tr>
-                        <th>Ürün Markası İsmi</th>
+                        <th>Ürün Kategorileri</th>
                         <th></th>
                         <th></th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    {this.state.productBrands.map((brand) => (
-                        <tr key={brand.productBrandId}>
-                            <td>{brand.name}</td>
-                            <td><Button onClick={this.deleteProductBrand.bind(this, brand.productBrandId)} color="danger">Sil</Button></td>
-                            <td><Button onClick={this.updateProductBrand.bind(this, brand.productBrandId)} color="info">Güncelle</Button></td>
-                            {/* <td><Button onClick={() => this.props.setProductBrand(brand.productBrandId)} color="info">Güncelle</Button></td> */}
+                    {this.state.productCategories.map((category) => (
+                        <tr key={category.productCategoryId}>
+                            <td>{category.name}</td>
+                            <td><Button onClick={this.deleteProductCategory.bind(this, category.productCategoryId)} color="danger">Sil</Button></td>
+                            <td><Button onClick={this.updateProductCategory.bind(this, category.productCategoryId)} color="info">Güncelle</Button></td>
                         </tr>
                     ))}
                 </tbody>
@@ -158,20 +153,20 @@ export default class ProductBrand extends Component {
     render() {
         return (
             <div>
-                <form onSubmit={this.addProduct}>
+                <form onSubmit={this.addProductCategory}>
                     <FormGroup>
-                        <label htmlFor="productName">Marka Adı</label>
-                        <input type="text" id="productName" name="name" onChange={this.handleChange}></input>
+                        <label htmlFor="categoryName">Kategori Adı</label>
+                        <input type="text" id="categoryName" name="name" onChange={this.handleChange}></input>
                         <button type="submit">Ekle</button>
                     </FormGroup>
                 </form>
 
                 <Row>
-                <h1 className="text-center">Sistemde Kayıtlı Olan Ürün Markaları</h1>
+                <h1 className="text-center">Sistemde Kayıtlı Olan Ürün Kategorileri</h1>
                 </Row>
                 <Row>
                     <Col md="8">
-                        {this.ListProductBrands()}
+                        {this.ListProductCategory()}
                     </Col>
                     <Col md="4"></Col>
                 </Row>
