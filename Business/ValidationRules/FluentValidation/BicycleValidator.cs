@@ -9,16 +9,16 @@ namespace Business.ValidationRules.FluentValidation
         public BicycleValidator()
         {
             RuleFor(x => x.BrandId)
-                .NotEmpty()
-                .GreaterThan(0).WithMessage("Bu alan mutlaka seçilmelidir!");
+                .NotEmpty().WithMessage("Marka bilgisi mutlaka seçilmelidir!")
+                .GreaterThan(0).WithMessage("Marka bilgisi mutlaka seçilmelidir!");
             
             RuleFor(x => x.ModelId)
-                .NotEmpty()
-                .GreaterThan(0).WithMessage("Bu alan mutlaka seçilmelidir!");
+                .NotEmpty().WithMessage("Model bilgisi mutlaka seçilmelidir!")
+                .GreaterThan(0).WithMessage("Model bilgisi mutlaka seçilmelidir!");
 
             RuleFor(x => x.OwnerId)
-                .NotEmpty()
-                .GreaterThan(0).WithMessage("Bu alan mutlaka seçilmelidir!");
+                .NotEmpty().WithMessage("Sahip bilgisi mutlaka seçilmelidir!")
+                .GreaterThan(0).WithMessage("Sahip bilgisi mutlaka seçilmelidir!");
 
             RuleFor(x => x.SerialNumber)
                 .Matches(@"^[a-zA-Z0-9_ğüşıöçĞÜŞİÖÇ -]*$").WithMessage("Seri Numarası yalnızca harfler, sayılar, '_' veya '-' işareti içerebilir!");
