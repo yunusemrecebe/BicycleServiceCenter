@@ -20,6 +20,7 @@ import BicycleBrandUpdate from './components/Bicycle/UpdateBicycleBrand';
 import BicycleModel from './components/Bicycle/BicycleModel';
 import BicycleModelUpdate from './components/Bicycle/UpdateBicycleModel';
 import Bicycle from './components/Bicycle/Bicycle';
+import BicycleUpdate from './components/Bicycle/UpdateBicycle';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -85,6 +86,7 @@ export default class App extends Component {
         <Route exact path="/bisikletModeli" render={props => (<BicycleModel {...props} setBicycleModel={this.setBicycleModel} />)} />
         <Route exact path="/bisikletModeliGüncelle" render={props => (<BicycleModelUpdate {...props} getBicycleModel={this.state.selectedBicycleModel} />)} />
         <Route exact path="/bisikletler" render={props => (<Bicycle {...props} setBicycle={this.setBicycle} />)} />
+        <Route exact path="/bisikletGüncelle" render={props => (<BicycleUpdate {...props} getBicycle={this.state.selectedBicycle} />)} />
 
         {/* EMPLOYEE İLE İLGİLİ YÖNLENDİRMELER */}
         <Route exact path="/personeller" render={props => (<Employees {...props} setEmployee={this.setEmployee} />)} />

@@ -233,9 +233,9 @@ export default class Bicycle extends Component {
                 <tbody>
                     {this.state.bicycles.map((bicycle) => (
                         <tr key={bicycle.bicycleId}>
-                            <td>{bicycle.brand}</td>
-                            <td>{bicycle.model}</td>
-                            <td>{bicycle.owner}</td>
+                            <td>{bicycle.brandName}</td>
+                            <td>{bicycle.modelName}</td>
+                            <td>{bicycle.ownerName}</td>
                             <td>{bicycle.serialNumber}</td>
                             <td><Button onClick={this.deleteBicycle.bind(this, bicycle.bicycleId)} color="danger">Sil</Button></td>
                             <td><Button onClick={this.updateBicycle.bind(this, bicycle.bicycleId)} color="info">Güncelle</Button></td>

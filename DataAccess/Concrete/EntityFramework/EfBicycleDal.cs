@@ -30,9 +30,10 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                                  BicycleId = bicyle.BicycleId,
                                  BrandId = bicycleBrand.BicycleBrandId,
                                  ModelId = bicyleModel.BicycleModelId,
+                                 OwnerId = customers.CustomerId,
                                  BrandName = bicycleBrand.Name,
                                  ModelName = bicyleModel.Name,
-                                 Owner = customers.FirstName + " " + customers.LastName,
+                                 OwnerName = customers.FirstName + " " + customers.LastName,
                                  SerialNumber = bicyle.SerialNumber
                              };
                 return result.ToList();
@@ -60,9 +61,10 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                                  BicycleId = bicyle.BicycleId,
                                  BrandId = bicycleBrand.BicycleBrandId,
                                  ModelId = bicyleModel.BicycleModelId,
+                                 OwnerId = customers.CustomerId,
                                  BrandName = bicycleBrand.Name,
                                  ModelName = bicyleModel.Name,
-                                 Owner = customers.FirstName + " " + customers.LastName,
+                                 OwnerName = customers.FirstName + " " + customers.LastName,
                                  SerialNumber = bicyle.SerialNumber
                              };
                 return result.ToList();
