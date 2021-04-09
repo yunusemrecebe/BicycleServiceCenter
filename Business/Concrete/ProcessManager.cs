@@ -11,6 +11,7 @@ using Entities.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Business.Concrete
 {
@@ -63,6 +64,11 @@ namespace Business.Concrete
         public IDataResult<List<Process>> GetList()
         {
             return new SuccessDataResult<List<Process>>(_processDal.GetList().ToList());
+        }
+
+        public IDataResult<List<Process>> GetListByFilter(Expression<Func<Process, bool>> filter)
+        {
+            return new SuccessDataResult<List<Process>>(_processDal.GetList(filter).ToList());
         }
 
         [CacheAspect]

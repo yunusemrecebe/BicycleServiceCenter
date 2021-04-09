@@ -74,5 +74,12 @@ namespace Business.Constants
         public static string ProductDeleted = "Ürün Silindi!";
         public static string ProductUpdated = "Ürün Güncellendi!";
         public static string ProductAlreadyExists = "Sistemde Kayıtlı Olan Bir Ürün Girdiniz!";
+
+        //Employee Messages
+        public static string EmployeeAdded = "Personel Eklendi!";
+        public static string EmployeeDeleted = "Personel Silindi!";
+        public static string EmployeeUpdated = "Personel Güncellendi!";
+        public static string EmployeeHasProcess = "Silmek istediğiniz personel bir servis hizmetinden sorumlu olduğu için silinemedi!";
+        public static string EmployeeAlreadyExists = "Sistemde Bu Numara İle Kayıt Edilmiş Bir Personel Zaten Mevcut!";
     }
 }

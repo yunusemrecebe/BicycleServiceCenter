@@ -8,12 +8,8 @@ export default class Menu extends Component {
             [1, "Anasayfa", "/"],
             [2, "Ürün Markası", "/ürünMarkası"],
             [3, "Ürün Kategorisi", "/ürünKategorisi"],
-            [3, "Ürünler", "/ürünler"]
-            // [3, "Personel", "/personeller"],
-            // [4, "Personel Ekle", "/personelEkle"],
-            // [5, "Giriş Yap", "/girisYap"],
-            // [6, "Kayıt Ol", "/kayitOl"],
-            // [7, "Çıkış Yap", "/cikisYap"]
+            [4, "Ürünler", "/ürünler"],
+            [5, "Personeller", "/personeller"]
         ],
         collapsed: true,
         currentCategory: 0

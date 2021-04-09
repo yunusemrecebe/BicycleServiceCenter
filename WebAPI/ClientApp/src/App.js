@@ -2,19 +2,17 @@ import React, { Component } from 'react';
 import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
-import Menu from './components/Menu';
-import Employees from './components/Employees';
-import Login from './components/Login';
-import Register from './components/Register';
-import Logout from './components/Logout';
-import AddEmployee from './components/AddEmployee';
+import Employees from './components/Employee/Employees';
+// import Login from './components/Login';
+// import Register from './components/Register';
+// import Logout from './components/Logout';
+// import AddEmployee from './components/Employee/AddEmployee';
 import Products from './components/Product/Product';
 import ProductUpdate from './components/Product/UpdateProduct';
 import ProductBrand from './components/Product/ProductBrand';
 import ProductBrandUpdate from './components/Product/UpdateProductBrand';
 import ProductCategory from './components/Product/ProductCategory';
 import ProductCategoryUpdate from './components/Product/UpdateProductCategory';
-import Test from './test';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -22,6 +20,7 @@ export default class App extends Component {
     selectedBrand: undefined,
     selectedCategory: undefined,
     selectedProduct: undefined,
+    selectedEmployee: undefined,
   };
 
   setProductBrand = async (brand) => {
@@ -36,17 +35,14 @@ export default class App extends Component {
     await this.setState({ selectedProduct: product });
   };
 
+  setEmployee = async (employee) => {
+    await this.setState({ selectedEmployee: employee });
+  };
+
   render() {
     return (
       <Layout>
         <Route exact path='/' component={Home} />
-        <Route exact path='/personeller' component={Employees} />
-        <Route exact path='/personelEkle' component={AddEmployee} />
-        <Route exact path='/girisYap' component={Login} />
-        <Route exact path='/kayitOl' component={Register} />
-        <Route exact path='/cikisYap' component={Logout} />
-        <Route exact path='/menu' component={Menu} />
-        <Route exact path='/test' component={Test} />
 
         <Route exact path="/ürünMarkası" render={props => (<ProductBrand {...props} setProductBrand={this.setProductBrand}/>)}/>
         <Route exact path="/ÜrünMarkasıGüncelle" render={props => (<ProductBrandUpdate {...props} getProductBrand={this.state.selectedBrand}/>)}/>
@@ -56,6 +52,9 @@ export default class App extends Component {
 
         <Route exact path="/ürünler" render={props => (<Products {...props} setProduct={this.setProduct}/>)}/>
         <Route exact path="/ÜrünGüncelle" render={props => (<ProductUpdate {...props} getProduct={this.state.selectedProduct}/>)}/>
+
+        <Route exact path="/personeller" render={props => (<Employees {...props} setEmployee={this.setEmployee}/>)}/>
+
       </Layout>
     );
   }

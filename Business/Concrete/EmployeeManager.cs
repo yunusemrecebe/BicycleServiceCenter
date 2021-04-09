@@ -18,10 +18,12 @@ namespace Business.Concrete
     public class EmployeeManager : IEmployeeService
     {
         IEmpoloyeeDal _empoloyeeDal;
+        IProcessService _processService;
 
-        public EmployeeManager(IEmpoloyeeDal empoloyeeDal)
+        public EmployeeManager(IEmpoloyeeDal empoloyeeDal, IProcessService processService)
         {
             _empoloyeeDal = empoloyeeDal;
+            _processService = processService;
         }
 
         [SecuredOperation("Employee.Add")]
@@ -37,13 +39,13 @@ namespace Business.Concrete
             }
 
             _empoloyeeDal.Add(employee);
-            return new SuccessResult(Messages.UserAdded);
+            return new SuccessResult(Messages.EmployeeAdded);
         }
 
         [CacheRemoveAspect("IEmployeeService.Get")]
         public IResult Delete(int id)
         {
-            IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
+            IResult result = BusinessRules.Run(CheckIdValueIsTrue(id), CheckIfEmployeeHasProcess(id));
 
             if (result != null)
             {
@@ -52,7 +54,7 @@ namespace Business.Concrete
 
             var employee = _empoloyeeDal.Get(x => x.EmployeeId == id);
             _empoloyeeDal.Delete(employee);
-            return new SuccessResult(Messages.UserDeleted);
+            return new SuccessResult(Messages.EmployeeDeleted);
         }
 
         [SecuredOperation("Employee.Get")]
@@ -96,7 +98,7 @@ namespace Business.Concrete
             }
 
             _empoloyeeDal.Update(employee);
-            return new SuccessResult(Messages.UserUpdated);
+            return new SuccessResult(Messages.EmployeeUpdated);
         }
 
         private IResult CheckIfEmployeeIsExists(string? phone)
@@ -107,7 +109,7 @@ namespace Business.Concrete
 
                 if (result)
                 {
-                    return new ErrorResult(Messages.CustomerAlreadyExists);
+                    return new ErrorResult(Messages.EmployeeAlreadyExists);
                 }
             }
 
@@ -126,6 +128,18 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        private IResult CheckIfEmployeeHasProcess(int id)
+        {
+            var result = _processService.GetListByFilter(p => p.EmployeeId == id).Data.Any();
+
+            if (result)
+            {
+                return new ErrorResult(Messages.EmployeeHasProcess);
+            }
+
+            return new SuccessResult();
+        }
+
         private IResult CheckPhoneNumberIsUsed(string? phone)
         {
             if (phone != null)
@@ -134,7 +148,7 @@ namespace Business.Concrete
 
                 if (result.Count > 1)
                 {
-                    return new ErrorResult(Messages.CustomerAlreadyExists);
+                    return new ErrorResult(Messages.EmployeeAlreadyExists);
                 }
             }
             
