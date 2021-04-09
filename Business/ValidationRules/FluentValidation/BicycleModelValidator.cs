@@ -13,9 +13,9 @@ namespace Business.ValidationRules.FluentValidation
         public BicycleModelValidator()
         {
             RuleFor(x => x.Name)
-                .NotEmpty().WithMessage("Kategori adı boş bırakılamaz!")
-                .Length(2, 50).WithMessage("Kategori adı alanı en az 2, en fazla 50 karakter içermelidir!")
-                .Matches(@"^[a-zA-Z0-9ğüşıöçĞÜŞİÖÇ ]*$").WithMessage("Kategori adı bilgisi özel karakter içeremez!");
+                .NotEmpty().WithMessage("Model adı boş bırakılamaz!")
+                .Length(2, 50).WithMessage("Model adı alanı en az 2, en fazla 50 karakter içermelidir!")
+                .Matches(@"^[a-zA-Z0-9ğüşıöçĞÜŞİÖÇ ]*$").WithMessage("Model adı bilgisi özel karakter içeremez!");
         }
     }
 }
