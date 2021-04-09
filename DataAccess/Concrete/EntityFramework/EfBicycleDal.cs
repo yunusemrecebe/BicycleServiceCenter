@@ -28,8 +28,40 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                              select new BicycleDetailDto
                              {
                                  BicycleId = bicyle.BicycleId,
-                                 Brand = bicycleBrand.Name,
-                                 Model = bicyleModel.Name,
+                                 BrandId = bicycleBrand.BicycleBrandId,
+                                 ModelId = bicyleModel.BicycleModelId,
+                                 BrandName = bicycleBrand.Name,
+                                 ModelName = bicyleModel.Name,
+                                 Owner = customers.FirstName + " " + customers.LastName,
+                                 SerialNumber = bicyle.SerialNumber
+                             };
+                return result.ToList();
+            }
+        }
+
+        public List<BicycleDetailDto> GetBicycleDetailsById(int id)
+        {
+            using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
+            {
+                var result = from bicyle in context.Bicycles
+                             join bicycleBrand in context.BicycleBrands
+                             on bicyle.BrandId equals bicycleBrand.BicycleBrandId
+
+                             join bicyleModel in context.BicycleModels
+                             on bicyle.ModelId equals bicyleModel.BicycleModelId
+
+                             join customers in context.Customers
+                             on bicyle.OwnerId equals customers.CustomerId
+
+                             where bicyle.BicycleId == id
+
+                             select new BicycleDetailDto
+                             {
+                                 BicycleId = bicyle.BicycleId,
+                                 BrandId = bicycleBrand.BicycleBrandId,
+                                 ModelId = bicyleModel.BicycleModelId,
+                                 BrandName = bicycleBrand.Name,
+                                 ModelName = bicyleModel.Name,
                                  Owner = customers.FirstName + " " + customers.LastName,
                                  SerialNumber = bicyle.SerialNumber
                              };

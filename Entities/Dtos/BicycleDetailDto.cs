@@ -10,8 +10,10 @@ namespace Entities.Dtos
     public class BicycleDetailDto : IDto
     {
         public int BicycleId { get; set; }
-        public string Brand { get; set; }
-        public string Model { get; set; }
+        public int BrandId { get; set; }
+        public int ModelId { get; set; }
+        public string BrandName { get; set; }
+        public string ModelName { get; set; }
         public string Owner { get; set; }
         public string? SerialNumber { get; set; }
     }

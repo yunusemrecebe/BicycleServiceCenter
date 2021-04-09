@@ -71,9 +71,20 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getdetails")]
-        public IActionResult GetBicycleDetails(int id)
+        public IActionResult GetBicycleDetails()
         {
             var result = _bicycleService.GetBicycleDetails();
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getdetailsbyid")]
+        public IActionResult GetBicycleDetailsById(int id)
+        {
+            var result = _bicycleService.GetBicycleDetailsById(id);
             if (result.Success)
             {
                 return Ok(result.Data);

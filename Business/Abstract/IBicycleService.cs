@@ -13,6 +13,7 @@ namespace Business.Abstract
     {
         IDataResult<List<Bicycle>> GetList();
         IDataResult<List<BicycleDetailDto>> GetBicycleDetails();
+        IDataResult<List<BicycleDetailDto>> GetBicycleDetailsById(int id);
         IDataResult<Bicycle> GetById(int id);
         IResult Add(Bicycle bicycle);
         IResult Update(Bicycle bicycle);

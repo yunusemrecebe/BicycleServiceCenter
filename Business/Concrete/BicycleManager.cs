@@ -53,6 +53,11 @@ namespace Business.Concrete
             return new SuccessDataResult<List<BicycleDetailDto>>(_bicycleDal.GetBicycleDetails().ToList());
         }
 
+        public IDataResult<List<BicycleDetailDto>> GetBicycleDetailsById(int id)
+        {
+            return new SuccessDataResult<List<BicycleDetailDto>>(_bicycleDal.GetBicycleDetailsById(id).ToList());
+        }
+
         public IDataResult<Bicycle> GetById(int id)
         {
             IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
