@@ -6,11 +6,11 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BicyclesModelsController : ControllerBase
+    public class BicycleModelsController : ControllerBase
     {
         IBicycleModelService _bicycleModelService;
 
-        public BicyclesModelsController(IBicycleModelService bicycleModelService)
+        public BicycleModelsController(IBicycleModelService bicycleModelService)
         {
             _bicycleModelService = bicycleModelService;
         }

@@ -10,7 +10,10 @@ export default class Menu extends Component {
             [3, "Ürün Kategorisi", "/ürünKategorisi"],
             [4, "Ürünler", "/ürünler"],
             [5, "Personeller", "/personeller"],
-            [6, "Müşteriler", "/müşteriler"]
+            [6, "Müşteriler", "/müşteriler"],
+            [7, "Bisiklet Markası", "/bisikletMarkası"],
+            [8, "Bisiklet Modeli", "/bisikletModeli"],
+            [9, "Bisikletler", "/bisikletler"]
         ],
         collapsed: true,
         currentCategory: 0
