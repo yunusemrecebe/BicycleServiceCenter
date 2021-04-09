@@ -4,10 +4,11 @@ import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import Employees from './components/Employee/Employees';
 import EmployeeUpdate from './components/Employee/UpdateEmployee';
+import Customers from './components/Customer/Customers';
+import CustomerUpdate from './components/Customer/UpdateCustomer';
 // import Login from './components/Login';
 // import Register from './components/Register';
 // import Logout from './components/Logout';
-// import AddEmployee from './components/Employee/AddEmployee';
 import Products from './components/Product/Product';
 import ProductUpdate from './components/Product/UpdateProduct';
 import ProductBrand from './components/Product/ProductBrand';
@@ -22,6 +23,7 @@ export default class App extends Component {
     selectedCategory: undefined,
     selectedProduct: undefined,
     selectedEmployee: undefined,
+    selectedCustomer: undefined,
   };
 
   setProductBrand = async (brand) => {
@@ -38,6 +40,10 @@ export default class App extends Component {
 
   setEmployee = async (employee) => {
     await this.setState({ selectedEmployee: employee });
+  };
+
+  setCustomer = async (customer) => {
+    await this.setState({ selectedCustomer: customer });
   };
 
   render() {
@@ -57,6 +63,8 @@ export default class App extends Component {
         <Route exact path="/personeller" render={props => (<Employees {...props} setEmployee={this.setEmployee}/>)}/>
         <Route exact path="/personelGüncelle" render={props => (<EmployeeUpdate {...props} getEmployee={this.state.selectedEmployee}/>)}/>
 
+        <Route exact path="/müşteriler" render={props => (<Customers {...props} setCustomer={this.setCustomer}/>)}/>
+        <Route exact path="/müşteriGüncelle" render={props => (<CustomerUpdate {...props} getCustomer={this.state.selectedCustomer}/>)}/>
       </Layout>
     );
   }

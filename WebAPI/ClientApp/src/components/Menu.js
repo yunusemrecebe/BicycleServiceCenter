@@ -9,7 +9,8 @@ export default class Menu extends Component {
             [2, "Ürün Markası", "/ürünMarkası"],
             [3, "Ürün Kategorisi", "/ürünKategorisi"],
             [4, "Ürünler", "/ürünler"],
-            [5, "Personeller", "/personeller"]
+            [5, "Personeller", "/personeller"],
+            [6, "Müşteriler", "/müşteriler"]
         ],
         collapsed: true,
         currentCategory: 0
