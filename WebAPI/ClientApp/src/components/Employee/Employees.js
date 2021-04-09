@@ -2,7 +2,7 @@ import React, { Component, useState } from "react";
 import alertify from "alertifyjs";
 import { Button, Table, Row, Col, Form, FormGroup, Label, Input } from "reactstrap";
 
-export default class ProductBrand extends Component {
+export default class Employees extends Component {
     state = {
         employees: [],
         firstName: "",
@@ -145,7 +145,7 @@ export default class ProductBrand extends Component {
                           <td>{employee.firstName} {employee.lastName}</td>
                           <td>{employee.phone}</td>
                           <td><Button onClick={this.deleteEmployee.bind(this, employee.employeeId)} color="danger">Sil</Button></td>
-                          <td><Button onClick={this.updateProductBrand.bind(this, employee.employeeId)} color="info">Güncelle</Button></td>
+                          <td><Button onClick={this.updateEmployee.bind(this, employee.employeeId)} color="info">Güncelle</Button></td>
                       </tr>
                   ))
                 :
@@ -198,17 +198,15 @@ export default class ProductBrand extends Component {
             });  
     };
 
-    //Marka ismi güncellemek için Marka İd gönderen fonksiyon
-    setProductBrand=(id)=>{
-        this.props.setProductBrand(id);
+    //Personel güncellemek için Personel İd gönderen fonksiyon
+    setEmployee=(id)=>{
+        this.props.setEmployee(id);
     }
 
-    //Marka İsmi Güncelleme
-    updateProductBrand(id){
-        //this.props.setProductBrand(id)
-        this.setProductBrand(id);
-        //localStorage.setItem('productBrandId',id)
-        this.props.history.push("/ÜrünMarkasıGüncelle");
+    //Personel Güncelleme
+    updateEmployee(id){
+        this.setEmployee(id);
+        this.props.history.push("/PersonelGüncelle");
     };
 
     render() {

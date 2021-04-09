@@ -3,6 +3,7 @@ import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import Employees from './components/Employee/Employees';
+import EmployeeUpdate from './components/Employee/UpdateEmployee';
 // import Login from './components/Login';
 // import Register from './components/Register';
 // import Logout from './components/Logout';
@@ -54,6 +55,7 @@ export default class App extends Component {
         <Route exact path="/ÜrünGüncelle" render={props => (<ProductUpdate {...props} getProduct={this.state.selectedProduct}/>)}/>
 
         <Route exact path="/personeller" render={props => (<Employees {...props} setEmployee={this.setEmployee}/>)}/>
+        <Route exact path="/personelGüncelle" render={props => (<EmployeeUpdate {...props} getEmployee={this.state.selectedEmployee}/>)}/>
 
       </Layout>
     );

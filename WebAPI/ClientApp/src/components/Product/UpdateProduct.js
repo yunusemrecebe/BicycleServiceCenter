@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import alertify from "alertifyjs";
-import { Button, Table, Row, Col, Form, FormGroup, Label, Input } from "reactstrap";
+import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 
 export default class UpdateProductCategory extends Component {
 
@@ -121,7 +121,7 @@ export default class UpdateProductCategory extends Component {
         fetch("/api/products/update", requestOptions)
             .then(async (response) => {
                 const data = await response.json();
-                console.log("124 \n" + data)
+
                 if (!response.ok) {
                     const error = data;
                     return Promise.reject(error);
@@ -132,7 +132,6 @@ export default class UpdateProductCategory extends Component {
             })
 
             .catch((responseError) => {
-                console.log(" 135 \n"+responseError);
                 if (responseError.Errors) {
                     if (responseError.Errors.length > 0) {
                         for (let i = 0; i < responseError.Errors.length; i++) {
