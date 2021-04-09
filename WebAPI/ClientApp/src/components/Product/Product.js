@@ -255,8 +255,8 @@ export default class ProductCategory extends Component {
                     {this.state.products.map((product) => (
                         <tr key={product.productId}>
                             <td>{product.productName}</td>
-                            <td>{product.brand}</td>
-                            <td>{product.category}</td>
+                            <td>{product.brandName}</td>
+                            <td>{product.categoryName}</td>
                             <td>{product.unitPrice}</td>
                             <td>{product.unitsInStock}</td>
                             <td><Button onClick={this.deleteProduct.bind(this, product.productId)} color="danger">Sil</Button></td>

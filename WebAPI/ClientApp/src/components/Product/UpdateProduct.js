@@ -32,6 +32,14 @@ export default class UpdateProductCategory extends Component {
         this.setState({ [name]: value });
     };
 
+    handleChangeBrand = (event) => {
+        this.setState({ selectedBrandId: parseInt(event.target.value) });
+    }
+
+    handleChangeCategory = (event) => {
+        this.setState({ selectedCategoryId: parseInt(event.target.value) });
+    }
+
     //Ürün Markalarını Db'den Çekme
     getProductBrands() {
         let token = localStorage.getItem('token');
@@ -157,8 +165,7 @@ export default class UpdateProductCategory extends Component {
 
                 <FormGroup>
                     <Label for="brand">Marka</Label>
-                    <Input value={this.state.selectedBrand} type="select" name="selectedBrandId" id="brand" onChange={this.handleChangeBrand}>
-                        <option selected value={this.state.selectedBrandId} >{this.state.selectedBrandName}</option>
+                    <Input value={this.state.selectedBrandId} type="select" name="selectedBrandId" id="brand" onChange={this.handleChangeBrand}>
                         {this.state.productBrands.map((productBrand) => (
                             <option key={productBrand.productBrandId} value={productBrand.productBrandId}>{productBrand.name}</option>
                         ))}
@@ -167,8 +174,7 @@ export default class UpdateProductCategory extends Component {
 
                 <FormGroup>
                     <Label for="category">Kategori</Label>
-                    <Input value={this.state.selectedCategory} type="select" name="selectedCategoryId" id="category" onChange={this.handleChangeCategory}>
-                        <option selected value={this.state.selectedCategoryId} >{this.state.selectedCategoryName}</option>
+                    <Input value={this.state.selectedCategoryId} type="select" name="selectedCategoryId" id="category" onChange={this.handleChangeCategory}>
                         {this.state.productCategories.map((productCategory) => (
                             <option key={productCategory.productCategoryId} value={productCategory.productCategoryId} >{productCategory.name}</option>
                         ))}
