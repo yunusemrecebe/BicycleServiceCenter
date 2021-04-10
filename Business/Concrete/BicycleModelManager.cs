@@ -89,6 +89,12 @@ namespace Business.Concrete
 
         }
 
+        [CacheAspect]
+        public IDataResult<List<BicycleModel>> GetListByBrand(int id)
+        {
+            return new SuccessDataResult<List<BicycleModel>>(_bicycleModelDal.GetList(m => m.BicycleBrand == id).ToList());
+        }
+
         [ValidationAspect(typeof(BicycleModelValidator))]
         [CacheRemoveAspect("IBicycleModelService.Get")]
         public IResult Update(BicycleModel bicycleModel)

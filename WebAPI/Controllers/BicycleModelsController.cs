@@ -75,6 +75,18 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("getallbybrand")]
+        public IActionResult GetListByBrand(int id)
+        {
+            var result = _bicycleModelService.GetListByBrand(id);
+
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result);
+        }
+
         [HttpGet("getdetailsbyid")]
         public IActionResult GetDetails(int id)
         {
