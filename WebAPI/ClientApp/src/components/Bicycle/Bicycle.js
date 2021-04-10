@@ -12,12 +12,12 @@ export default class Bicycle extends Component {
         selectedModel: 0,
         selectedCustomer: 0,
         serialNumber: "",
+        isLoaded: false,
     };
 
     componentDidMount() {
         this.getBicycles();
         this.getBicycleBrands();
-        this.getBicycleModels();
         this.getCustomers();
     }
 
@@ -28,7 +28,9 @@ export default class Bicycle extends Component {
     };
 
     handleChangeBrand = (event) => {
-        this.setState({ selectedBrand: parseInt(event.target.value) });
+        this.setState({ isLoaded:true });
+        this.state.selectedBrand = document.getElementById("brand").value;
+        this.getBicycleModels(this.state.selectedBrand);
     }
 
     handleChangeModel = (event) => {
@@ -101,7 +103,7 @@ export default class Bicycle extends Component {
 
                 <FormGroup>
                     <Label for="brand">Marka</Label>
-                    <Input value={this.state.selectedBrand} type="select" name="brand" id="brand" onChange={this.handleChangeBrand}>
+                    <Input type="select" name="brand" id="brand" onChange={this.handleChangeBrand}>
                         <option selected value={0} >Seçiniz</option>
                         {this.state.bicycleBrands.map((bicycleBrand) => (
                             <option key={bicycleBrand.bicycleBrandId} value={bicycleBrand.bicycleBrandId}>{bicycleBrand.name}</option>
@@ -109,15 +111,11 @@ export default class Bicycle extends Component {
                     </Input>
                 </FormGroup>
 
-                <FormGroup>
-                    <Label for="model">Model</Label>
-                    <Input value={this.state.selectedModel} type="select" name="model" id="model" onChange={this.handleChangeModel}>
-                        <option selected value={0} >Seçiniz</option>
-                        {this.state.bicycleModels.map((bicycleModel) => (
-                            <option key={bicycleModel.bicycleModelId} value={bicycleModel.bicycleModelId} >{bicycleModel.name}</option>
-                        ))}
-                    </Input>
-                </FormGroup>
+                {this.state.isLoaded ?
+                this.listBicycleModels()
+                :
+                null
+                }
 
                 <FormGroup>
                     <Label for="owner">Sahibi</Label>
@@ -159,14 +157,14 @@ export default class Bicycle extends Component {
     };
 
     //Bisiklet Modellerini Db'den Çekme
-    getBicycleModels() {
+    getBicycleModels(id) {
         let token = localStorage.getItem('token');
         if (token == null) {
             alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
             this.props.history.push("/girisYap")
         }
 
-        let url = "/api/bicyclemodels/getall";
+        let url = "/api/bicyclemodels/getallbybrand?id=" + id;
         fetch(url, {
             method: 'get',
             headers: {
@@ -175,6 +173,23 @@ export default class Bicycle extends Component {
         })
             .then((response) => response.json())
             .then((data) => this.setState({ bicycleModels: data }));
+            
+    };
+
+    //Bisiklet Modellerini option içerisinde listeyen fonksiyon
+    listBicycleModels(){
+        return(
+
+                <FormGroup>
+                    <Label for="model">Model</Label>
+                    <Input value={this.state.selectedModel} type="select" name="model" id="model" onChange={this.handleChangeModel}>
+                        <option selected value={0} >Seçiniz</option>
+                        {this.state.bicycleModels.map((bicycleModel) => (
+                <option key={bicycleModel.bicycleModelId} value={bicycleModel.bicycleModelId} >{bicycleModel.name}</option>
+            ))} 
+                    </Input>
+                </FormGroup>
+        )
     };
 
     //Bisikletleri Db'den Çekme
