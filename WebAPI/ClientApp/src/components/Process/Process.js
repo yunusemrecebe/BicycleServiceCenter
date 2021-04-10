@@ -6,20 +6,19 @@ export default class Process extends Component {
     state = {
         processes: [],
         bicycles: [],
-        bicycleBrands: [],
-        bicycleModels: [],
         customers: [],
-        selectedBrand: 0,
-        selectedModel: 0,
+        employees: [],
+        selectedEmployee: 0,
+        selectedBicycle: 0,
         selectedCustomer: 0,
-        serialNumber: "",
+        completionDate: "1 Gün",
+        diagnostics: "",
         isLoaded: false,
     };
 
     componentDidMount() {
         this.getProcesses();
-        this.getBicycles();
-        this.getBicycleBrands();
+        this.getEmployees();
         this.getCustomers();
     }
 
@@ -29,18 +28,18 @@ export default class Process extends Component {
         this.setState({ [name]: value });
     };
 
-    handleChangeBrand = (event) => {
-        this.setState({ isLoaded: true });
-        this.state.selectedBrand = document.getElementById("brand").value;
-        this.getBicycleModels(this.state.selectedBrand);
+    handleChangeBicycle = (event) => {
+        this.setState({ selectedBicycle: parseInt(event.target.value) });
     }
 
-    handleChangeModel = (event) => {
-        this.setState({ selectedModel: parseInt(event.target.value) });
+    handleChangeEmployee = (event) => {
+        this.setState({ selectedEmployee: parseInt(event.target.value) });
     }
 
     handleChangeCustomer = (event) => {
-        this.setState({ selectedCustomer: parseInt(event.target.value) });
+        this.setState({ isLoaded: true });
+        this.state.selectedCustomer = document.getElementById("owner").value;
+        this.getBicycles(this.state.selectedCustomer);
     }
 
     // Servis Hizmeti Ekleme
@@ -51,30 +50,32 @@ export default class Process extends Component {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                brandId: this.state.selectedBrand,
-                modelId: this.state.selectedModel,
-                ownerId: this.state.selectedCustomer,
-                serialNumber: this.state.serialNumber,
+                employeeId: this.state.selectedEmployee,
+                customerId: this.state.selectedCustomer,
+                bicycleId: this.state.selectedBicycle,
+                completionDate: this.state.completionDate,
+                diagnostics: this.state.diagnostics,
             }),
         };
 
-        fetch("/api/bicycles/add", requestOptions)
+        fetch("/api/processes/add", requestOptions)
             .then(async (response) => {
                 const data = await response.json();
-
+                
                 if (!response.ok) {
                     const error = data;
                     return Promise.reject(error);
                 }
 
-                this.getBicycles();
+                this.getProcesses();
 
                 Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
                 this.setState({
-                    selectedBrand: 0,
-                    selectedModel: 0,
+                    selectedEmployee: 0,
                     selectedCustomer: 0,
-                    serialNumber: "",
+                    selectedBicycle: 0,
+                    completionDate: "1 Gün",
+                    diagnostics: "",
                 });
 
                 alertify.success(data.message);
@@ -102,100 +103,81 @@ export default class Process extends Component {
         return (
             <Form onSubmit={this.addProcess}>
                 <h1> Servis Hizmeti Ekle</h1>
-
-                <FormGroup>
-                    <Label for="owner">Müşteri</Label>
-                    <Input value={this.state.selectedCustomer} type="select" name="owner" id="owner" onChange={this.handleChangeCustomer}>
-                        <option selected value={0} >Seçiniz</option>
-                        {this.state.customers.map((customer) => (
-                            <option key={customer.customerId} value={customer.customerId} >{customer.firstName} {customer.lastName}</option>
-                        ))}
-                    </Input>
-                </FormGroup>
-
                 <Row>
-                    <Col md={6}>
+                    <Col md={4}>
                         <FormGroup>
-                            <Label for="brand"> Bisiklet Markası</Label>
-                            <Input type="select" name="brand" id="brand" onChange={this.handleChangeBrand}>
+                            <Label for="owner">Müşteri</Label>
+                            <Input value={this.state.selectedCustomer} type="select" name="owner" id="owner" onChange={this.handleChangeCustomer}>
                                 <option selected value={0} >Seçiniz</option>
-                                {this.state.bicycleBrands.map((bicycleBrand) => (
-                                    <option key={bicycleBrand.bicycleBrandId} value={bicycleBrand.bicycleBrandId}>{bicycleBrand.name}</option>
+                                {this.state.customers.map((customer) => (
+                                    <option key={customer.customerId} value={customer.customerId} >{customer.firstName} {customer.lastName}</option>
                                 ))}
                             </Input>
                         </FormGroup>
                     </Col>
-                    <Col md={6}>
+
+                    <Col md={4}>
                         <FormGroup>
-                            <Label for="model">Bisiklet Modeli</Label>
-                            <Input value={this.state.selectedModel} type="select" name="model" id="model" onChange={this.handleChangeModel}>
+                            <Label for="bicycle">Bisiklet</Label>
+                            <Input type="select" name="bicycle" id="bicycle" onChange={this.handleChangeBicycle}>
                                 <option selected value={0} >Seçiniz</option>
-                                {this.state.bicycleModels.map((bicycleModel) => (
-                                    <option key={bicycleModel.bicycleModelId} value={bicycleModel.bicycleModelId} >{bicycleModel.name}</option>
+                                {this.state.bicycles.map((bicycle) => (
+                                    <option key={bicycle.bicycleId} value={bicycle.bicycleId}>{bicycle.brandName} {bicycle.modelName}</option>
+                                ))}
+                            </Input>
+                        </FormGroup>
+                    </Col>
+
+                    <Col md={4}>
+                    <FormGroup>
+                            <Label for="employee">Personel</Label>
+                            <Input type="select" name="employee" id="employee" onChange={this.handleChangeEmployee}>
+                                <option selected value={0} >Seçiniz</option>
+                                {this.state.employees.map((employee) => (
+                                    <option key={employee.employeeId} value={employee.employeeId}>{employee.firstName} {employee.lastName}</option>
                                 ))}
                             </Input>
                         </FormGroup>
                     </Col>
                 </Row>
-
-                <FormGroup>
-                    <Label for="serialNumber">Şase Numarası</Label>
-                    <Input type="text" name="serialNumber" id="serialNumber" onChange={this.handleChange} />
+                                        
+                <Row>
+                   <Col md={4}>
+                   <FormGroup>
+                    <Label for="completionDate">Öngörülen Teslim Tarihi</Label>
+                    <Input type="select" name="completionDate" id="completionDate" onChange={this.handleChange}>
+                        <option selected value="1 Gün" >1 Gün</option>
+                        <option value="1-3 Gün" >1-3 Gün</option>
+                        <option value="3-5 Gün" >3-5 Gün</option>
+                        <option value="1 Hafta" >1 Hafta</option>
+                        <option value="10 Gün" >10 Gün</option>
+                        <option value="20 Gün" >20 Gün</option>
+                    </Input>
                 </FormGroup>
+                    </Col> 
 
+                    <Col md={8}>
+                    <FormGroup>
+                    <Label for="diagnostics">Teşhisler</Label>
+                    <Input type="text" name="diagnostics" id="diagnostics" onChange={this.handleChange}></Input>
+                </FormGroup>
+                    </Col> 
+                </Row>
+                
                 <Button>Ekle</Button>
             </Form>
         )
     }
 
-    //Bisiklet Markalarını Db'den Çekme
-    getBicycleBrands() {
+    //Müşteriye Göre Bisikletleri Db'den Çekme
+    getBicycles(id) {
         let token = localStorage.getItem('token');
         if (token == null) {
             alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
             this.props.history.push("/girisYap")
         }
 
-        let url = "/api/bicyclebrands/getall";
-        fetch(url, {
-            method: 'get',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then((response) => response.json())
-            .then((data) => this.setState({ bicycleBrands: data }));
-    };
-
-    //Bisiklet Modellerini Db'den Çekme
-    getBicycleModels(id) {
-        let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
-
-        let url = "/api/bicyclemodels/getallbybrand?id=" + id;
-        fetch(url, {
-            method: 'get',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then((response) => response.json())
-            .then((data) => this.setState({ bicycleModels: data }));
-
-    };
-
-    //Bisikletleri Db'den Çekme
-    getBicycles() {
-        let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
-
-        let url = "/api/bicycles/getdetails";
+        let url = "/api/bicycles/getdetailsbycustomer?id=" + id;
         fetch(url, {
             method: 'get',
             headers: {
@@ -225,6 +207,25 @@ export default class Process extends Component {
             .then((data) => this.setState({ customers: data }));
     };
 
+    //Personelleri Db'den Çekme
+    getEmployees() {
+        let token = localStorage.getItem('token');
+        if (token == null) {
+            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
+            this.props.history.push("/girisYap")
+        }
+
+        let url = "/api/employees/getall";
+        fetch(url, {
+            method: 'get',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => this.setState({ employees: data }));
+    };
+
     //Servis Hizmetlerini Db'den çekme
     getProcesses() {
         let token = localStorage.getItem('token');
@@ -252,10 +253,9 @@ export default class Process extends Component {
                     <tr>
                         <th>Personel</th>
                         <th>Müşteri</th>
-                        <th>Bisiklet Markası</th>
-                        <th>BisikletModeli</th>
+                        <th>Bisiklet</th>
                         <th>Başlangıç Tarihi</th>
-                        <th>Tamamlanma Tarihi</th>
+                        <th>Öngörülen Teslim Tarihi</th>
                         <th>Teşhisler</th>
                         <th></th>
                         <th></th>
@@ -267,13 +267,12 @@ export default class Process extends Component {
                         <tr key={process.processId}>
                             <td>{process.employee}</td>
                             <td>{process.customer}</td>
-                            <td>{process.bicycleBrand}</td>
-                            <td>{process.bicycleModel}</td>
-                            <td>{process.startingDate}</td>
+                            <td>{process.bicycleBrand} {process.bicycleModel}</td>
+                            <td>{process.startingDate.replace('T',' ')}</td>
                             <td>{process.competitionDate}</td>
                             <td>{process.diagnostics}</td>
-                            <td><Button onClick={this.deleteBicycle.bind(this, process.processId)} color="danger">Sil</Button></td>
-                            <td><Button onClick={this.updateBicycle.bind(this, process.processId)} color="info">Güncelle</Button></td>
+                            <td><Button onClick={this.deleteProcess.bind(this, process.processId)} color="danger">Sil</Button></td>
+                            <td><Button onClick={this.updateProcess.bind(this, process.processId)} color="info">Güncelle</Button></td>
                         </tr>
                     ))}
                 </tbody>
@@ -281,15 +280,15 @@ export default class Process extends Component {
         )
     }
 
-    //Bisiklet Silme
-    deleteBicycle(id) {
+    //Servis Hizmeti Silme
+    deleteProcess(id) {
 
         const requestOptions = {
             method: "POST",
             headers: { "Content-Type": "application/json" },
         };
 
-        fetch("/api/bicycles/delete?id=" + id, requestOptions)
+        fetch("/api/processes/delete?id=" + id, requestOptions)
             .then(async (response) => {
                 const data = await response.json();
 
@@ -298,7 +297,7 @@ export default class Process extends Component {
                     return Promise.reject(error);
                 }
 
-                this.getBicycles();
+                this.getProcesses();
                 alertify.warning(data.message);
             })
 
@@ -313,15 +312,15 @@ export default class Process extends Component {
             });
     };
 
-    //Bisiklet güncellemek için Bisiklet İd gönderen fonksiyon
-    setBicycle = (id) => {
-        this.props.setBicycle(id);
+    //Servis Hizmeti güncellemek için Servis Hizmeti id'si gönderen fonksiyon
+    setProcess = (id) => {
+        this.props.setProcess(id);
     }
 
-    //Bisiklet Güncelleme
-    updateBicycle(id) {
-        this.setBicycle(id);
-        this.props.history.push("/BisikletGüncelle");
+    //Servis Hizmeti Güncelleme
+    updateProcess(id) {
+        this.setProcess(id);
+        this.props.history.push("/servisHizmetiGuncelle");
     };
 
     render() {
@@ -330,13 +329,12 @@ export default class Process extends Component {
                 {this.addProcessForm()}
 
                 <Row>
-                    <h1 className="text-center">Sistemde Kayıtlı Olan Bisikletler</h1>
+                    <h1 className="text-center">Sistemde Kayıtlı Olan Hizmetler</h1>
                 </Row>
                 <Row>
-                    <Col md="8">
+                    <Col md="12">
                         {this.ListProcesses()}
                     </Col>
-                    <Col md="4"></Col>
                 </Row>
 
             </div>
