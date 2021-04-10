@@ -63,7 +63,7 @@ namespace Business.Concrete
 
             return new SuccessDataResult<BicycleModel>(_bicycleModelDal.Get(m => m.BicycleModelId == id));
         }
-        
+
         public IDataResult<BicycleModelDto> GetDetailsById(int id)
         {
             IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
@@ -93,7 +93,7 @@ namespace Business.Concrete
         [CacheRemoveAspect("IBicycleModelService.Get")]
         public IResult Update(BicycleModel bicycleModel)
         {
-            IResult result = BusinessRules.Run(CheckIfBicycleModelIsExists(bicycleModel.Name), CheckIdValueIsTrue(bicycleModel.BicycleModelId));
+            IResult result = BusinessRules.Run(CheckIdValueIsTrue(bicycleModel.BicycleModelId));
 
             if (result != null)
             {
