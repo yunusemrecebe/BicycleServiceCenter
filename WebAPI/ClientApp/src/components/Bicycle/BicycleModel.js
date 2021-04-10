@@ -88,7 +88,7 @@ export default class BicycleModel extends Component {
             this.props.history.push("/girisYap")
         }
 
-        let url = "/api/bicyclemodels/getall";
+        let url = "/api/bicyclemodels/getdetails";
         fetch(url, {
             method: 'get',
             headers: {
@@ -106,6 +106,7 @@ export default class BicycleModel extends Component {
                 <thead>
                     <tr>
                         <th>Bisiklet Modeli İsmi</th>
+                        <th>Ait Olduğu Marka</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -114,7 +115,8 @@ export default class BicycleModel extends Component {
                 <tbody>
                     {this.state.bicycleModels.map((model) => (
                         <tr key={model.bicycleModelId}>
-                            <td>{model.name}</td>
+                            <td>{model.bicycleModelName}</td>
+                            <td>{model.bicycleBrandName}</td>
                             <td><Button onClick={this.deleteBicycleModel.bind(this, model.bicycleModelId)} color="danger">Sil</Button></td>
                             <td><Button onClick={this.updateBicycleModel.bind(this, model.bicycleModelId)} color="info">Güncelle</Button></td>
                         </tr>
