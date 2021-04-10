@@ -16,6 +16,10 @@ namespace Business.ValidationRules.FluentValidation
                 .NotEmpty().WithMessage("Model adı boş bırakılamaz!")
                 .Length(2, 50).WithMessage("Model adı alanı en az 2, en fazla 50 karakter içermelidir!")
                 .Matches(@"^[a-zA-Z0-9ğüşıöçĞÜŞİÖÇ ]*$").WithMessage("Model adı bilgisi özel karakter içeremez!");
+
+            RuleFor(x => x.BicycleBrand)
+                .NotEmpty().WithMessage("Bisiklet Markası mutlaka seçilmelidir!")
+                .GreaterThanOrEqualTo(0).WithMessage("Bisiklet Markası mutlaka seçilmelidir!");
         }
     }
 }

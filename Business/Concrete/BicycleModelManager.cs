@@ -7,6 +7,7 @@ using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.Dtos;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -61,6 +62,24 @@ namespace Business.Concrete
             }
 
             return new SuccessDataResult<BicycleModel>(_bicycleModelDal.Get(m => m.BicycleModelId == id));
+        }
+        
+        public IDataResult<BicycleModelDto> GetDetailsById(int id)
+        {
+            IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
+
+            if (result != null)
+            {
+                return new ErrorDataResult<BicycleModelDto>(Messages.IdValueIsInvalid);
+            }
+
+            return new SuccessDataResult<BicycleModelDto>(_bicycleModelDal.GetBicycleModelDetailsById(id));
+        }
+
+        [CacheAspect]
+        public IDataResult<List<BicycleModelDto>> GetDetails()
+        {
+            return new SuccessDataResult<List<BicycleModelDto>>(_bicycleModelDal.GetBicycleModelDetails().ToList());
         }
 
         [CacheAspect]

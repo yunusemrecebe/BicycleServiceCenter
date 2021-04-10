@@ -74,5 +74,29 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+
+        [HttpGet("getdetailsbyid")]
+        public IActionResult GetDetails(int id)
+        {
+            var result = _bicycleModelService.GetDetailsById(id);
+
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getdetails")]
+        public IActionResult GetDetails()
+        {
+            var result = _bicycleModelService.GetDetails();
+
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result);
+        }
     }
 }
