@@ -19,12 +19,8 @@ namespace Business.ValidationRules.FluentValidation
                 .NotEmpty()
                 .GreaterThan(0).WithMessage("Bu alan mutlaka seçilmelidir!");
 
-            RuleFor(p => p.CompletionDate)
-                .NotEmpty()
-                .MaximumLength(50);
-
             RuleFor(p => p.Diagnostics)
-                .Matches(@"^[a-zA-Z0-9ğüşıöçĞÜŞİÖÇ ]*$").WithMessage("Teşhis bilgisi özel karakter içeremez!");
+                .Matches(@"^[a-zA-Z0-9ğüşıöçĞÜŞİÖÇ -]*$").WithMessage("Teşhis bilgisi özel karakter içeremez!");
         }
     }
 }

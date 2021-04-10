@@ -28,7 +28,7 @@ namespace Business.Concrete
         [CacheRemoveAspect("IProcessService.Get")]
         public IResult Add(Process process)
         {
-            process.StartingDate = DateTime.Today;
+            process.StartingDate = Convert.ToDateTime(DateTime.Now.ToString("MM/dd/yyyy HH:mm"));
             _processDal.Add(process);
             return new SuccessResult(Messages.ProcessAdded);
         }

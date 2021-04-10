@@ -91,5 +91,16 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+
+        [HttpGet("getdetailsbycustomer")]
+        public IActionResult GetBicycleDetailsByCustomer(int id)
+        {
+            var result = _bicycleService.GetBicycleDetailsByCustomerId(id);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result);
+        }
     }
 }
