@@ -5,11 +5,14 @@ import { Button, Table, Row, Col, Form, FormGroup, Label, Input } from "reactstr
 export default class BicycleModel extends Component {
     state = {
         bicycleModels: [],
+        bicycleBrands: [],
         name: "",
+        selectedBrand: 0,
     };
 
     componentDidMount() {
         this.getBicycleModels();
+        this.getBicycleBrands();
     }
 
     //form verilerini state içerisine aktaran fonksiyon
@@ -19,7 +22,11 @@ export default class BicycleModel extends Component {
         this.setState({ [name]: value });
     };
 
-    // Model Adı Ekleme
+    handleChangeBrand = (event) => {
+        this.setState({ selectedBrand: parseInt(event.target.value) });
+    }
+
+    // Model Ekleme
     addBicycleModel = (event) => {
         event.preventDefault();
 
@@ -27,6 +34,7 @@ export default class BicycleModel extends Component {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
+                bicycleBrand: this.state.selectedBrand,
                 name: this.state.name,
             }),
         };
@@ -43,7 +51,7 @@ export default class BicycleModel extends Component {
                 this.getBicycleModels();
 
                 Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
-                this.setState({ name: "" });
+                this.setState({ name: "", selectedBrand: 0 });
 
                 alertify.success(data.message);
             })
@@ -64,15 +72,25 @@ export default class BicycleModel extends Component {
                 }
             });
     };
-
+    
     // Model Ekleme Formu
     addBicycleModelForm() {
         return (
             <Form onSubmit={this.addBicycleModel}>
                 <h1> Bisiklet Modeli Ekle</h1>
                 <FormGroup>
-                    <Label for="name">Adı</Label>
+                    <Label for="name">Model Adı</Label>
                     <Input type="text" name="name" id="name" onChange={this.handleChange} />
+                </FormGroup>
+
+                <FormGroup>
+                    <Label for="brand">Ait Olduğu Marka</Label>
+                    <Input value={this.state.selectedBrand} type="select" name="brand" id="brand" onChange={this.handleChangeBrand}>
+                        <option selected value={0} >Seçiniz</option>
+                        {this.state.bicycleBrands.map((bicycleBrand) => (
+                            <option key={bicycleBrand.bicycleBrandId} value={bicycleBrand.bicycleBrandId}>{bicycleBrand.name}</option>
+                        ))}
+                    </Input>
                 </FormGroup>
   
                 <Button>Ekle</Button>
@@ -97,6 +115,25 @@ export default class BicycleModel extends Component {
         })
             .then((response) => response.json())
             .then((data) => this.setState({ bicycleModels: data }));
+    };
+
+    //Bisiklet Markalarını Db'den Çekme
+    getBicycleBrands() {
+        let token = localStorage.getItem('token');
+        if (token == null) {
+            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
+            this.props.history.push("/girisYap")
+        }
+
+        let url = "/api/bicyclebrands/getall";
+        fetch(url, {
+            method: 'get',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => this.setState({ bicycleBrands: data }));
     };
 
     //Db'Den çekilmiş model isimlerini listeleme

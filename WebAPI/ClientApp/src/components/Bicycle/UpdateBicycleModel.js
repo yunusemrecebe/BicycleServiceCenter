@@ -85,7 +85,7 @@ export default class UpdateBicycleModel extends Component {
                 name: this.state.name != "" ? this.state.name : this.state.selectedModelName,
             }),
         };
-        console.log(this.props.getBicycleModel + "\n" + this.state.selectedBrandId + "\n" + this.state.name + "\n" + this.state.selectedModelName);
+        
         fetch("/api/bicyclemodels/update", requestOptions)
             .then(async (response) => {
                 
