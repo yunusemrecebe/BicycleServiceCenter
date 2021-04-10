@@ -13,7 +13,8 @@ export default class Menu extends Component {
             [6, "Müşteriler", "/müşteriler"],
             [7, "Bisiklet Markası", "/bisikletMarkası"],
             [8, "Bisiklet Modeli", "/bisikletModeli"],
-            [9, "Bisikletler", "/bisikletler"]
+            [9, "Bisikletler", "/bisikletler"],
+            [10, "Servis Hizmeti", "/servisHizmeti"]
         ],
         collapsed: true,
         currentCategory: 0

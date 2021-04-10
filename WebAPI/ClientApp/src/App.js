@@ -21,6 +21,7 @@ import BicycleModel from './components/Bicycle/BicycleModel';
 import BicycleModelUpdate from './components/Bicycle/UpdateBicycleModel';
 import Bicycle from './components/Bicycle/Bicycle';
 import BicycleUpdate from './components/Bicycle/UpdateBicycle';
+import Process from './components/Process/Process';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -33,6 +34,7 @@ export default class App extends Component {
     selectedBicycle: undefined,
     selectedEmployee: undefined,
     selectedCustomer: undefined,
+    selectedProcess: undefined,
   };
 
   setProductBrand = async (brand) => {
@@ -67,6 +69,10 @@ export default class App extends Component {
     await this.setState({ selectedCustomer: customer });
   };
 
+  setProcess = async (process) => {
+    await this.setState({ selectedProcess: process });
+  };
+
   render() {
     return (
       <Layout>
@@ -87,6 +93,9 @@ export default class App extends Component {
         <Route exact path="/bisikletModeliGüncelle" render={props => (<BicycleModelUpdate {...props} getBicycleModel={this.state.selectedBicycleModel} />)} />
         <Route exact path="/bisikletler" render={props => (<Bicycle {...props} setBicycle={this.setBicycle} />)} />
         <Route exact path="/bisikletGüncelle" render={props => (<BicycleUpdate {...props} getBicycle={this.state.selectedBicycle} />)} />
+
+        {/* PROCESS İLE İLGİLİ YÖNLENDİRMELER */}
+        <Route exact path="/servisHizmeti" render={props => (<Process {...props} setProcess={this.setProcess} />)} />
 
         {/* EMPLOYEE İLE İLGİLİ YÖNLENDİRMELER */}
         <Route exact path="/personeller" render={props => (<Employees {...props} setEmployee={this.setEmployee} />)} />
