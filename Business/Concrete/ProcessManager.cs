@@ -77,6 +77,11 @@ namespace Business.Concrete
             return new SuccessDataResult<List<ProcessDetailDto>>(_processDal.GetProcessDetails().ToList());
         }
 
+        public IDataResult<ProcessDetailDto> GetProcessDetailsById(int id)
+        {
+            return new SuccessDataResult<ProcessDetailDto>(_processDal.GetProcessDetailsById(id));
+        }
+
         [ValidationAspect(typeof(ProcessValidator))]
         [CacheRemoveAspect("IProcessService.Get")]
         public IResult Update(Process process)

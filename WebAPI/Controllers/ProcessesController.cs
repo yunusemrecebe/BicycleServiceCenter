@@ -86,5 +86,17 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+
+        [HttpGet("getprocessdetailsbyid")]
+        public IActionResult GetProcessDetailsById(int id)
+        {
+            var result = _processService.GetProcessDetailsById(id);
+
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result);
+        }
     }
 }

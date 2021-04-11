@@ -33,15 +33,61 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                              select new ProcessDetailDto
                              {
                                  ProcessId = process.ProcessId,
-                                 Employee = employee.FirstName + " " + employee.LastName,
-                                 Customer = customer.FirstName + " " + customer.LastName,
-                                 BicycleBrand = bicycleBrand.Name,
-                                 BicycleModel = bicycleModel.Name,
+                                 EmployeeId = employee.EmployeeId,
+                                 CustomerId = customer.CustomerId,
+                                 BicycleBrandId = bicycleBrand.BicycleBrandId,
+                                 BicycleModelId = bicycleModel.BicycleModelId,
+                                 EmployeeName = employee.FirstName + " " + employee.LastName,
+                                 CustomerName = customer.FirstName + " " + customer.LastName,
+                                 BicycleBrandName = bicycleBrand.Name,
+                                 BicycleModelName = bicycleModel.Name,
                                  StartingDate = process.StartingDate,
                                  CompetitionDate = process.CompletionDate,
                                  Diagnostics = process.Diagnostics
                              };
                 return result.ToList();
+
+            }
+        }
+
+        public ProcessDetailDto GetProcessDetailsById(int id)
+        {
+            using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
+            {
+                var result = from process in context.Processes
+                             join employee in context.Employees
+                             on process.EmployeeId equals employee.EmployeeId
+
+                             join customer in context.Customers
+                             on process.CustomerId equals customer.CustomerId
+
+                             join bicycle in context.Bicycles
+                             on process.BicycleId equals bicycle.BicycleId
+
+                             join bicycleBrand in context.BicycleBrands
+                             on bicycle.BrandId equals bicycleBrand.BicycleBrandId
+
+                             join bicycleModel in context.BicycleModels
+                             on bicycle.ModelId equals bicycleModel.BicycleModelId
+
+                             where process.ProcessId == id
+
+                             select new ProcessDetailDto
+                             {
+                                 ProcessId = process.ProcessId,
+                                 EmployeeId = employee.EmployeeId,
+                                 CustomerId = customer.CustomerId,
+                                 BicycleBrandId = bicycleBrand.BicycleBrandId,
+                                 BicycleModelId = bicycleModel.BicycleModelId,
+                                 EmployeeName = employee.FirstName + " " + employee.LastName,
+                                 CustomerName = customer.FirstName + " " + customer.LastName,
+                                 BicycleBrandName = bicycleBrand.Name,
+                                 BicycleModelName = bicycleModel.Name,
+                                 StartingDate = process.StartingDate,
+                                 CompetitionDate = process.CompletionDate,
+                                 Diagnostics = process.Diagnostics
+                             };
+                return result.SingleOrDefault();
 
             }
         }

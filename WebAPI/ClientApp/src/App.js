@@ -22,6 +22,7 @@ import BicycleModelUpdate from './components/Bicycle/UpdateBicycleModel';
 import Bicycle from './components/Bicycle/Bicycle';
 import BicycleUpdate from './components/Bicycle/UpdateBicycle';
 import Process from './components/Process/Process';
+import ProcessUpdate from './components/Process/UpdateProcess';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -96,6 +97,7 @@ export default class App extends Component {
 
         {/* PROCESS İLE İLGİLİ YÖNLENDİRMELER */}
         <Route exact path="/servisHizmeti" render={props => (<Process {...props} setProcess={this.setProcess} />)} />
+        <Route exact path="/servisHizmetiGüncelle" render={props => (<ProcessUpdate {...props} getProcess={this.state.selectedProcess} />)} />
 
         {/* EMPLOYEE İLE İLGİLİ YÖNLENDİRMELER */}
         <Route exact path="/personeller" render={props => (<Employees {...props} setEmployee={this.setEmployee} />)} />
