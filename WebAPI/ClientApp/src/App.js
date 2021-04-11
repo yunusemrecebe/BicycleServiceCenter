@@ -36,6 +36,7 @@ export default class App extends Component {
     selectedEmployee: undefined,
     selectedCustomer: undefined,
     selectedProcess: undefined,
+    selectedProcessCustomer: undefined,
   };
 
   setProductBrand = async (brand) => {
@@ -71,8 +72,17 @@ export default class App extends Component {
   };
 
   setProcess = async (process) => {
-    await this.setState({ selectedProcess: process });
+    await this.setState({ 
+      selectedProcess: process,
+     });
   };
+
+  setSelectedCustomer = async (customer) => {
+    await this.setState({ 
+      selectedProcessCustomer: customer
+     });
+  };
+
 
   render() {
     return (
@@ -96,8 +106,8 @@ export default class App extends Component {
         <Route exact path="/bisikletGüncelle" render={props => (<BicycleUpdate {...props} getBicycle={this.state.selectedBicycle} />)} />
 
         {/* PROCESS İLE İLGİLİ YÖNLENDİRMELER */}
-        <Route exact path="/servisHizmeti" render={props => (<Process {...props} setProcess={this.setProcess} />)} />
-        <Route exact path="/servisHizmetiGüncelle" render={props => (<ProcessUpdate {...props} getProcess={this.state.selectedProcess} />)} />
+        <Route exact path="/servisHizmeti" render={props => (<Process {...props} setProcess={this.setProcess} setSelectedCustomer={this.setSelectedCustomer} />)} />
+        <Route exact path="/servisHizmetiGüncelle" render={props => (<ProcessUpdate {...props} getProcess={this.state.selectedProcess} getCustomer={this.state.selectedProcessCustomer} />)} />
 
         {/* EMPLOYEE İLE İLGİLİ YÖNLENDİRMELER */}
         <Route exact path="/personeller" render={props => (<Employees {...props} setEmployee={this.setEmployee} />)} />

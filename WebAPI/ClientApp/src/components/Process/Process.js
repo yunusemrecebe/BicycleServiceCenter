@@ -265,14 +265,14 @@ export default class Process extends Component {
                 <tbody>
                     {this.state.processes.map((process) => (
                         <tr key={process.processId}>
-                            <td>{process.employee}</td>
-                            <td>{process.customer}</td>
-                            <td>{process.bicycleBrand} {process.bicycleModel}</td>
+                            <td>{process.employeeName}</td>
+                            <td>{process.customerName}</td>
+                            <td>{process.bicycleBrandName} {process.bicycleModelName}</td>
                             <td>{process.startingDate.replace('T',' ')}</td>
                             <td>{process.competitionDate}</td>
                             <td>{process.diagnostics}</td>
                             <td><Button onClick={this.deleteProcess.bind(this, process.processId)} color="danger">Sil</Button></td>
-                            <td><Button onClick={this.updateProcess.bind(this, process.processId)} color="info">Güncelle</Button></td>
+                            <td><Button onClick={this.updateProcess.bind(this, process.processId, process.customerId)} color="info">Güncelle</Button></td>
                         </tr>
                     ))}
                 </tbody>
@@ -318,8 +318,8 @@ export default class Process extends Component {
     }
 
     //Servis Hizmeti Güncelleme
-    updateProcess(id) {
-        this.setProcess(id);
+    updateProcess(id, customer) {
+        this.setProcess(id, customer );
         this.props.history.push("/servisHizmetiGüncelle");
     };
 
