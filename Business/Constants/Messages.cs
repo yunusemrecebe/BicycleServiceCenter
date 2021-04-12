@@ -50,6 +50,8 @@ namespace Business.Constants
         public static string CustomerAdded = "Müşteri Eklendi!";
         public static string CustomerDeleted = "Müşteri Silindi!";
         public static string CustomerUpdated = "Müşteri Bilgileri Güncellendi!";
+        public static string CustomerHasProcess = "Silmek istediğiniz müşteri, bir servis hizmeti aldığı için silinemedi!";
+        public static string CustomerHasBike = "Silmek istediğiniz müşteri, üzerine kayıtlı bir bisiklet olduğu için silinemedi!";
         public static string CustomerAlreadyExists = "Sistemde Bu Numara İle Kayıt Edilmiş Bir Kullanıcı Zaten Mevcut!";
 
         //Process Messages
@@ -79,7 +81,7 @@ namespace Business.Constants
         public static string EmployeeAdded = "Personel Eklendi!";
         public static string EmployeeDeleted = "Personel Silindi!";
         public static string EmployeeUpdated = "Personel Güncellendi!";
-        public static string EmployeeHasProcess = "Silmek istediğiniz personel bir servis hizmetinden sorumlu olduğu için silinemedi!";
+        public static string EmployeeHasProcess = "Silmek istediğiniz personel, bir servis hizmetinden sorumlu olduğu için silinemedi!";
         public static string EmployeeAlreadyExists = "Sistemde Bu Numara İle Kayıt Edilmiş Bir Personel Zaten Mevcut!";
     }
 }

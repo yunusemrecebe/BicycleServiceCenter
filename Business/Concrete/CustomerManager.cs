@@ -9,21 +9,22 @@ using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using FluentValidation;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
     public class CustomerManager : ICustomerService
     {
         ICustomerDal _customerDal;
+        IProcessService _processService;
+        IBicycleService _bicycleService;
 
-        public CustomerManager(ICustomerDal customerDal)
+        public CustomerManager(ICustomerDal customerDal, IProcessService processService, IBicycleService bicycleService)
         {
             _customerDal = customerDal;
+            _processService = processService;
+            _bicycleService = bicycleService;
         }
 
         [ValidationAspect(typeof(CustomerValidator))]
@@ -44,7 +45,7 @@ namespace Business.Concrete
         [CacheRemoveAspect("ICustomerService.Get")]
         public IResult Delete(int id)
         {
-            IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
+            IResult result = BusinessRules.Run(CheckIdValueIsTrue(id), CheckIfCustomerHasProcess(id), CheckIfCustomerHasBike(id));
 
             if (result != null)
             {
@@ -129,6 +130,30 @@ namespace Business.Concrete
             if (result.Count>1)
             {
                 return new ErrorResult(Messages.CustomerAlreadyExists);
+            }
+
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfCustomerHasProcess(int id)
+        {
+            var result = _processService.GetListByFilter(p => p.CustomerId == id).Data.Any();
+
+            if (result)
+            {
+                return new ErrorResult(Messages.CustomerHasProcess);
+            }
+
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfCustomerHasBike(int id)
+        {
+            var result = _bicycleService.GetBicycleDetailsByCustomerId(id).Data.Any();
+
+            if (result)
+            {
+                return new ErrorResult(Messages.CustomerHasBike);
             }
 
             return new SuccessResult();
