@@ -176,10 +176,9 @@ export default class BicycleBrand extends Component {
                 <h1 className="text-center">Sistemde Kayıtlı Olan Bisiklet Markaları</h1>
                 </Row>
                 <Row>
-                    <Col md="8">
+                    <Col md="12">
                         {this.ListBicycleBrands()}
                     </Col>
-                    <Col md="4"></Col>
                 </Row>
 
             </div>

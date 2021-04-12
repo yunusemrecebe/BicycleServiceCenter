@@ -248,6 +248,7 @@ export default class ProductCategory extends Component {
                         <th>Birim Fiyat</th>
                         <th>Stoktaki Miktar</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
 
@@ -277,10 +278,9 @@ export default class ProductCategory extends Component {
                     <h1 className="text-center">Sistemde Kayıtlı Olan Ürünler</h1>
                 </Row>
                 <Row>
-                    <Col md="8">
+                    <Col md="12">
                         {this.ListProducts()}
                     </Col>
-                    <Col md="4"></Col>
                 </Row>
 
             </div>

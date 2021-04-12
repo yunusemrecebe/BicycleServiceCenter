@@ -1,6 +1,6 @@
 import React, { Component, useState } from "react";
 import alertify from "alertifyjs";
-import {Button, Table, FormGroup, Row, Col} from "reactstrap";
+import { Button, Label, Input, Table, FormGroup, Row, Col } from "reactstrap";
 
 export default class ProductBrand extends Component {
     state = {
@@ -32,7 +32,7 @@ export default class ProductBrand extends Component {
         };
 
 
-        
+
         fetch("/api/productbrands/add", requestOptions)
             .then(async (response) => {
                 const data = await response.json();
@@ -55,11 +55,11 @@ export default class ProductBrand extends Component {
                             alertify.error(responseError.Errors[i].ErrorMessage);
                         }
                     }
-                    else{
+                    else {
                         alertify.error(responseError);
                     }
                 }
-                else{
+                else {
                     alertify.error(responseError.message);
                 }
             });
@@ -85,14 +85,14 @@ export default class ProductBrand extends Component {
     };
 
     //Marka İsmi Silme
-    deleteProductBrand(id){
+    deleteProductBrand(id) {
 
         const requestOptions = {
             method: "POST",
             headers: { "Content-Type": "application/json" },
         };
-        
-        fetch("/api/productbrands/delete?id="+id, requestOptions)
+
+        fetch("/api/productbrands/delete?id=" + id, requestOptions)
             .then(async (response) => {
                 const data = await response.json();
 
@@ -113,16 +113,16 @@ export default class ProductBrand extends Component {
                         }
                     }
                 }
-            });  
+            });
     };
 
     //Marka ismi güncellemek için Marka İd gönderen fonksiyon
-    setProductBrand=(id)=>{
+    setProductBrand = (id) => {
         this.props.setProductBrand(id);
     }
 
     //Marka İsmi Güncelleme
-    updateProductBrand(id){
+    updateProductBrand(id) {
         //this.props.setProductBrand(id)
         this.setProductBrand(id);
         //localStorage.setItem('productBrandId',id)
@@ -158,22 +158,27 @@ export default class ProductBrand extends Component {
     render() {
         return (
             <div>
-                <form onSubmit={this.addProduct}>
-                    <FormGroup>
-                        <label htmlFor="productName">Marka Adı</label>
-                        <input type="text" id="productName" name="name" onChange={this.handleChange}></input>
-                        <button type="submit">Ekle</button>
-                    </FormGroup>
-                </form>
+                <Row>
+                    <Col md="3">
+                        <form onSubmit={this.addProduct}>
+                            <h1> Marka Ekle</h1>
+                            <FormGroup>
+                                <Label for="name">Marka Adı</Label>
+                                <Input type="text" name="name" id="name" onChange={this.handleChange} />
+                            </FormGroup>
+                            <Button type="submit">Ekle</Button>
+                        </form>
+                    </Col>
+                    <Col md="9"></Col>
+                </Row>
 
                 <Row>
-                <h1 className="text-center">Sistemde Kayıtlı Olan Ürün Markaları</h1>
+                    <h1 className="text-center">Sistemde Kayıtlı Olan Ürün Markaları</h1>
                 </Row>
                 <Row>
-                    <Col md="8">
+                    <Col md="12">
                         {this.ListProductBrands()}
                     </Col>
-                    <Col md="4"></Col>
                 </Row>
 
             </div>

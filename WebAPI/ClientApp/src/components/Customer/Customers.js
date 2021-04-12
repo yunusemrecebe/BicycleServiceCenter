@@ -135,6 +135,7 @@ export default class Customers extends Component {
                       <th>Ad Soyad</th>
                       <th>Telefon</th>
                       <th></th>
+                      <th></th>
                   </tr>
               </thead>
 
@@ -217,10 +218,9 @@ export default class Customers extends Component {
                 <h1 className="text-center">Sistemde Kayıtlı Olan Müşteriler</h1>
                 </Row>
                 <Row>
-                    <Col md="8">
+                    <Col md="12">
                         {this.ListCustomers()}
                     </Col>
-                    <Col md="4"></Col>
                 </Row>
 
             </div>
