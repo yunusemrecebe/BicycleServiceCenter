@@ -1,6 +1,6 @@
 import React, { Component, useState } from "react";
 import alertify from "alertifyjs";
-import {Button, Table, FormGroup, Row, Col} from "reactstrap";
+import { Button, Label, Input, Table, FormGroup, Row, Col } from "reactstrap";
 
 export default class ProductCategory extends Component {
     state = {
@@ -30,7 +30,7 @@ export default class ProductCategory extends Component {
                 name: this.state.name,
             }),
         };
-        
+
         fetch("/api/productcategories/add", requestOptions)
             .then(async (response) => {
                 const data = await response.json();
@@ -53,11 +53,11 @@ export default class ProductCategory extends Component {
                             alertify.error(responseError.Errors[i].ErrorMessage);
                         }
                     }
-                    else{
+                    else {
                         alertify.error(responseError);
                     }
                 }
-                else{
+                else {
                     alertify.error(responseError.message);
                 }
             });
@@ -83,14 +83,14 @@ export default class ProductCategory extends Component {
     };
 
     //Ürün Kategorisi Silme
-    deleteProductCategory(id){
+    deleteProductCategory(id) {
 
         const requestOptions = {
             method: "POST",
             headers: { "Content-Type": "application/json" },
         };
-        
-        fetch("/api/productcategories/delete?id="+id, requestOptions)
+
+        fetch("/api/productcategories/delete?id=" + id, requestOptions)
             .then(async (response) => {
                 const data = await response.json();
 
@@ -111,16 +111,16 @@ export default class ProductCategory extends Component {
                         }
                     }
                 }
-            });  
+            });
     };
 
     //Ürün Kategorisi güncellemek için Kategori İd gönderen fonksiyon
-    setProductCategory=(id)=>{
+    setProductCategory = (id) => {
         this.props.setProductCategory(id);
     }
 
     //Ürün Kategorisi Güncelleme
-    updateProductCategory(id){
+    updateProductCategory(id) {
         this.setProductCategory(id);
         this.props.history.push("/ÜrünKategorisiGüncelle");
     };
@@ -153,16 +153,22 @@ export default class ProductCategory extends Component {
     render() {
         return (
             <div>
-                <form onSubmit={this.addProductCategory}>
-                    <FormGroup>
-                        <label htmlFor="categoryName">Kategori Adı</label>
-                        <input type="text" id="categoryName" name="name" onChange={this.handleChange}></input>
-                        <button type="submit">Ekle</button>
-                    </FormGroup>
-                </form>
+                <Row>
+                    <Col md="3">
+                        <form onSubmit={this.addProductCategory}>
+                            <h1> Marka Ekle</h1>
+                            <FormGroup>
+                                <Label for="name">Kategori Adı</Label>
+                                <Input type="text" name="name" id="name" onChange={this.handleChange} />
+                            </FormGroup>
+                            <Button type="submit">Ekle</Button>
+                        </form>
+                    </Col>
+                    <Col md="9"></Col>
+                </Row>
 
                 <Row>
-                <h1 className="text-center">Sistemde Kayıtlı Olan Ürün Kategorileri</h1>
+                    <h1 className="text-center">Sistemde Kayıtlı Olan Ürün Kategorileri</h1>
                 </Row>
                 <Row>
                     <Col md="12">
