@@ -36,6 +36,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<ProcessManager>().As<IProcessService>().SingleInstance();
             builder.RegisterType<EfProcessDal>().As<IProcessDal>().SingleInstance();
 
+            builder.RegisterType<InventoryManager>().As<IInventoryService>().SingleInstance();
+            builder.RegisterType<EfInventoryDal>().As<IInventoryDal>().SingleInstance();
+
             builder.RegisterType<ProductManager>().As<IProductService>().SingleInstance();
             builder.RegisterType<EfProductDal>().As<IProductDal>().SingleInstance();
 

@@ -83,5 +83,10 @@ namespace Business.Constants
         public static string EmployeeUpdated = "Personel Güncellendi!";
         public static string EmployeeHasProcess = "Silmek istediğiniz personel, bir servis hizmetinden sorumlu olduğu için silinemedi!";
         public static string EmployeeAlreadyExists = "Sistemde Bu Numara İle Kayıt Edilmiş Bir Personel Zaten Mevcut!";
+
+        //Inventory Messages
+        public static string InventoryAdded = "Ürün Stoklara Eklendi!";
+        public static string InventoryDeleted = "Ürün Stoklardan Silindi!";
+        public static string InventoryUpdated = "Ürün Stok Bilgisi Güncellendi!";
     }
 }

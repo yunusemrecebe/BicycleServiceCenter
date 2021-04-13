@@ -12,5 +12,6 @@ namespace Entities.Dtos
         public string CategoryName { get; set; }
         public decimal UnitPrice { get; set; }
         public int UnitsInStock { get; set; }
+        public bool StockStatus { get; set; }
     }
 }
