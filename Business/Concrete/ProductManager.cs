@@ -2,13 +2,13 @@
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,14 +17,17 @@ namespace Business.Concrete
     public class ProductManager : IProductService
     {
         IProductDal _productDal;
+        IInventoryService _inventoryService;
 
-        public ProductManager(IProductDal productDal)
+        public ProductManager(IProductDal productDal, IInventoryService inventoryService)
         {
             _productDal = productDal;
+            _inventoryService = inventoryService;
         }
 
         [ValidationAspect(typeof(ProductValidator))]
         [CacheRemoveAspect("IProductService.Get")]
+        [TransactionScopeAspect]
         public IResult Add(Product product)
         {
             IResult result = BusinessRules.Run(CheckIfProductIsExists(product.Name));
@@ -35,6 +38,7 @@ namespace Business.Concrete
             }
 
             _productDal.Add(product);
+            _inventoryService.Add(new Inventory { ProductId = product.ProductId });
             return new SuccessResult(Messages.ProductAdded);
         }
 

@@ -8,6 +8,7 @@ namespace Business.Abstract
     {
         IDataResult<List<Inventory>> GetList();
         IDataResult<Inventory> GetById(int id);
+        IDataResult<Inventory> GetByProductId(int id);
         IResult Add(Inventory inventory);
         IResult Update(Inventory inventory);
         IResult Delete(int id);

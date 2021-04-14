@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using Core.Aspects.Autofac.Validation;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
+using Core.Utilities.Business;
+using FluentValidation;
 
 namespace Business.Concrete
 {
@@ -39,6 +41,11 @@ namespace Business.Concrete
         public IDataResult<Inventory> GetById(int id)
         {
             return new SuccessDataResult<Inventory>(_inventoryDal.Get(i => i.InventoryId == id));
+        }
+
+        public IDataResult<Inventory> GetByProductId(int id)
+        {
+            return new SuccessDataResult<Inventory>(_inventoryDal.Get(i => i.ProductId == id));
         }
 
         [CacheAspect]

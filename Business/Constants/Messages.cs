@@ -88,5 +88,6 @@ namespace Business.Constants
         public static string InventoryAdded = "Ürün Stoklara Eklendi!";
         public static string InventoryDeleted = "Ürün Stoklardan Silindi!";
         public static string InventoryUpdated = "Ürün Stok Bilgisi Güncellendi!";
+        public static string insufficientStock = "Yetersiz Stok!";
     }
 }
