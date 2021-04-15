@@ -47,7 +47,7 @@ namespace Business.Concrete
                 ProductId = inventory.ProductId,
                 PurchasePrice = inventory.PurchasePrice,
                 SellPrice = inventory.SellPrice,
-                UnitsInStock = (inventory.UnitsInStock - consumedPart.Quantity),
+                UnitsInStock = remainingUnitsInStock,
                 Status = inventory.Status
             });
             return new SuccessResult(Messages.ConsumedPartAdded);
