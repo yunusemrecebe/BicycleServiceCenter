@@ -83,9 +83,7 @@ export default class ProductCategory extends Component {
             body: JSON.stringify({
                 name: this.state.productName,
                 brandId: this.state.selectedBrand,
-                categoryId: this.state.selectedCategory,
-                unitPrice: this.state.unitPrice,
-                unitsInStock: this.state.unitsInStock,
+                categoryId: this.state.selectedCategory
             }),
         };
 
@@ -159,16 +157,6 @@ export default class ProductCategory extends Component {
                     </Input>
                 </FormGroup>
 
-                <FormGroup>
-                    <Label for="unitPrice">Birim Fiyat</Label>
-                    <Input type="number" name="unitPrice" id="unitPrice" onChange={this.handleChange} min="0.00" step="0.001" max="999999999.00" presicion={2}/>
-                </FormGroup>
-
-                <FormGroup>
-                    <Label for="unitsInStock">Stoktaki Miktar</Label>
-                    <Input type="number" name="unitsInStock" id="unitsInStock" onChange={this.handleChange} min="0"/>
-                </FormGroup>
-
                 <Button>Ekle</Button>
             </Form>
         )
@@ -187,6 +175,7 @@ export default class ProductCategory extends Component {
                 const data = await response.json();
 
                 if (!response.ok) {
+                    alertify.error(data.message);
                     const error = data;
                     return Promise.reject(error);
                 }
@@ -245,8 +234,6 @@ export default class ProductCategory extends Component {
                         <th>Ürün Adı</th>
                         <th>Marka</th>
                         <th>Kategori</th>
-                        <th>Birim Fiyat</th>
-                        <th>Stoktaki Miktar</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -258,8 +245,6 @@ export default class ProductCategory extends Component {
                             <td>{product.productName}</td>
                             <td>{product.brandName}</td>
                             <td>{product.categoryName}</td>
-                            <td>{product.unitPrice}</td>
-                            <td>{product.unitsInStock}</td>
                             <td><Button onClick={this.deleteProduct.bind(this, product.productId)} color="danger">Sil</Button></td>
                             <td><Button onClick={this.updateProduct.bind(this, product.productId)} color="info">Güncelle</Button></td>
                         </tr>

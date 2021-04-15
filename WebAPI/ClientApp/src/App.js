@@ -23,6 +23,8 @@ import Bicycle from './components/Bicycle/Bicycle';
 import BicycleUpdate from './components/Bicycle/UpdateBicycle';
 import Process from './components/Process/Process';
 import ProcessUpdate from './components/Process/UpdateProcess';
+import Inventory from './components/Inventory/Inventory';
+import InventoryUpdate from './components/Inventory/UpdateInventory';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -30,6 +32,7 @@ export default class App extends Component {
     selectedBrand: undefined,
     selectedCategory: undefined,
     selectedProduct: undefined,
+    selectedInventory: undefined,
     selectedBicycleBrand: undefined,
     selectedBicycleModel: undefined,
     selectedBicycle: undefined,
@@ -49,6 +52,10 @@ export default class App extends Component {
 
   setProduct = async (product) => {
     await this.setState({ selectedProduct: product });
+  };
+
+  setInventory = async (inventory) => {
+    await this.setState({ selectedInventory: inventory });
   };
 
   setBicycleBrand = async (brand) => {
@@ -96,6 +103,10 @@ export default class App extends Component {
         <Route exact path="/ÜrünKategorisiGüncelle" render={props => (<ProductCategoryUpdate {...props} getProductCategory={this.state.selectedCategory} />)} />
         <Route exact path="/ürünler" render={props => (<Products {...props} setProduct={this.setProduct} />)} />
         <Route exact path="/ÜrünGüncelle" render={props => (<ProductUpdate {...props} getProduct={this.state.selectedProduct} />)} />
+
+        {/* INVENTORY İLE İLGİLİ YÖNLENDİRMELER*/}
+        <Route exact path="/envanter" render={props => (<Inventory {...props} setInventory={this.setInventory} />)} />
+        <Route exact path="/envanterGüncelle" render={props => (<InventoryUpdate {...props} getInventory={this.state.selectedInventory} />)} />
 
         {/* BICYCLE İLE İLGİLİ YÖNLENDİRMELER */}
         <Route exact path="/bisikletMarkası" render={props => (<BicycleBrand {...props} setBicycleBrand={this.setBicycleBrand} />)} />

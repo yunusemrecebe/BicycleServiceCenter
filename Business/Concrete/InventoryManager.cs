@@ -10,6 +10,9 @@ using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
 using Core.Utilities.Business;
 using FluentValidation;
+using Entities.Dtos;
+using System;
+using System.Linq.Expressions;
 
 namespace Business.Concrete
 {
@@ -48,10 +51,25 @@ namespace Business.Concrete
             return new SuccessDataResult<Inventory>(_inventoryDal.Get(i => i.ProductId == id));
         }
 
+        public IDataResult<List<InventoryDetailDto>> GetInventoryDetails()
+        {
+            return new SuccessDataResult<List<InventoryDetailDto>>(_inventoryDal.GetInventoryDetails().ToList());
+        }
+
+        public IDataResult<InventoryDetailDto> GetInventoryDetailsById(int id)
+        {
+            return new SuccessDataResult<InventoryDetailDto>(_inventoryDal.GetInventoryDetailsById(id));
+        }
+
         [CacheAspect]
         public IDataResult<List<Inventory>> GetList()
         {
             return new SuccessDataResult<List<Inventory>>(_inventoryDal.GetList().ToList());
+        }
+
+        public IDataResult<List<Inventory>> GetListByFilter(Expression<Func<Inventory, bool>> filter)
+        {
+            return new SuccessDataResult<List<Inventory>>(_inventoryDal.GetList(filter).ToList());
         }
 
         [ValidationAspect(typeof(InventoryValidator))]

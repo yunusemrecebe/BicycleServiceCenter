@@ -75,5 +75,29 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+
+        [HttpGet("getdetails")]
+        public IActionResult GetInventoryDetails()
+        {
+            var result = _inventoryService.GetInventoryDetails();
+
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getdetailsbyid")]
+        public IActionResult GetInventoryDetailsById(int id)
+        {
+            var result = _inventoryService.GetInventoryDetailsById(id);
+
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result);
+        }
     }
 }

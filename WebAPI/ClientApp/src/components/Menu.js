@@ -14,7 +14,8 @@ export default class Menu extends Component {
             [7, "Bisiklet Markası", "/bisikletMarkası"],
             [8, "Bisiklet Modeli", "/bisikletModeli"],
             [9, "Bisikletler", "/bisikletler"],
-            [10, "Servis Hizmeti", "/servisHizmeti"]
+            [10, "Servis Hizmeti", "/servisHizmeti"],
+            [11, "Stok Yönetimi", "/envanter"]
         ],
         collapsed: true,
         currentCategory: 0

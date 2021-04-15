@@ -70,6 +70,7 @@ namespace Business.Constants
         public static string ProductCategoryDeleted = "Ürün Kategorisi Silindi!";
         public static string ProductCategoryUpdated = "Ürün Kategorisi Güncellendi!";
         public static string ProductCategoryAlreadyExists = "Sistemde Kayıtlı Olan Bir Ürün Kategorisi Girdiniz!";
+        public static string ProductHasStock = "Envanter'de stok kaydı bulunan bir ürün silinemez!";
 
         //Product Messages
         public static string ProductAdded = "Ürün Eklendi!";

@@ -45,7 +45,7 @@ namespace Business.Concrete
         [CacheRemoveAspect("IProductService.Get")]
         public IResult Delete(int id)
         {
-            IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
+            IResult result = BusinessRules.Run(CheckIdValueIsTrue(id), CheckIfProductHasStock(id));
 
             if (result != null)
             {
@@ -125,5 +125,16 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        private IResult CheckIfProductHasStock(int id)
+        {
+            var result = _inventoryService.GetListByFilter(s => s.ProductId == id).Data.Any();
+
+            if (result)
+            {
+                return new ErrorResult(Messages.ProductHasStock);
+            }
+
+            return new SuccessResult();
+        }
     }
 }
