@@ -9,14 +9,14 @@ export default class UpdateProcess extends Component {
         bicycleBrands: [],
         bicycleModels: [],
         customers: [],
+        employees: [],
+        selectedProcessId: 0,
         selectedEmployeeId: 0,
         selectedCustomerId: 0,
-        selectedBrandId: 0,
-        selectedModelId: 0,
+        selectedBicycleId:0,
         selectedEmployeeName: "",
         selectedCustomerName: "",
-        selectedBrandName: "",
-        selectedModelName: "",
+        selectedBicycle: "",
         startingDate: "",
         competitionDate: "",
         diagnostics: "",
@@ -26,9 +26,8 @@ export default class UpdateProcess extends Component {
     componentDidMount() {
         this.getProcessDetailsById(this.props.getProcess);
         this.getBicyclesByCustomer(this.props.getCustomer);
-        //this.getBicycleBrands();
-        //this.getBicycleModels();
-        //this.getCustomers();
+        this.getCustomers();
+        this.getEmployees();
     }
 
     handleChange = (event) => {
@@ -37,38 +36,18 @@ export default class UpdateProcess extends Component {
         this.setState({ [name]: value });
     };
 
-    handleChangeBrand = (event) => {
-        this.setState({ selectedBrandId: parseInt(event.target.value) });
+    handleChangeBicycle = (event) => {
+        this.setState({ selectedBicycleId: parseInt(event.target.value) });
     }
 
-    handleChangeModel = (event) => {
-        this.setState({ selectedModelId: parseInt(event.target.value) });
+    handleChangeEmployee = (event) => {
+        this.setState({ selectedEmployeeId: parseInt(event.target.value) });
     }
 
     handleChangeCustomer = (event) => {
-        this.setState({ selectedCustomerId: parseInt(event.target.value) });
+        this.state.selectedCustomerId = document.getElementById("owner").value;
+        this.getBicyclesByCustomer(this.state.selectedCustomerId);
     }
-
-    //Müşteriye Göre Bisikletleri Db'den Çekme
-    getBicyclesByCustomer(id) {
-        
-            let token = localStorage.getItem('token');
-            if (token == null) {
-                alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-                this.props.history.push("/girisYap")
-            }
-    
-            let url = "/api/bicycles/getdetailsbycustomer?id=" + id;
-            fetch(url, {
-                method: 'get',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-                .then((response) => response.json())
-                .then((data) => this.setState({ bicycles: data }));
-        
-    };
 
     //Müşterileri Db'den çekme
     getCustomers() {
@@ -89,6 +68,24 @@ export default class UpdateProcess extends Component {
             .then((data) => this.setState({ customers: data }));
     };
 
+    getEmployees() {
+        let token = localStorage.getItem('token');
+        if (token == null) {
+            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
+            this.props.history.push("/girisYap")
+        }
+
+        let url = "/api/employees/getall";
+        fetch(url, {
+            method: 'get',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => this.setState({ employees: data }));
+    };
+
     //Servis Hizmeti Detay Bilgisini Db'den Çekme (ProcessDetailDto)
     getProcessDetailsById(id) {
         let token = localStorage.getItem('token');
@@ -107,20 +104,43 @@ export default class UpdateProcess extends Component {
             .then((response) => response.json())
             .then((data) => this.setState(
                 {
+                    selectedProcessId: data.processId,
                     selectedEmployeeId: data.employeeId,
                     selectedCustomerId: data.customerId,
-                    selectedBrandId: data.bicycleBrandId,
-                    selectedModelId: data.bicycleModelId,
+                    selectedBicycleId: data.bicycleId,
                     selectedEmployeeName: data.employeeName,
                     selectedCustomerName: data.customerName,
-                    selectedBrandName: data.bicycleBrandName,
-                    selectedModelName: data.bicycleModelName,
+                    selectedBicycle: data.bicycle,
                     startingDate: data.startingDate,
                     competitionDate: data.competitionDate,
                     diagnostics: data.diagnostics,
                     isProcessLoaded: true,
                 }));
     };
+
+    //Müşteriye Göre Bisikletleri Db'den Çekme
+    getBicyclesByCustomer(id) {
+        
+        let token = localStorage.getItem('token');
+        if (token == null) {
+            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
+            this.props.history.push("/girisYap")
+        }
+
+        let url = "/api/bicycles/getdetailsbycustomer?id=" + id;
+        fetch(url, {
+            method: 'get',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => this.setState({
+                 bicycles: data,
+                 selectedBicycleId : data[0].bicycleId,
+                 isProcessLoaded: true }));
+    
+};
 
     //Bisiklet güncelleme
     updateProcess = (event) => {
@@ -130,25 +150,29 @@ export default class UpdateProcess extends Component {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                bicycleId: this.props.getBicycle,
-                brandId: this.state.selectedBrandId,
-                modelId: this.state.selectedModelId,
-                ownerId: this.state.selectedCustomerId,
-                serialNumber: this.state.serialNumber,
+                processId: this.state.selectedProcessId,
+                employeeId: this.state.selectedEmployeeId,
+                customerId: this.state.selectedCustomerId,
+                bicycleId: this.state.selectedBicycleId,
+                startingDate: this.state.startingDate,
+                completionDate: this.state.competitionDate,
+                diagnostics: this.state.diagnostics,
             }),
         };
 
-        fetch("/api/bicycles/update", requestOptions)
+        fetch("/api/processes/update", requestOptions)
             .then(async (response) => {
                 const data = await response.json();
 
                 if (!response.ok) {
                     const error = data;
+                    alertify.error(data.message);
+                    alertify.error(data.error);
                     return Promise.reject(error);
                 }
 
                 alertify.success(data.message);
-                this.props.history.push("/bisikletler");
+                this.props.history.push("/servisHizmeti");
             })
 
             .catch((responseError) => {
@@ -174,11 +198,10 @@ export default class UpdateProcess extends Component {
                     <Col md={4}>
                         <FormGroup>
                             <Label for="owner">Müşteri</Label>
-                            <Input value={this.state.selectedCustomer} type="select" name="owner" id="owner" onChange={this.handleChangeCustomer}>
-                                <option selected value={this.state.selectedCustomerId} >{this.state.selectedCustomerName}</option>
-                                {/* {this.state.customers.map((customer) => (
+                            <Input value={this.state.selectedCustomerId} type="select" name="owner" id="owner" onChange={this.handleChangeCustomer}>
+                                {this.state.customers.map((customer) => (
                                     <option key={customer.customerId} value={customer.customerId} >{customer.firstName} {customer.lastName}</option>
-                                ))} */}
+                                ))}
                             </Input>
                         </FormGroup>
                     </Col>
@@ -187,11 +210,10 @@ export default class UpdateProcess extends Component {
                         {this.state.isProcessLoaded == true ?
                         <FormGroup>
                             <Label for="bicycle">Bisiklet</Label>
-                            <Input type="select" name="bicycle" id="bicycle" onChange={this.handleChangeBicycle}>
-                                <option selected value={0} >{this.state.bicycles.brandName} {this.state.bicycles.modelName}</option>
-                                {/* {this.state.bicycles.map((bicycle) => (
+                            <Input value={this.state.selectedBicycleId} type="select" name="bicycle" id="bicycle" onChange={this.handleChangeBicycle} >
+                                {this.state.bicycles.map((bicycle) => (
                                     <option key={bicycle.bicycleId} value={bicycle.bicycleId}>{bicycle.brandName} {bicycle.modelName}</option>
-                                ))} */}
+                                ))}
                             </Input>
                         </FormGroup>
                         :
@@ -202,11 +224,10 @@ export default class UpdateProcess extends Component {
                     <Col md={4}>
                         <FormGroup>
                             <Label for="employee">Personel</Label>
-                            <Input type="select" name="employee" id="employee" onChange={this.handleChangeEmployee}>
-                                <option selected value={this.state.selectedEmployeeId} >{this.state.selectedEmployeeName}</option>selectedBicycleId
-                                {/* {this.state.employees.map((employee) => (
+                            <Input value={this.state.selectedEmployeeId} type="select" name="employee" id="employee" onChange={this.handleChangeEmployee}>
+                                {this.state.employees.map((employee) => (
                                     <option key={employee.employeeId} value={employee.employeeId}>{employee.firstName} {employee.lastName}</option>
-                                ))} */}
+                                ))}
                             </Input>
                         </FormGroup>
                     </Col>
@@ -215,8 +236,8 @@ export default class UpdateProcess extends Component {
                 <Row>
                     <Col md={4}>
                         <FormGroup>
-                            <Label for="completionDate">Öngörülen Teslim Tarihi</Label>
-                            <Input type="select" name="completionDate" id="completionDate" onChange={this.handleChange}>
+                            <Label for="competitionDate">Öngörülen Teslim Tarihi</Label>
+                            <Input type="select" name="competitionDate" id="competitionDate" onChange={this.handleChange}>
                                 <option selected value={this.state.competitionDate} >{this.state.competitionDate}</option>
                                 <option value="1 Gün" >1 Gün</option>
                                 <option value="1-3 Gün" >1-3 Gün</option>

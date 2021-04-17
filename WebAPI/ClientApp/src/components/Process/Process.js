@@ -267,7 +267,7 @@ export default class Process extends Component {
                         <tr key={process.processId}>
                             <td>{process.employeeName}</td>
                             <td>{process.customerName}</td>
-                            <td>{process.bicycleBrandName} {process.bicycleModelName}</td>
+                            <td>{process.bicycle}</td>
                             <td>{process.startingDate.replace('T',' ')}</td>
                             <td>{process.competitionDate}</td>
                             <td>{process.diagnostics}</td>
@@ -313,8 +313,9 @@ export default class Process extends Component {
     };
 
     //Servis Hizmeti güncellemek için Servis Hizmeti id'si gönderen fonksiyon
-    setProcess = (id) => {
+    setProcess = (id, customer) => {
         this.props.setProcess(id);
+        this.props.setSelectedCustomer(customer);
     }
 
     //Servis Hizmeti Güncelleme

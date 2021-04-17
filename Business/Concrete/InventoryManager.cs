@@ -76,6 +76,11 @@ namespace Business.Concrete
         [CacheRemoveAspect("IInventoryService.Get")]
         public IResult Update(Inventory inventory)
         {
+            if (inventory.UnitsInStock > 0)
+            {
+                inventory.Status = true;
+            }
+
             _inventoryDal.Update(inventory);
             return new SuccessResult(Messages.InventoryUpdated);
         }

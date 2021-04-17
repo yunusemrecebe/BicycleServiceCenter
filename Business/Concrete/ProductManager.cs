@@ -27,7 +27,6 @@ namespace Business.Concrete
 
         [ValidationAspect(typeof(ProductValidator))]
         [CacheRemoveAspect("IProductService.Get")]
-        [TransactionScopeAspect]
         public IResult Add(Product product)
         {
             IResult result = BusinessRules.Run(CheckIfProductIsExists(product.Name));
