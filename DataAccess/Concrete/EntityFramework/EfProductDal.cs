@@ -3,14 +3,16 @@ using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework.Abstract;
 using Entities.Concrete;
 using Entities.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace DataAccess.Concrete.EntityFramework.Concrete
 {
     public class EfProductDal : EfEntityRepositoryBase<Product, BicycleServiceCenterContext>, IProductDal
     {
-        public List<ProductDetailDto> GetProductDetails()
+        public List<ProductDetailDto> GetProductDetails(Expression<Func<ProductDetailDto, bool>> filter)
         {
             using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
             {
@@ -31,7 +33,7 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                                  BrandName = productBrand.Name,
                                  CategoryName = productCategory.Name
                              };
-                return result.ToList();
+                return filter == null ? result.ToList() : result.Where(filter).ToList();
             }
         }
 
