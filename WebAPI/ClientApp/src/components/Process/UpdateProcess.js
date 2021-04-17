@@ -6,14 +6,18 @@ export default class UpdateProcess extends Component {
 
     state = {
         bicycles: [],
-        bicycleBrands: [],
-        bicycleModels: [],
         customers: [],
         employees: [],
+        productCategories: [],
+        products: [],
+        selectedProductCategoryId: 0,
+        selectedProduct: 0,
+        quantity: 0,
+        discount: 0,
         selectedProcessId: 0,
         selectedEmployeeId: 0,
         selectedCustomerId: 0,
-        selectedBicycleId:0,
+        selectedBicycleId: 0,
         selectedEmployeeName: "",
         selectedCustomerName: "",
         selectedBicycle: "",
@@ -28,6 +32,7 @@ export default class UpdateProcess extends Component {
         this.getBicyclesByCustomer(this.props.getCustomer);
         this.getCustomers();
         this.getEmployees();
+        this.getProductCategories();
     }
 
     handleChange = (event) => {
@@ -49,6 +54,15 @@ export default class UpdateProcess extends Component {
         this.getBicyclesByCustomer(this.state.selectedCustomerId);
     }
 
+    handleChangeProductCategory = (event) => {
+        this.state.selectedProductCategoryId = document.getElementById("productCategory").value;
+        this.getProductsByCategory(this.state.selectedProductCategoryId);
+    }
+
+    handleChangeProduct = (event) => {
+        this.setState({ selectedProduct: parseInt(event.target.value) });
+    }
+
     //Müşterileri Db'den çekme
     getCustomers() {
         let token = localStorage.getItem('token');
@@ -68,6 +82,45 @@ export default class UpdateProcess extends Component {
             .then((data) => this.setState({ customers: data }));
     };
 
+    //Ürün Kategorilerini Db'den çekme
+    getProductCategories() {
+        let token = localStorage.getItem('token');
+        if (token == null) {
+            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
+            this.props.history.push("/girisYap")
+        }
+
+        let url = "/api/productcategories/getall";
+        fetch(url, {
+            method: 'get',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => this.setState({ productCategories: data }));
+    };
+
+    //Ürünleri Kategorilere göre Db'den çekme
+    getProductsByCategory(id) {
+    let token = localStorage.getItem('token');
+    if (token == null) {
+        alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
+        this.props.history.push("/girisYap")
+    }
+
+    let url = "/api/products/getallbycategoryid?id=" + id;
+    fetch(url, {
+        method: 'get',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+        .then((response) => response.json())
+        .then((data) => this.setState({ products: data }));
+    };
+
+    //Personelleri Db'den çekme
     getEmployees() {
         let token = localStorage.getItem('token');
         if (token == null) {
@@ -120,7 +173,7 @@ export default class UpdateProcess extends Component {
 
     //Müşteriye Göre Bisikletleri Db'den Çekme
     getBicyclesByCustomer(id) {
-        
+
         let token = localStorage.getItem('token');
         if (token == null) {
             alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
@@ -136,15 +189,55 @@ export default class UpdateProcess extends Component {
         })
             .then((response) => response.json())
             .then((data) => this.setState({
-                 bicycles: data,
-                 selectedBicycleId : data[0].bicycleId,
-                 isProcessLoaded: true }));
-    
-};
+                bicycles: data,
+                selectedBicycleId: data[0].bicycleId,
+                isProcessLoaded: true
+            }));
+
+    };
+
+    addConsumedPart(){
+        const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                processId: this.state.selectedProcessId,
+                productId : this.state.selectedProduct,
+                quantity : this.state.quantity,
+                discount: this.state.discount,
+            }),
+        };
+
+        fetch("/api/consumedparts/add", requestOptions)
+            .then(async (response) => {
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                alertify.success(data.message);
+            })
+
+            .catch((responseError) => {
+                if (responseError.Errors) {
+                    if (responseError.Errors.length > 0) {
+                        for (let i = 0; i < responseError.Errors.length; i++) {
+                            alertify.error(responseError.Errors[i].ErrorMessage);
+                        }
+                    }
+                    else {
+                        alertify.error(responseError.Message);
+                    }
+                }
+            });
+    }
 
     //Bisiklet güncelleme
     updateProcess = (event) => {
         event.preventDefault();
+        this.addConsumedPart();
 
         const requestOptions = {
             method: "POST",
@@ -166,8 +259,6 @@ export default class UpdateProcess extends Component {
 
                 if (!response.ok) {
                     const error = data;
-                    alertify.error(data.message);
-                    alertify.error(data.error);
                     return Promise.reject(error);
                 }
 
@@ -208,16 +299,16 @@ export default class UpdateProcess extends Component {
 
                     <Col md={4}>
                         {this.state.isProcessLoaded == true ?
-                        <FormGroup>
-                            <Label for="bicycle">Bisiklet</Label>
-                            <Input value={this.state.selectedBicycleId} type="select" name="bicycle" id="bicycle" onChange={this.handleChangeBicycle} >
-                                {this.state.bicycles.map((bicycle) => (
-                                    <option key={bicycle.bicycleId} value={bicycle.bicycleId}>{bicycle.brandName} {bicycle.modelName}</option>
-                                ))}
-                            </Input>
-                        </FormGroup>
-                        :
-                        null
+                            <FormGroup>
+                                <Label for="bicycle">Bisiklet</Label>
+                                <Input value={this.state.selectedBicycleId} type="select" name="bicycle" id="bicycle" onChange={this.handleChangeBicycle} >
+                                    {this.state.bicycles.map((bicycle) => (
+                                        <option key={bicycle.bicycleId} value={bicycle.bicycleId}>{bicycle.brandName} {bicycle.modelName}</option>
+                                    ))}
+                                </Input>
+                            </FormGroup>
+                            :
+                            null
                         }
                     </Col>
 
@@ -257,6 +348,47 @@ export default class UpdateProcess extends Component {
                     </Col>
                 </Row>
 
+                <hr></hr>
+
+                <Row>
+                    <Col md={3}>
+                        <FormGroup>
+                            <Label for="productCategory">Ürün Kategorisi</Label>
+                            <Input value={this.state.selectedProductCategoryId} type="select" name="productCategory" id="productCategory" onChange={this.handleChangeProductCategory}>
+                                <option selected value={0}>Seçiniz</option>
+                                {this.state.productCategories.map((category) => (
+                                    <option key={category.productCategoryId} value={category.productCategoryId}>{category.name}</option>
+                                ))}
+                            </Input>
+                        </FormGroup>
+                    </Col>
+
+                    <Col md={3}>
+                        <FormGroup>
+                            <Label for="product">Ürün</Label>
+                            <Input value={this.state.selectedProduct} type="select" name="product" id="product" onChange={this.handleChangeProduct}>
+                                <option selected value={0}>Seçiniz</option>
+                                {this.state.products.map((product) => (
+                                    <option key={product.productId} value={product.productId}>{product.brandName} - {product.productName}</option>
+                                ))}
+                            </Input>
+                        </FormGroup>
+                    </Col>
+
+                    <Col md={3}>
+                        <FormGroup>
+                            <Label for="quantity">Adet</Label>
+                            <Input type="number" name="quantity" id="quantity" min={0} onChange={this.handleChange}></Input>
+                        </FormGroup>
+                    </Col>
+
+                    <Col md={3}>
+                        <FormGroup>
+                            <Label for="discount">İndirim Oranı</Label>
+                            <Input type="number" name="discount" id="discount" min={0} onChange={this.handleChange}></Input>
+                        </FormGroup>
+                    </Col>
+                </Row>
                 <Button>Ekle</Button>
             </Form>
         )

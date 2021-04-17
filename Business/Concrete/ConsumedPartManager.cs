@@ -41,7 +41,7 @@ namespace Business.Concrete
 
             if (consumedPart.Discount > 0)
             {
-                consumedPart.UnitPrice -= (inventory.SellPrice / 100) * (decimal)consumedPart.Discount;
+                consumedPart.UnitPrice = inventory.SellPrice - (inventory.SellPrice / 100) * (decimal)consumedPart.Discount;
             }
             else
             {
