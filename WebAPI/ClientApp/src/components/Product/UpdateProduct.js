@@ -15,9 +15,6 @@ export default class UpdateProductCategory extends Component {
         selectedBrandName: "",
         selectedCategoryName: "",
         productName: "",
-        unitPrice: 2,
-        unitsInStock: 2,
-        isLoaded: false,
     };
 
     componentDidMount() {
@@ -103,9 +100,6 @@ export default class UpdateProductCategory extends Component {
                     selectedBrandName: data[0].brandName,
                     selectedCategoryName: data[0].categoryName,
                     productName: data[0].productName,
-                    unitPrice: data[0].unitPrice,
-                    unitsInStock: data[0].unitsInStock,
-                    isLoaded: true,
                 }));
     };
 
@@ -121,8 +115,6 @@ export default class UpdateProductCategory extends Component {
                 productId: this.state.productId,
                 categoryId: this.state.selectedCategoryId,
                 name: this.state.productName,
-                unitPrice: this.state.unitPrice,
-                unitsInStock: this.state.unitsInStock
             }),
         };
 
@@ -180,21 +172,6 @@ export default class UpdateProductCategory extends Component {
                         ))}
                     </Input>
                 </FormGroup>
-                {this.state.isLoaded ?
-                    <div>
-                        <FormGroup>
-                            <Label for="unitPrice">Birim Fiyat</Label>
-                            <Input type="number" name="unitPrice" id="unitPrice" defaultValue={this.state.unitPrice} onChange={this.handleChange} min="0.00" step="0.001" max="999999999.00" presicion={2}/>
-                        </FormGroup>
-
-                        <FormGroup>
-                            <Label for="unitsInStock">Stoktaki Miktar</Label>
-                            <Input type="number" name="unitsInStock" id="unitsInStock" defaultValue={this.state.unitsInStock} onChange={this.handleChange} min="0"/>
-                        </FormGroup>
-                    </div>
-                :
-                    null
-                }
 
                 <Button>Güncelle</Button>
             </Form>
