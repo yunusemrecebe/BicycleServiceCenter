@@ -15,6 +15,7 @@ namespace Entities.Dtos
         public int OwnerId { get; set; }
         public string BrandName { get; set; }
         public string ModelName { get; set; }
+        public int ProductionDate { get; set; }
         public string OwnerName { get; set; }
         public string? SerialNumber { get; set; }
     }

@@ -12,7 +12,7 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
 {
     public class EfBicycleDal : EfEntityRepositoryBase<Bicycle, BicycleServiceCenterContext>, IBicycleDal
     {
-        public List<BicycleDetailDto> GetBicycleDetails()
+        public List<BicycleDetailDto> GetBicycleDetailsList(Expression<Func<BicycleDetailDto, bool>> filter = null)
         {
             using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
             {
@@ -35,13 +35,14 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                                  BrandName = bicycleBrand.Name,
                                  ModelName = bicyleModel.Name,
                                  OwnerName = customers.FirstName + " " + customers.LastName,
-                                 SerialNumber = bicyle.SerialNumber
+                                 SerialNumber = bicyle.SerialNumber,
+                                 ProductionDate = bicyle.ProductionDate
                              };
                 return result.ToList();
             }
         }
 
-        public List<BicycleDetailDto> GetBicycleDetailsByCustomerId(int id)
+        public BicycleDetailDto GetBicycleDetails(Expression<Func<BicycleDetailDto, bool>> filter)
         {
             using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
             {
@@ -55,8 +56,6 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                              join customers in context.Customers
                              on bicyle.OwnerId equals customers.CustomerId
 
-                             where customers.CustomerId == id
-
                              select new BicycleDetailDto
                              {
                                  BicycleId = bicyle.BicycleId,
@@ -66,40 +65,10 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                                  BrandName = bicycleBrand.Name,
                                  ModelName = bicyleModel.Name,
                                  OwnerName = customers.FirstName + " " + customers.LastName,
-                                 SerialNumber = bicyle.SerialNumber
+                                 SerialNumber = bicyle.SerialNumber,
+                                 ProductionDate = bicyle.ProductionDate
                              };
-                return result.ToList();
-            }
-        }
-
-        public List<BicycleDetailDto> GetBicycleDetailsById(int id)
-        {
-            using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
-            {
-                var result = from bicyle in context.Bicycles
-                             join bicycleBrand in context.BicycleBrands
-                             on bicyle.BrandId equals bicycleBrand.BicycleBrandId
-
-                             join bicyleModel in context.BicycleModels
-                             on bicyle.ModelId equals bicyleModel.BicycleModelId
-
-                             join customers in context.Customers
-                             on bicyle.OwnerId equals customers.CustomerId
-
-                             where bicyle.BicycleId == id
-
-                             select new BicycleDetailDto
-                             {
-                                 BicycleId = bicyle.BicycleId,
-                                 BrandId = bicycleBrand.BicycleBrandId,
-                                 ModelId = bicyleModel.BicycleModelId,
-                                 OwnerId = customers.CustomerId,
-                                 BrandName = bicycleBrand.Name,
-                                 ModelName = bicyleModel.Name,
-                                 OwnerName = customers.FirstName + " " + customers.LastName,
-                                 SerialNumber = bicyle.SerialNumber
-                             };
-                return result.ToList();
+                return result.Where(filter).SingleOrDefault();
             }
         }
     }
