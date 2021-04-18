@@ -8,6 +8,7 @@ namespace Business.Abstract
     {
         IDataResult<List<ConsumedPart>> GetList();
         IDataResult<ConsumedPart> GetById(int id);
+        IDataResult<ConsumedPart> GetByProductId(int id);
         IResult Add(ConsumedPart consumedPart);
         IResult Update(ConsumedPart consumedPart);
         IResult Delete(int id);

@@ -88,7 +88,12 @@ namespace Business.Concrete
 
             return new SuccessDataResult<ConsumedPart>(_consumedPartDal.Get(c => c.ConsumedPartId == id));
         }
-        
+
+        public IDataResult<ConsumedPart> GetByProductId(int id)
+        {
+            return new SuccessDataResult<ConsumedPart>(_consumedPartDal.Get(p => p.ProductId == id));
+        }
+
         [CacheAspect]
         public IDataResult<List<ConsumedPart>> GetList()
         {

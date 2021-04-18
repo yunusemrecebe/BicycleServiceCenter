@@ -18,11 +18,13 @@ namespace Business.Concrete
     {
         IProductDal _productDal;
         IInventoryService _inventoryService;
+        IConsumedPartService _consumedPartService;
 
-        public ProductManager(IProductDal productDal, IInventoryService inventoryService)
+        public ProductManager(IProductDal productDal, IInventoryService inventoryService, IConsumedPartService consumedPartService)
         {
             _productDal = productDal;
             _inventoryService = inventoryService;
+            _consumedPartService = consumedPartService;
         }
 
         [ValidationAspect(typeof(ProductValidator))]
@@ -44,7 +46,7 @@ namespace Business.Concrete
         [CacheRemoveAspect("IProductService.Get")]
         public IResult Delete(int id)
         {
-            IResult result = BusinessRules.Run(CheckIdValueIsTrue(id), CheckIfProductHasStock(id));
+            IResult result = BusinessRules.Run(CheckIdValueIsTrue(id), CheckIfProductHasStock(id), CheckIfProductUsedInConsumedParts(id));
 
             if (result != null)
             {
@@ -137,6 +139,18 @@ namespace Business.Concrete
             if (result)
             {
                 return new ErrorResult(Messages.ProductHasStock);
+            }
+
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfProductUsedInConsumedParts(int id)
+        {
+            var result = _consumedPartService.GetByProductId(id).Data;
+
+            if (result != null)
+            {
+                return new ErrorResult(Messages.ProductIsUsedInConsumedParts);
             }
 
             return new SuccessResult();
