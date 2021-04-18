@@ -53,9 +53,9 @@ namespace Business.Concrete
             return new SuccessDataResult<List<BicycleDetailDto>>(_bicycleDal.GetBicycleDetailsList().ToList());
         }
 
-        public IDataResult<BicycleDetailDto> GetBicycleDetailsByCustomerId(int customerId)
+        public IDataResult<List<BicycleDetailDto>> GetBicycleDetailsByCustomerId(int customerId)
         {
-            return new SuccessDataResult<BicycleDetailDto>(_bicycleDal.GetBicycleDetails(c => c.OwnerId == customerId));
+            return new SuccessDataResult<List<BicycleDetailDto>>(_bicycleDal.GetBicycleDetailsList(c => c.OwnerId == customerId));
         }
 
         public IDataResult<BicycleDetailDto> GetBicycleDetailsById(int id)
