@@ -28,7 +28,7 @@ export default class Bicycle extends Component {
     };
 
     handleChangeBrand = (event) => {
-        this.setState({ isLoaded:true });
+        this.setState({ isLoaded: true });
         this.state.selectedBrand = document.getElementById("brand").value;
         this.getBicycleModels(this.state.selectedBrand);
     }
@@ -55,7 +55,7 @@ export default class Bicycle extends Component {
                 serialNumber: this.state.serialNumber,
             }),
         };
-        
+
         fetch("/api/bicycles/add", requestOptions)
             .then(async (response) => {
                 const data = await response.json();
@@ -68,7 +68,7 @@ export default class Bicycle extends Component {
                 this.getBicycles();
 
                 Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
-                this.setState({ 
+                this.setState({
                     selectedBrand: 0,
                     selectedModel: 0,
                     selectedCustomer: 0,
@@ -85,11 +85,11 @@ export default class Bicycle extends Component {
                             alertify.error(responseError.Errors[i].ErrorMessage);
                         }
                     }
-                    else{
+                    else {
                         alertify.error(responseError);
                     }
                 }
-                else{
+                else {
                     alertify.error(responseError.message);
                 }
             });
@@ -111,11 +111,16 @@ export default class Bicycle extends Component {
                     </Input>
                 </FormGroup>
 
-                {this.state.isLoaded ?
-                this.listBicycleModels()
-                :
-                null
-                }
+                <FormGroup>
+                    <Label for="model">Model</Label>
+                    <Input value={this.state.selectedModel} type="select" name="model" id="model" onChange={this.handleChangeModel}>
+                        <option selected value={0} >Seçiniz</option>
+                        {this.state.isLoaded ? this.state.bicycleModels.map((bicycleModel) => (
+                            <option key={bicycleModel.bicycleModelId} value={bicycleModel.bicycleModelId} >{bicycleModel.name}</option>
+                        )):
+                        null}
+                    </Input>
+                </FormGroup>
 
                 <FormGroup>
                     <Label for="owner">Sahibi</Label>
@@ -173,22 +178,22 @@ export default class Bicycle extends Component {
         })
             .then((response) => response.json())
             .then((data) => this.setState({ bicycleModels: data }));
-            
+
     };
 
     //Bisiklet Modellerini option içerisinde listeyen fonksiyon
-    listBicycleModels(){
-        return(
+    listBicycleModels() {
+        return (
 
-                <FormGroup>
-                    <Label for="model">Model</Label>
-                    <Input value={this.state.selectedModel} type="select" name="model" id="model" onChange={this.handleChangeModel}>
-                        <option selected value={0} >Seçiniz</option>
-                        {this.state.bicycleModels.map((bicycleModel) => (
-                <option key={bicycleModel.bicycleModelId} value={bicycleModel.bicycleModelId} >{bicycleModel.name}</option>
-            ))} 
-                    </Input>
-                </FormGroup>
+            <FormGroup>
+                <Label for="model">Model</Label>
+                <Input value={this.state.selectedModel} type="select" name="model" id="model" onChange={this.handleChangeModel}>
+                    <option selected value={0} >Seçiniz</option>
+                    {this.state.bicycleModels.map((bicycleModel) => (
+                        <option key={bicycleModel.bicycleModelId} value={bicycleModel.bicycleModelId} >{bicycleModel.name}</option>
+                    ))}
+                </Input>
+            </FormGroup>
         )
     };
 
@@ -264,14 +269,14 @@ export default class Bicycle extends Component {
     }
 
     //Bisiklet Silme
-    deleteBicycle(id){
+    deleteBicycle(id) {
 
         const requestOptions = {
             method: "POST",
             headers: { "Content-Type": "application/json" },
         };
-        
-        fetch("/api/bicycles/delete?id="+id, requestOptions)
+
+        fetch("/api/bicycles/delete?id=" + id, requestOptions)
             .then(async (response) => {
                 const data = await response.json();
 
@@ -292,16 +297,16 @@ export default class Bicycle extends Component {
                         }
                     }
                 }
-            });  
+            });
     };
 
     //Bisiklet güncellemek için Bisiklet İd gönderen fonksiyon
-    setBicycle=(id)=>{
+    setBicycle = (id) => {
         this.props.setBicycle(id);
     }
 
     //Bisiklet Güncelleme
-    updateBicycle(id){
+    updateBicycle(id) {
         this.setBicycle(id);
         this.props.history.push("/BisikletGüncelle");
     };
@@ -312,7 +317,7 @@ export default class Bicycle extends Component {
                 {this.addBicycleForm()}
 
                 <Row>
-                <h1 className="text-center">Sistemde Kayıtlı Olan Bisikletler</h1>
+                    <h1 className="text-center">Sistemde Kayıtlı Olan Bisikletler</h1>
                 </Row>
                 <Row>
                     <Col md="12">
