@@ -38,7 +38,7 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                                  SerialNumber = bicyle.SerialNumber,
                                  ProductionDate = bicyle.ProductionDate
                              };
-                return result.ToList();
+                return filter == null ? result.ToList() : result.Where(filter).ToList();
             }
         }
 
