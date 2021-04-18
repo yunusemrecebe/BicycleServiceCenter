@@ -12,7 +12,7 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
 {
     public class EfProductDal : EfEntityRepositoryBase<Product, BicycleServiceCenterContext>, IProductDal
     {
-        public List<ProductDetailDto> GetProductDetails(Expression<Func<ProductDetailDto, bool>> filter)
+        public List<ProductDetailDto> GetProductDetailsList(Expression<Func<ProductDetailDto, bool>> filter)
         {
             using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
             {
@@ -37,7 +37,7 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
             }
         }
 
-        public List<ProductDetailDto> GetProductDetailsById(int id)
+        public ProductDetailDto GetProductDetails(Expression<Func<ProductDetailDto, bool>> filter)
         {
             using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
             {
@@ -52,8 +52,6 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                              join inventory in context.Inventory
                              on product.ProductId equals inventory.ProductId
 
-                             where product.ProductId == id
-
                              select new ProductDetailDto
                              {
                                  ProductId = product.ProductId,
@@ -63,7 +61,7 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                                  BrandName = productBrand.Name,
                                  CategoryName = productCategory.Name
                              };
-                return result.ToList();
+                return result.Where(filter).SingleOrDefault();
             }
         }
     }

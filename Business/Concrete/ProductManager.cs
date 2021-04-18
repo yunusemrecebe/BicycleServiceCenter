@@ -68,9 +68,9 @@ namespace Business.Concrete
             return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == id));
         }
 
-        public IDataResult<List<ProductDetailDto>> GetProductDetailsById(int id)
+        public IDataResult<ProductDetailDto> GetProductDetailsById(int id)
         {
-            return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetailsById(id).ToList());
+            return new SuccessDataResult<ProductDetailDto>(_productDal.GetProductDetails(p => p.ProductId == id));
         }
 
         [CacheAspect]
@@ -82,13 +82,13 @@ namespace Business.Concrete
         [CacheAspect]
         public IDataResult<List<ProductDetailDto>> GetListByCategoryId(int id)
         {
-            return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails(p => p.CategoryId == id).ToList());
+            return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetailsList(p => p.CategoryId == id).ToList());
         }
 
         [CacheAspect]
         public IDataResult<List<ProductDetailDto>> GetProductDetails()
         {
-            return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails().ToList());
+            return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetailsList().ToList());
         }
 
         [ValidationAspect(typeof(ProductValidator))]
