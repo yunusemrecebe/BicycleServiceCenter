@@ -238,6 +238,7 @@ export default class Bicycle extends Component {
                     <tr>
                         <th>Markası İsmi</th>
                         <th>Model İsmi</th>
+                        <th>Üretim Yılı</th>
                         <th>Sahibi</th>
                         <th>Şase Numarası</th>
                         <th></th>
@@ -250,6 +251,7 @@ export default class Bicycle extends Component {
                         <tr key={bicycle.bicycleId}>
                             <td>{bicycle.brandName}</td>
                             <td>{bicycle.modelName}</td>
+                            <td>{bicycle.productionDate}</td>
                             <td>{bicycle.ownerName}</td>
                             <td>{bicycle.serialNumber}</td>
                             <td><Button onClick={this.deleteBicycle.bind(this, bicycle.bicycleId)} color="danger">Sil</Button></td>

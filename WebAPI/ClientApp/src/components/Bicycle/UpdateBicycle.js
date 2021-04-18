@@ -16,6 +16,7 @@ export default class UpdateBicycle extends Component {
         selectedModelName: "",
         selectedCustomerName: "",
         serialNumber: "",
+        productionDate: 0,
     };
 
     componentDidMount() {
@@ -118,14 +119,15 @@ export default class UpdateBicycle extends Component {
             .then((response) => response.json())
             .then((data) => this.setState(
                 {
-                    bicycleId: data[0].bicycleId,
-                    selectedBrandId: data[0].brandId,
-                    selectedModelId: data[0].modelId,
-                    selectedCustomerId: data[0].ownerId,
-                    selectedBrandName: data[0].brandName,
-                    selectedModelName: data[0].modelName,
-                    selectedCustomerName: data[0].ownerName,
-                    serialNumber: data[0].serialNumber,
+                    bicycleId: data.bicycleId,
+                    selectedBrandId: data.brandId,
+                    selectedModelId: data.modelId,
+                    selectedCustomerId: data.ownerId,
+                    selectedBrandName: data.brandName,
+                    selectedModelName: data.modelName,
+                    selectedCustomerName: data.ownerName,
+                    serialNumber: data.serialNumber,
+                    productionDate: data.productionDate,
                     isLoaded: true,
                 }));
     };
@@ -143,6 +145,7 @@ export default class UpdateBicycle extends Component {
                 modelId: this.state.selectedModelId,
                 ownerId: this.state.selectedCustomerId,
                 serialNumber: this.state.serialNumber,
+                productionDate: this.state.productionDate,
             }),
         };
 
@@ -210,6 +213,15 @@ export default class UpdateBicycle extends Component {
                     <Label for="serialNumber">Şase Numarası</Label>
                     <Input type="text" name="serialNumber" id="serialNumber" defaultValue={this.state.serialNumber} onChange={this.handleChange} />
                 </FormGroup>
+                {this.state.isLoaded == true ?
+                <FormGroup>
+                    <Label for="productionDate">Üretim Yılı</Label>
+                    <Input type="number" name="productionDate" id="productionDate" defaultValue={this.state.productionDate} onChange={this.handleChange} />
+                </FormGroup>
+
+                    :
+                    null
+                    }
 
                 <Button>Güncelle</Button>
             </Form>
