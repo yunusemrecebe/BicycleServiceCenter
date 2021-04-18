@@ -181,22 +181,6 @@ export default class Bicycle extends Component {
 
     };
 
-    //Bisiklet Modellerini option içerisinde listeyen fonksiyon
-    listBicycleModels() {
-        return (
-
-            <FormGroup>
-                <Label for="model">Model</Label>
-                <Input value={this.state.selectedModel} type="select" name="model" id="model" onChange={this.handleChangeModel}>
-                    <option selected value={0} >Seçiniz</option>
-                    {this.state.bicycleModels.map((bicycleModel) => (
-                        <option key={bicycleModel.bicycleModelId} value={bicycleModel.bicycleModelId} >{bicycleModel.name}</option>
-                    ))}
-                </Input>
-            </FormGroup>
-        )
-    };
-
     //Bisikletleri Db'den Çekme
     getBicycles() {
         let token = localStorage.getItem('token');
