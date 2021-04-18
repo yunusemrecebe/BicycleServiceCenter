@@ -94,12 +94,12 @@ export default class UpdateProductCategory extends Component {
             .then((response) => response.json())
             .then((data) => this.setState(
                 {
-                    productId: data[0].productId,
-                    selectedBrandId: data[0].brandId,
-                    selectedCategoryId: data[0].categoryId,
-                    selectedBrandName: data[0].brandName,
-                    selectedCategoryName: data[0].categoryName,
-                    productName: data[0].productName,
+                    productId: data.productId,
+                    selectedBrandId: data.brandId,
+                    selectedCategoryId: data.categoryId,
+                    selectedBrandName: data.brandName,
+                    selectedCategoryName: data.categoryName,
+                    productName: data.productName,
                 }));
     };
 
