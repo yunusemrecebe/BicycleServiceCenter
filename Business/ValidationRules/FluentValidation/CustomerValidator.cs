@@ -26,6 +26,13 @@ namespace Business.ValidationRules.FluentValidation
                 .NotEmpty().WithMessage("Telefon numarası alanı boş bırakılamaz!")
                 .Length(10).WithMessage("Telefon numarası alanı 10 karakterden oluşmalıdır! (5XX-XXX-XXXX)")
                 .Matches(@"^[0-9]*$").WithMessage("Telefon numarası alanı yalnızca rakamlardan oluşmalıdır!");
+
+            RuleFor(c => c.EMail)
+                .MaximumLength(150).WithMessage("Email adresi 150 karakterden daha uzun olamaz!")
+                .EmailAddress();
+
+            RuleFor(c => c.Adress)
+                .Matches(@"^[a-zA-Z0-9ğüşıöçĞÜŞİÖÇ .-/]*$").WithMessage("Adres bilgisi özel karakter içeremez!");
         }
     }
 }
