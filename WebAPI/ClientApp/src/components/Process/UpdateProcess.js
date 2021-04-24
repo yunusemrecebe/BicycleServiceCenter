@@ -35,7 +35,7 @@ export default class UpdateProcess extends Component {
         this.getCustomers();
         this.getEmployees();
         this.getProductCategories();
-        this.getConsumedParts();
+        this.getConsumedParts(this.props.getProcess);
     }
 
     handleChange = (event) => {
@@ -143,14 +143,14 @@ export default class UpdateProcess extends Component {
     };
 
     //Kullanılan Ürünleri Db'den çekme
-    getConsumedParts() {
+    getConsumedParts(id) {
         let token = localStorage.getItem('token');
         if (token == null) {
             alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
             this.props.history.push("/girisYap")
         }
 
-        let url = "/api/consumedparts/getall";
+        let url = "/api/consumedparts/getdetailsbyprocessid?id=" + id;
         fetch(url, {
             method: 'get',
             headers: {
@@ -341,7 +341,7 @@ export default class UpdateProcess extends Component {
                             <th>Teşhisler</th>
 
                             <td>
-                                <Input type="text" name="diagnostics" id="diagnostics" defaultValue={this.state.diagnostics} onChange={this.handleChange}></Input>
+                                <Input type="textarea" name="diagnostics" id="diagnostics" defaultValue={this.state.diagnostics} onChange={this.handleChange}></Input>
                             </td>
                         </tr>
 
@@ -469,9 +469,9 @@ export default class UpdateProcess extends Component {
                     <tr>
                         <th>Ürün Kodu</th>
                         <th>Ürün</th>
+                        <th>Adet</th>
                         <th>Birim Fiyat</th>
                         <th>Toplam Fiyat</th>
-                        <th>Adet</th>
                         <th>İndirim Oranı</th>
                         <th></th>
                         <th></th>
@@ -482,19 +482,63 @@ export default class UpdateProcess extends Component {
                     {this.state.consumedParts.map((consumedPart) => (
                         <tr key={consumedPart.consumedPartId}>
                             <td>{consumedPart.productCode}</td>
-                            <td>{process.product}</td>
-                            <td>{process.unitPrice}</td>
-                            <td>{process.totalPrice}</td>
-                            <td>{process.quantity}</td>
-                            <td>{process.Discount}</td>
-                            <td><Button onClick={this.deleteProcess.bind(this, process.processId)} color="danger">Sil</Button></td>
-                            <td><Button onClick={this.updateProcess.bind(this, process.processId, process.customerId)} color="info">Detaylar</Button></td>
+                            <td>{consumedPart.product}</td>
+                            <td>{consumedPart.quantity}</td>
+                            <td>{consumedPart.unitPrice}</td>
+                            <td>{consumedPart.totalPrice}</td>
+                            <td>{consumedPart.discount}</td>
+                            <td><Button onClick={this.deleteConsumedPart.bind(this, consumedPart.consumedPartId)} color="danger">Sil</Button></td>
+                            <td><Button onClick={this.updateConsumedPart.bind(this, consumedPart.consumedPartId)} color="info">Güncelle</Button></td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
         )
     }
+
+    //Kullanılan Ürün Silme
+    deleteConsumedPart(id) {
+
+        const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+        };
+
+        fetch("/api/consumedparts/delete?id=" + id, requestOptions)
+            .then(async (response) => {
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                this.getConsumedParts(this.props.getProcess);
+                alertify.warning(data.message);
+            })
+
+            .catch((responseError) => {
+                if (responseError.Errors) {
+                    if (responseError.Errors.length > 0) {
+                        for (let i = 0; i < responseError.Errors.length; i++) {
+                            alertify.error(responseError.Errors[i].ErrorMessage);
+                        }
+                    }
+                }
+            });
+    };
+
+    //Servis Hizmeti güncellemek için Servis Hizmeti id'si gönderen fonksiyon
+    setConsumedPart = (id, customer) => {
+        this.props.setProcess(id);
+        this.props.setSelectedCustomer(customer);
+    }
+
+    //Servis Hizmeti Güncelleme
+    updateConsumedPart(id) {
+        this.setConsumedPart(id);
+        this.props.history.push("/servisHizmetiGüncelle");
+    };
 
     render() {
         return (
