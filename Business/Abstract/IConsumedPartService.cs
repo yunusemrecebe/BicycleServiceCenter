@@ -11,6 +11,7 @@ namespace Business.Abstract
     {
         IDataResult<List<ConsumedPart>> GetList();
         IDataResult<List<ConsumedPartDetailDto>> GetConsumedPartDetailsList();
+        IDataResult<List<ConsumedPartDetailDto>> GetConsumedPartDetailsListByProcessId(int id);
         IDataResult<ConsumedPartDetailDto> GetConsumedPartDetailsById(int id);
         IDataResult<ConsumedPart> GetById(int id);
         IDataResult<ConsumedPart> GetByProductId(int id);

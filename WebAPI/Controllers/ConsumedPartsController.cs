@@ -87,6 +87,18 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("getdetailsbyprocessid")]
+        public IActionResult GetConsumedPartDetailsListByProcessId(int id)
+        {
+            var result = _consumedPartService.GetConsumedPartDetailsListByProcessId(id);
+
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result);
+        }
+
         [HttpGet("getdetailsbyid")]
         public IActionResult GetConsumedPartDetailsListById(int id)
         {

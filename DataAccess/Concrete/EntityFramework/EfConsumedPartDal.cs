@@ -21,6 +21,9 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                              join product in context.Products
                              on consumedPart.ProductId equals product.ProductId
 
+                             join process in context.Processes
+                             on consumedPart.ProcessId equals process.ProcessId
+
                              join inventory in context.Inventory
                              on consumedPart.ProductId equals inventory.ProductId
 
@@ -31,6 +34,7 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                              {
                                  ConsumedPartId = consumedPart.ConsumedPartId,
                                  ProductId = product.ProductId,
+                                 ProcessId = process.ProcessId,
                                  ProductCode = product.ProductCode,
                                  Product = productBrand.Name + " " + product.Name,
                                  UnitPrice = inventory.SellPrice,
@@ -51,6 +55,9 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                              join product in context.Products
                              on consumedPart.ProductId equals product.ProductId
 
+                             join process in context.Processes
+                             on consumedPart.ProcessId equals process.ProcessId
+
                              join inventory in context.Inventory
                              on consumedPart.ProductId equals inventory.ProductId
 
@@ -61,6 +68,7 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                              {
                                  ConsumedPartId = consumedPart.ConsumedPartId,
                                  ProductId = product.ProductId,
+                                 ProcessId = process.ProcessId,
                                  ProductCode = product.ProductCode,
                                  Product = productBrand.Name + " " + product.Name,
                                  UnitPrice = inventory.SellPrice,

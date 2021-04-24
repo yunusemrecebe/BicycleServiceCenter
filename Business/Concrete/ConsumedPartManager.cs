@@ -107,6 +107,11 @@ namespace Business.Concrete
             return new SuccessDataResult<List<ConsumedPartDetailDto>>(_consumedPartDal.GetConsumedPartDetailsList().ToList());
         }
 
+        public IDataResult<List<ConsumedPartDetailDto>> GetConsumedPartDetailsListByProcessId(int id)
+        {
+            return new SuccessDataResult<List<ConsumedPartDetailDto>>(_consumedPartDal.GetConsumedPartDetailsList(c => c.ProcessId == id).ToList());
+        }
+
         [CacheAspect]
         public IDataResult<List<ConsumedPart>> GetList()
         {
