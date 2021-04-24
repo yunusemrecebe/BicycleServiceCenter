@@ -149,9 +149,9 @@ namespace Business.Concrete
 
         private IResult CheckIfCustomerHasBike(int id)
         {
-            var result = _bicycleService.GetBicycleDetailsByCustomerId(id).Data;
+            var result = _bicycleService.GetBicycleDetailsByCustomerId(id).Data.Any();
 
-            if (result != null)
+            if (result)
             {
                 return new ErrorResult(Messages.CustomerHasBike);
             }
