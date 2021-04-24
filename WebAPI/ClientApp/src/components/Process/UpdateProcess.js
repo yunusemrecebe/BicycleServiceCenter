@@ -389,6 +389,7 @@ export default class UpdateProcess extends Component {
                 });
 
                 alertify.success(data.message);
+                this.getConsumedParts(this.props.getProcess);
             })
 
             .catch((responseError) => {
