@@ -256,7 +256,7 @@ export default class Process extends Component {
                         <th>Bisiklet</th>
                         <th>Başlangıç Tarihi</th>
                         <th>Öngörülen Teslim Tarihi</th>
-                        <th>Teşhisler</th>
+                        <th>Durum</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -270,9 +270,9 @@ export default class Process extends Component {
                             <td>{process.bicycle}</td>
                             <td>{process.startingDate.replace('T',' ')}</td>
                             <td>{process.competitionDate}</td>
-                            <td>{process.diagnostics}</td>
+                            <td>{process.status}</td>
                             <td><Button onClick={this.deleteProcess.bind(this, process.processId)} color="danger">Sil</Button></td>
-                            <td><Button onClick={this.updateProcess.bind(this, process.processId, process.customerId)} color="info">Güncelle</Button></td>
+                            <td><Button onClick={this.updateProcess.bind(this, process.processId, process.customerId)} color="info">Detaylar</Button></td>
                         </tr>
                     ))}
                 </tbody>

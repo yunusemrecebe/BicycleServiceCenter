@@ -24,6 +24,7 @@ export default class UpdateProcess extends Component {
         startingDate: "",
         competitionDate: "",
         diagnostics: "",
+        status: "",
         isProcessLoaded: false,
     };
 
@@ -167,6 +168,7 @@ export default class UpdateProcess extends Component {
                     startingDate: data.startingDate,
                     competitionDate: data.competitionDate,
                     diagnostics: data.diagnostics,
+                    status: data.status,
                     isProcessLoaded: true,
                 }));
     };
@@ -250,6 +252,7 @@ export default class UpdateProcess extends Component {
                 startingDate: this.state.startingDate,
                 completionDate: this.state.competitionDate,
                 diagnostics: this.state.diagnostics,
+                status: this.state.status,
             }),
         };
 
@@ -327,15 +330,13 @@ export default class UpdateProcess extends Component {
                 <Row>
                     <Col md={4}>
                         <FormGroup>
-                            <Label for="competitionDate">Öngörülen Teslim Tarihi</Label>
-                            <Input type="select" name="competitionDate" id="competitionDate" onChange={this.handleChange}>
-                                <option selected value={this.state.competitionDate} >{this.state.competitionDate}</option>
-                                <option value="1 Gün" >1 Gün</option>
-                                <option value="1-3 Gün" >1-3 Gün</option>
-                                <option value="3-5 Gün" >3-5 Gün</option>
-                                <option value="1 Hafta" >1 Hafta</option>
-                                <option value="10 Gün" >10 Gün</option>
-                                <option value="20 Gün" >20 Gün</option>
+                            <Label for="status">Durum</Label>
+                            <Input type="select" name="status" id="status" onChange={this.handleChange}>
+                                <option selected value={this.state.status} >{this.state.status}</option>
+                                <option value="Beklemede" >Beklemede</option>
+                                <option value="Devam Ediyor" >Devam Ediyor</option>
+                                <option value="Tamamlandı" >Tamamlandı</option>
+                                <option value="Teslim Edildi" >Teslim Edildi</option>
                             </Input>
                         </FormGroup>
                     </Col>
