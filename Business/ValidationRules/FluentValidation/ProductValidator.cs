@@ -16,6 +16,11 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(p => p.Name)
                 .NotEmpty().WithMessage("Ürün adı mutlaka girilmelidir!")
                 .Matches(@"^[a-zA-Z0-9ğüşıöçĞÜŞİÖÇ -]*$").WithMessage("Ürün Adı bilgisi özel karakter içeremez!");
+
+            RuleFor(p => p.ProductCode)
+                .NotEmpty().WithMessage("Ürün kodu boş bırakılamaz!")
+                .Matches(@"^[a-zA-Z0-9ğüşıöçĞÜŞİÖÇ -]*$").WithMessage("Ürün kodu bilgisi özel karakter içeremez!");
+
         }
     }
 }

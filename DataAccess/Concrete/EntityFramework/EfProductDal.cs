@@ -31,7 +31,8 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                                  BrandId = productBrand.ProductBrandId,
                                  ProductName = product.Name,
                                  BrandName = productBrand.Name,
-                                 CategoryName = productCategory.Name
+                                 CategoryName = productCategory.Name,
+                                 ProductCode = product.ProductCode
                              };
                 return filter == null ? result.ToList() : result.Where(filter).ToList();
             }
@@ -59,7 +60,8 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                                  BrandId = productBrand.ProductBrandId,
                                  ProductName = product.Name,
                                  BrandName = productBrand.Name,
-                                 CategoryName = productCategory.Name
+                                 CategoryName = productCategory.Name,
+                                 ProductCode = product.ProductCode
                              };
                 return result.Where(filter).SingleOrDefault();
             }
