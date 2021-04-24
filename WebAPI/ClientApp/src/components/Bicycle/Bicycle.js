@@ -11,6 +11,7 @@ export default class Bicycle extends Component {
         selectedBrand: 0,
         selectedModel: 0,
         selectedCustomer: 0,
+        productionDate: 0,
         serialNumber: "",
         isLoaded: false,
     };
@@ -52,6 +53,7 @@ export default class Bicycle extends Component {
                 brandId: this.state.selectedBrand,
                 modelId: this.state.selectedModel,
                 ownerId: this.state.selectedCustomer,
+                productionDate: this.state.productionDate,
                 serialNumber: this.state.serialNumber,
             }),
         };
@@ -102,6 +104,16 @@ export default class Bicycle extends Component {
                 <h1> Bisiklet Ekle</h1>
 
                 <FormGroup>
+                    <Label for="owner">Sahibi</Label>
+                    <Input value={this.state.selectedCustomer} type="select" name="owner" id="owner" onChange={this.handleChangeCustomer}>
+                        <option selected value={0} >Seçiniz</option>
+                        {this.state.customers.map((customer) => (
+                            <option key={customer.customerId} value={customer.customerId} >{customer.firstName} {customer.lastName}</option>
+                        ))}
+                    </Input>
+                </FormGroup>
+
+                <FormGroup>
                     <Label for="brand">Marka</Label>
                     <Input type="select" name="brand" id="brand" onChange={this.handleChangeBrand}>
                         <option selected value={0} >Seçiniz</option>
@@ -123,13 +135,8 @@ export default class Bicycle extends Component {
                 </FormGroup>
 
                 <FormGroup>
-                    <Label for="owner">Sahibi</Label>
-                    <Input value={this.state.selectedCustomer} type="select" name="owner" id="owner" onChange={this.handleChangeCustomer}>
-                        <option selected value={0} >Seçiniz</option>
-                        {this.state.customers.map((customer) => (
-                            <option key={customer.customerId} value={customer.customerId} >{customer.firstName} {customer.lastName}</option>
-                        ))}
-                    </Input>
+                    <Label for="productionDate">Üretim Yılı</Label>
+                    <Input type="number" name="productionDate" id="productionDate" onChange={this.handleChange} />
                 </FormGroup>
 
                 <FormGroup>
