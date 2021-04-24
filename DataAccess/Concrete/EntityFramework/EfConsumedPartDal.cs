@@ -72,7 +72,7 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                                  ProductCode = product.ProductCode,
                                  Product = productBrand.Name + " " + product.Name,
                                  UnitPrice = inventory.SellPrice,
-                                 TotalPrice = inventory.SellPrice * consumedPart.Quantity,
+                                 TotalPrice = consumedPart.UnitPrice * consumedPart.Quantity,
                                  Quantity = consumedPart.Quantity,
                                  Discount = consumedPart.Discount
                              };
