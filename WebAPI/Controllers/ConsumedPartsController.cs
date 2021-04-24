@@ -74,5 +74,29 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+
+        [HttpGet("getdetails")]
+        public IActionResult GetConsumedPartDetailsList()
+        {
+            var result = _consumedPartService.GetConsumedPartDetailsList();
+
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getdetailsbyid")]
+        public IActionResult GetConsumedPartDetailsListById(int id)
+        {
+            var result = _consumedPartService.GetConsumedPartDetailsById(id);
+
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result);
+        }
     }
 }

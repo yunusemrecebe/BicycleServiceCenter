@@ -8,9 +8,11 @@ using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.Dtos;
 using FluentValidation;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Business.Concrete
 {
@@ -92,6 +94,17 @@ namespace Business.Concrete
         public IDataResult<ConsumedPart> GetByProductId(int id)
         {
             return new SuccessDataResult<ConsumedPart>(_consumedPartDal.Get(p => p.ProductId == id));
+        }
+
+        public IDataResult<ConsumedPartDetailDto> GetConsumedPartDetailsById(int id)
+        {
+            return new SuccessDataResult<ConsumedPartDetailDto>(_consumedPartDal.GetConsumedPartDetails(c => c.ConsumedPartId == id));
+        }
+
+        [CacheAspect]
+        public IDataResult<List<ConsumedPartDetailDto>> GetConsumedPartDetailsList()
+        {
+            return new SuccessDataResult<List<ConsumedPartDetailDto>>(_consumedPartDal.GetConsumedPartDetailsList().ToList());
         }
 
         [CacheAspect]
