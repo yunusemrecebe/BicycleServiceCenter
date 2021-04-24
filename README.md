@@ -10,6 +10,7 @@ Bir bisiklet firmasının teknik servis bölümünde hizmet verdiği bisikletler
 - Servis hizmeti verilen müşterinin bisikleti ya da bisikletleri hakkında bilgileri 
 - Servis hizmeti esnasında yapılan işlemleri ve sarf edilen malzeme bilgisini
 - Halihazırda servis hizmeti alan veya geçmişte servis hizmeti almış bisiklet bilgilerini
+- Envanterde bulunan ürünlerin stok bilgilerini
 
 takip etmeyi sağlar.
 
