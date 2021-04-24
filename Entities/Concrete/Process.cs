@@ -12,5 +12,6 @@ namespace Entities.Concrete
         public DateTime StartingDate { get; set; }
         public string CompletionDate { get; set; }
         public string? Diagnostics { get; set; }
+        public string Status { get; set; }
     }
 }

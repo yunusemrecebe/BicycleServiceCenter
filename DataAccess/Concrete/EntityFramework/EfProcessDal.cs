@@ -41,7 +41,8 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                                  Bicycle = bicycleBrand.Name + " " + bicycleModel.Name,
                                  StartingDate = process.StartingDate,
                                  CompetitionDate = process.CompletionDate,
-                                 Diagnostics = process.Diagnostics
+                                 Diagnostics = process.Diagnostics,
+                                 Status = process.Status
                              };
                 return result.ToList();
 
@@ -81,7 +82,8 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                                  Bicycle = bicycleBrand.Name + " " + bicycleModel.Name,
                                  StartingDate = process.StartingDate,
                                  CompetitionDate = process.CompletionDate,
-                                 Diagnostics = process.Diagnostics
+                                 Diagnostics = process.Diagnostics,
+                                 Status = process.Status
                              };
                 return result.SingleOrDefault();
 

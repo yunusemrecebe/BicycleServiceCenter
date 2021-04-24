@@ -15,5 +15,6 @@ namespace Entities.Dtos
         public DateTime StartingDate { get; set; }
         public string CompetitionDate { get; set; }
         public string? Diagnostics { get; set; }
+        public string Status { get; set; }
     }
 }
