@@ -42,6 +42,7 @@ export default class Inventory extends Component {
             <Table hover>
                 <thead>
                     <tr>
+                        <th>Ürün Kodu</th>
                         <th>Ürün</th>
                         <th>Alış Fiyatı</th>
                         <th>Satış Fiyatı</th>
@@ -55,6 +56,7 @@ export default class Inventory extends Component {
                 <tbody>
                     {this.state.inventory.map((inventory) => (
                         <tr key={inventory.inventoryId}>
+                            <td>{inventory.productCode}</td>
                             <td>{inventory.product}</td>
                             <td>{inventory.purchasePrice}</td>
                             <td>{inventory.sellPrice}</td>
