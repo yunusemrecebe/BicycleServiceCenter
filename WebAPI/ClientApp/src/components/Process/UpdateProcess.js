@@ -10,6 +10,7 @@ export default class UpdateProcess extends Component {
         employees: [],
         productCategories: [],
         products: [],
+        consumedParts: [],
         selectedProductCategoryId: 0,
         selectedProduct: 0,
         quantity: 0,
@@ -34,6 +35,7 @@ export default class UpdateProcess extends Component {
         this.getCustomers();
         this.getEmployees();
         this.getProductCategories();
+        this.getConsumedParts();
     }
 
     handleChange = (event) => {
@@ -138,6 +140,25 @@ export default class UpdateProcess extends Component {
         })
             .then((response) => response.json())
             .then((data) => this.setState({ employees: data }));
+    };
+
+    //Kullanılan Ürünleri Db'den çekme
+    getConsumedParts() {
+        let token = localStorage.getItem('token');
+        if (token == null) {
+            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
+            this.props.history.push("/girisYap")
+        }
+
+        let url = "/api/consumedparts/getall";
+        fetch(url, {
+            method: 'get',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => this.setState({ consumedParts: data }));
     };
 
     //Servis Hizmeti Detay Bilgisini Db'den Çekme (ProcessDetailDto)
@@ -402,35 +423,35 @@ export default class UpdateProcess extends Component {
                         <tr>
                             <th scope="row">Ürün Kategorisi</th>
                             <td>
-                            <Input value={this.state.selectedProductCategoryId} type="select" name="productCategory" id="productCategory" onChange={this.handleChangeProductCategory}>
-                                <option selected value={0}>Seçiniz</option>
-                                {this.state.productCategories.map((category) => (
-                                    <option key={category.productCategoryId} value={category.productCategoryId}>{category.name}</option>
-                                ))}
-                            </Input>
+                                <Input value={this.state.selectedProductCategoryId} type="select" name="productCategory" id="productCategory" onChange={this.handleChangeProductCategory}>
+                                    <option selected value={0}>Seçiniz</option>
+                                    {this.state.productCategories.map((category) => (
+                                        <option key={category.productCategoryId} value={category.productCategoryId}>{category.name}</option>
+                                    ))}
+                                </Input>
                             </td>
                         </tr>
                         <tr>
                             <th scope="row">Ürün</th>
                             <td>
-                            <Input value={this.state.selectedProduct} type="select" name="product" id="product" onChange={this.handleChangeProduct}>
-                                <option selected value={0}>Seçiniz</option>
-                                {this.state.products.map((product) => (
-                                    <option key={product.productId} value={product.productId}>{product.brandName} - {product.productName}</option>
-                                ))}
-                            </Input>
+                                <Input value={this.state.selectedProduct} type="select" name="product" id="product" onChange={this.handleChangeProduct}>
+                                    <option selected value={0}>Seçiniz</option>
+                                    {this.state.products.map((product) => (
+                                        <option key={product.productId} value={product.productId}>{product.brandName} - {product.productName}</option>
+                                    ))}
+                                </Input>
                             </td>
                         </tr>
                         <tr>
                             <th scope="row">Adet</th>
                             <td>
-                            <Input type="number" name="quantity" id="quantity" min={0} onChange={this.handleChange}></Input>
+                                <Input type="number" name="quantity" id="quantity" defaultValue={0} min={0} onChange={this.handleChange}></Input>
                             </td>
                         </tr>
                         <tr>
                             <th scope="row">İndirim Oranı</th>
                             <td>
-                            <Input type="number" name="discount" id="discount" min={0} onChange={this.handleChange}></Input>
+                                <Input type="number" name="discount" id="discount" defaultValue={0} min={0} onChange={this.handleChange}></Input>
                             </td>
                         </tr>
                     </tbody>
@@ -440,17 +461,56 @@ export default class UpdateProcess extends Component {
         )
     }
 
+    //Db'Den çekilmiş kullanılan ürünleri listeleme
+    ListConsumedParts() {
+        return (
+            <Table hover>
+                <thead>
+                    <tr>
+                        <th>Ürün Kodu</th>
+                        <th>Ürün</th>
+                        <th>Birim Fiyat</th>
+                        <th>Toplam Fiyat</th>
+                        <th>Adet</th>
+                        <th>İndirim Oranı</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {this.state.consumedParts.map((consumedPart) => (
+                        <tr key={consumedPart.consumedPartId}>
+                            <td>{consumedPart.productCode}</td>
+                            <td>{process.product}</td>
+                            <td>{process.unitPrice}</td>
+                            <td>{process.totalPrice}</td>
+                            <td>{process.quantity}</td>
+                            <td>{process.Discount}</td>
+                            <td><Button onClick={this.deleteProcess.bind(this, process.processId)} color="danger">Sil</Button></td>
+                            <td><Button onClick={this.updateProcess.bind(this, process.processId, process.customerId)} color="info">Detaylar</Button></td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
+        )
+    }
+
     render() {
         return (
-            <Row>
-                <Col md="6">
-                    {this.updateProcessForm()}
-                </Col>
+            <div>
+                <Row>
+                    <Col md="6">
+                        {this.updateProcessForm()}
+                    </Col>
 
-                <Col md="6">
-                    {this.addConsumedPartForm()}
-                </Col>
-            </Row>
+                    <Col md="6">
+                        {this.addConsumedPartForm()}
+                    </Col>
+                </Row>
+                {this.ListConsumedParts()}
+
+            </div>
 
 
 
