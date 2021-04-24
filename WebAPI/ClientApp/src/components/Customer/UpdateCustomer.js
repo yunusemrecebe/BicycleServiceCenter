@@ -9,6 +9,8 @@ export default class UpdateCustomer extends Component {
         firstName: "",
         lastName: "",
         phone: "",
+        eMail: "",
+        adress: ""
     };
 
     componentDidMount() {
@@ -29,7 +31,7 @@ export default class UpdateCustomer extends Component {
             this.props.history.push("/girisYap")
         }
 
-        let url = "/api/customers/get?id="+id;
+        let url = "/api/customers/get?id=" + id;
         fetch(url, {
             method: 'get',
             headers: {
@@ -41,9 +43,9 @@ export default class UpdateCustomer extends Component {
     };
 
     //Müşteri Bilgilerini Güncelleme
-    updateCustomer=(event)=>{
+    updateCustomer = (event) => {
         event.preventDefault();
-        
+
         const requestOptions = {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -52,9 +54,11 @@ export default class UpdateCustomer extends Component {
                 firstName: this.state.firstName != "" ? this.state.firstName : this.state.customer.firstName,
                 lastName: this.state.lastName != "" ? this.state.lastName : this.state.customer.lastName,
                 phone: this.state.phone != "" ? this.state.phone : this.state.customer.phone,
+                eMail: this.state.eMail != "" ? this.state.eMail : this.state.customer.eMail,
+                adress: this.state.adress != "" ? this.state.adress : this.state.customer.adress,
             }),
         };
-        
+
         fetch("/api/customers/update", requestOptions)
             .then(async (response) => {
                 const data = await response.json();
@@ -75,11 +79,11 @@ export default class UpdateCustomer extends Component {
                             alertify.error(responseError.Errors[i].ErrorMessage);
                         }
                     }
-                    else{
+                    else {
                         alertify.error(responseError.Message);
                     }
                 }
-            }); 
+            });
     }
 
     //Müşteri güncelleme Form
@@ -100,6 +104,16 @@ export default class UpdateCustomer extends Component {
                 <FormGroup>
                     <Label for="phone">Telefon</Label>
                     <Input type="text" name="phone" id="phone" defaultValue={this.state.customer.phone} onChange={this.handleChange} />
+                </FormGroup>
+
+                <FormGroup>
+                    <Label for="eMail">Email</Label>
+                    <Input type="email" name="eMail" id="eMail" defaultValue={this.state.customer.eMail} onChange={this.handleChange} />
+                </FormGroup>
+
+                <FormGroup>
+                    <Label for="adress">Adres</Label>
+                    <Input type="adress" name="adress" id="adress" defaultValue={this.state.customer.adress} onChange={this.handleChange} />
                 </FormGroup>
 
                 <Button>Güncelle</Button>

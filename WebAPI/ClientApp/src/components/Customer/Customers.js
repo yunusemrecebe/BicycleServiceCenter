@@ -8,6 +8,8 @@ export default class Customers extends Component {
         firstName: "",
         lastName: "",
         phone: "",
+        eMail: "",
+        adress: ""
     };
 
     componentDidMount() {
@@ -41,6 +43,8 @@ export default class Customers extends Component {
                 firstName: this.state.firstName,
                 lastName: this.state.lastName,
                 phone: this.state.phone,
+                eMail: this.state.email,
+                adress: this.state.adress,
             }),
         };
 
@@ -60,6 +64,8 @@ export default class Customers extends Component {
                   firstName: "",
                   lastName: "",
                   phone: "",
+                  eMail: "",
+                  adress: "",
                 });
 
                 alertify.success(data.message);
@@ -102,6 +108,16 @@ export default class Customers extends Component {
                   <Input type="text" name="phone" id="phone" onChange={this.handleChange}/>
               </FormGroup>
 
+              <FormGroup>
+                  <Label for="eMail">Email</Label>
+                  <Input type="email" name="eMail" id="eMail" onChange={this.handleChange}/>
+              </FormGroup>
+
+              <FormGroup>
+                  <Label for="adress">Adres</Label>
+                  <Input type="adress" name="adress" id="adress" onChange={this.handleChange}/>
+              </FormGroup>
+
               <Button>Ekle</Button>
           </Form>
       )
@@ -126,7 +142,7 @@ export default class Customers extends Component {
             .then((data) => this.setState({ customers: data }));
     };
 
-    //Db'Den çekilmiş personelleri listeleme
+    //Db'Den çekilmiş müşterileri listeleme
     ListCustomers() {
       return (
           <Table hover>
@@ -134,6 +150,8 @@ export default class Customers extends Component {
                   <tr>
                       <th>Ad Soyad</th>
                       <th>Telefon</th>
+                      <th>EMail</th>
+                      <th>Adres</th>
                       <th></th>
                       <th></th>
                   </tr>
@@ -144,12 +162,14 @@ export default class Customers extends Component {
                       <tr key={customer.customerId}>
                           <td>{customer.firstName} {customer.lastName}</td>
                           <td>{customer.phone}</td>
+                          <td>{customer.eMail}</td>
+                          <td>{customer.adress}</td>
                           <td><Button onClick={this.deleteCustomer.bind(this, customer.customerId)} color="danger">Sil</Button></td>
                           <td><Button onClick={this.updateCustomer.bind(this, customer.customerId)} color="info">Güncelle</Button></td>
                       </tr>
                   ))
                 :
-                <h1>Sistemde kayıtlı personel bulunamadı!</h1>
+                <h1>Sistemde kayıtlı müşteri bulunamadı!</h1>
                 }
               </tbody>
           </Table>
