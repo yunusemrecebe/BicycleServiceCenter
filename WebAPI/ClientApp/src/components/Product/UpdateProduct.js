@@ -14,6 +14,7 @@ export default class UpdateProductCategory extends Component {
         selectedCategoryId: 0,
         selectedBrandName: "",
         selectedCategoryName: "",
+        productCode: "",
         productName: "",
     };
 
@@ -100,6 +101,7 @@ export default class UpdateProductCategory extends Component {
                     selectedBrandName: data.brandName,
                     selectedCategoryName: data.categoryName,
                     productName: data.productName,
+                    productCode: data.productCode,
                 }));
     };
 
@@ -114,6 +116,7 @@ export default class UpdateProductCategory extends Component {
                 brandId: this.state.selectedBrandId,
                 productId: this.state.productId,
                 categoryId: this.state.selectedCategoryId,
+                productCode: this.state.productCode,
                 name: this.state.productName,
             }),
         };
@@ -149,7 +152,12 @@ export default class UpdateProductCategory extends Component {
     updateProductForm() {
         return (
             <Form onSubmit={this.updateProduct}>
-                <h1> Ürün Ekle</h1>
+                <h1> Ürün Güncelle</h1>
+                <FormGroup>
+                    <Label for="productCode">Ürün Kodu</Label>
+                    <Input type="text" name="productCode" id="productCode" defaultValue={this.state.productCode} onChange={this.handleChange} />
+                </FormGroup>
+
                 <FormGroup>
                     <Label for="productName">Ürün Adı</Label>
                     <Input type="text" name="productName" id="productName" defaultValue={this.state.productName} onChange={this.handleChange} />

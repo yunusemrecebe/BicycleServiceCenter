@@ -7,11 +7,10 @@ export default class ProductCategory extends Component {
         products: [],
         productBrands: [],
         productCategories: [],
+        productCode: "",
         productName: "",
         selectedBrand: 0,
         selectedCategory: 0,
-        unitPrice: 0,
-        unitsInStock: 0,
     };
 
 
@@ -81,6 +80,7 @@ export default class ProductCategory extends Component {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
+                productCode: this.state.productCode,
                 name: this.state.productName,
                 brandId: this.state.selectedBrand,
                 categoryId: this.state.selectedCategory
@@ -100,11 +100,10 @@ export default class ProductCategory extends Component {
                 Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
 
                 this.setState({
+                    productCode: "",
                     productName: "",
                     selectedBrand: 0,
                     selectedCategory: 0,
-                    unitPrice: 0,
-                    unitsInStock: 0,
                 });
                 
                 alertify.success(data.message);
@@ -132,6 +131,11 @@ export default class ProductCategory extends Component {
         return (
             <Form onSubmit={this.addProduct}>
                 <h1> Ürün Ekle</h1>
+                <FormGroup>
+                    <Label for="productCode">Ürün Kodu</Label>
+                    <Input type="text" name="productCode" id="productCode" onChange={this.handleChange} />
+                </FormGroup>
+
                 <FormGroup>
                     <Label for="productName">Ürün Adı</Label>
                     <Input type="text" name="productName" id="productName" onChange={this.handleChange} />
@@ -231,6 +235,7 @@ export default class ProductCategory extends Component {
             <Table hover>
                 <thead>
                     <tr>
+                        <th>Ürün Kodu</th>
                         <th>Ürün Adı</th>
                         <th>Marka</th>
                         <th>Kategori</th>
@@ -242,6 +247,7 @@ export default class ProductCategory extends Component {
                 <tbody>
                     {this.state.products.map((product) => (
                         <tr key={product.productId}>
+                            <td>{product.productCode}</td>
                             <td>{product.productName}</td>
                             <td>{product.brandName}</td>
                             <td>{product.categoryName}</td>
