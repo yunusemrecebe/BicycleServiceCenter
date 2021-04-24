@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import alertify from "alertifyjs";
-import { Button, Form, FormGroup, Label, Input, Row, Col } from "reactstrap";
+import { Button, Form, FormGroup, Label, Input, Row, Col, Table } from "reactstrap";
 
 export default class UpdateProcess extends Component {
 
@@ -104,21 +104,21 @@ export default class UpdateProcess extends Component {
 
     //Ürünleri Kategorilere göre Db'den çekme
     getProductsByCategory(id) {
-    let token = localStorage.getItem('token');
-    if (token == null) {
-        alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-        this.props.history.push("/girisYap")
-    }
-
-    let url = "/api/products/getallbycategoryid?id=" + id;
-    fetch(url, {
-        method: 'get',
-        headers: {
-            'Authorization': `Bearer ${token}`
+        let token = localStorage.getItem('token');
+        if (token == null) {
+            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
+            this.props.history.push("/girisYap")
         }
-    })
-        .then((response) => response.json())
-        .then((data) => this.setState({ products: data }));
+
+        let url = "/api/products/getallbycategoryid?id=" + id;
+        fetch(url, {
+            method: 'get',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => this.setState({ products: data }));
     };
 
     //Personelleri Db'den çekme
@@ -198,48 +198,9 @@ export default class UpdateProcess extends Component {
 
     };
 
-    addConsumedPart(){
-        const requestOptions = {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                processId: this.state.selectedProcessId,
-                productId : this.state.selectedProduct,
-                quantity : this.state.quantity,
-                discount: this.state.discount,
-            }),
-        };
-
-        fetch("/api/consumedparts/add", requestOptions)
-            .then(async (response) => {
-                const data = await response.json();
-
-                if (!response.ok) {
-                    const error = data;
-                    return Promise.reject(error);
-                }
-
-                alertify.success(data.message);
-            })
-
-            .catch((responseError) => {
-                if (responseError.Errors) {
-                    if (responseError.Errors.length > 0) {
-                        for (let i = 0; i < responseError.Errors.length; i++) {
-                            alertify.error(responseError.Errors[i].ErrorMessage);
-                        }
-                    }
-                    else {
-                        alertify.error(responseError.Message);
-                    }
-                }
-            });
-    }
-
     //Bisiklet güncelleme
     updateProcess = (event) => {
         event.preventDefault();
-        this.addConsumedPart();
 
         const requestOptions = {
             method: "POST",
@@ -286,110 +247,194 @@ export default class UpdateProcess extends Component {
     //Bisiklet güncelleme Form
     updateProcessForm() {
         return (
+
             <Form onSubmit={this.updateProcess}>
                 <h1> Servis Hizmeti Güncelle</h1>
-                <Row>
-                    <Col md={4}>
-                        <FormGroup>
-                            <Label for="owner">Müşteri</Label>
-                            <Input value={this.state.selectedCustomerId} type="select" name="owner" id="owner" onChange={this.handleChangeCustomer}>
-                                {this.state.customers.map((customer) => (
-                                    <option key={customer.customerId} value={customer.customerId} >{customer.firstName} {customer.lastName}</option>
-                                ))}
-                            </Input>
-                        </FormGroup>
-                    </Col>
 
-                    <Col md={4}>
-                        {this.state.isProcessLoaded == true ?
-                            <FormGroup>
-                                <Label for="bicycle">Bisiklet</Label>
-                                <Input value={this.state.selectedBicycleId} type="select" name="bicycle" id="bicycle" onChange={this.handleChangeBicycle} >
-                                    {this.state.bicycles.map((bicycle) => (
-                                        <option key={bicycle.bicycleId} value={bicycle.bicycleId}>{bicycle.brandName} {bicycle.modelName}</option>
+                <Table borderless>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Müşteri</th>
+
+                            <td>
+                                <Input value={this.state.selectedCustomerId} type="select" name="owner" id="owner" onChange={this.handleChangeCustomer}>
+                                    {this.state.customers.map((customer) => (
+                                        <option key={customer.customerId} value={customer.customerId} >{customer.firstName} {customer.lastName}</option>
                                     ))}
                                 </Input>
-                            </FormGroup>
-                            :
-                            null
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Bisiklet</th>
+
+                            <td>
+                                {this.state.isProcessLoaded == true ?
+                                    <Input value={this.state.selectedBicycleId} type="select" name="bicycle" id="bicycle" onChange={this.handleChangeBicycle} >
+                                        {this.state.bicycles.map((bicycle) => (
+                                            <option key={bicycle.bicycleId} value={bicycle.bicycleId}>{bicycle.brandName} {bicycle.modelName}</option>
+                                        ))}
+                                    </Input>
+                                    :
+                                    null
+                                }
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Personel</th>
+
+                            <td>
+                                <Input value={this.state.selectedEmployeeId} type="select" name="employee" id="employee" onChange={this.handleChangeEmployee}>
+                                    {this.state.employees.map((employee) => (
+                                        <option key={employee.employeeId} value={employee.employeeId}>{employee.firstName} {employee.lastName}</option>
+                                    ))}
+                                </Input>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Durum</th>
+
+                            <td>
+                                <Input type="select" name="status" id="status" onChange={this.handleChange}>
+                                    <option selected value={this.state.status} >{this.state.status}</option>
+                                    <option value="Beklemede" >Beklemede</option>
+                                    <option value="Devam Ediyor" >Devam Ediyor</option>
+                                    <option value="Tamamlandı" >Tamamlandı</option>
+                                    <option value="Teslim Edildi" >Teslim Edildi</option>
+                                </Input>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Teşhisler</th>
+
+                            <td>
+                                <Input type="text" name="diagnostics" id="diagnostics" defaultValue={this.state.diagnostics} onChange={this.handleChange}></Input>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </Table>
+
+
+                <Button>Güncelle</Button>
+            </Form>
+
+        )
+    }
+
+    //Kullanılan ürün ekleme
+    addConsumedPart = (event) => {
+        event.preventDefault();
+
+        const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                processId: this.state.selectedProcessId,
+                productId: this.state.selectedProduct,
+                quantity: this.state.quantity,
+                discount: this.state.discount,
+            }),
+        };
+
+        fetch("/api/consumedparts/add", requestOptions)
+            .then(async (response) => {
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
+                this.setState({
+                    selectedProductCategoryId: 0,
+                    selectedProduct: 0,
+                    productId: 0,
+                    quantity: 0,
+                    discount: 0,
+                });
+
+                alertify.success(data.message);
+            })
+
+            .catch((responseError) => {
+                if (responseError.Errors) {
+                    if (responseError.Errors.length > 0) {
+                        for (let i = 0; i < responseError.Errors.length; i++) {
+                            alertify.error(responseError.Errors[i].ErrorMessage);
                         }
-                    </Col>
+                    }
+                    else {
+                        alertify.error(responseError.Message);
+                    }
+                }
+            });
+    }
 
-                    <Col md={4}>
-                        <FormGroup>
-                            <Label for="employee">Personel</Label>
-                            <Input value={this.state.selectedEmployeeId} type="select" name="employee" id="employee" onChange={this.handleChangeEmployee}>
-                                {this.state.employees.map((employee) => (
-                                    <option key={employee.employeeId} value={employee.employeeId}>{employee.firstName} {employee.lastName}</option>
-                                ))}
-                            </Input>
-                        </FormGroup>
-                    </Col>
-                </Row>
-
-                <Row>
-                    <Col md={4}>
-                        <FormGroup>
-                            <Label for="status">Durum</Label>
-                            <Input type="select" name="status" id="status" onChange={this.handleChange}>
-                                <option selected value={this.state.status} >{this.state.status}</option>
-                                <option value="Beklemede" >Beklemede</option>
-                                <option value="Devam Ediyor" >Devam Ediyor</option>
-                                <option value="Tamamlandı" >Tamamlandı</option>
-                                <option value="Teslim Edildi" >Teslim Edildi</option>
-                            </Input>
-                        </FormGroup>
-                    </Col>
-
-                    <Col md={8}>
-                        <FormGroup>
-                            <Label for="diagnostics">Teşhisler</Label>
-                            <Input type="text" name="diagnostics" id="diagnostics" defaultValue={this.state.diagnostics} onChange={this.handleChange}></Input>
-                        </FormGroup>
-                    </Col>
-                </Row>
-
-                <hr></hr>
-
-                <Row>
-                    <Col md={3}>
-                        <FormGroup>
-                            <Label for="productCategory">Ürün Kategorisi</Label>
+    //Kullanılan ürün ekleme formu
+    addConsumedPartForm() {
+        return (
+            <Form onSubmit={this.addConsumedPart}>
+                <h1> Kullanılan Ürün Ekle</h1>
+                <Table borderless>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Ürün Kategorisi</th>
+                            <td>
                             <Input value={this.state.selectedProductCategoryId} type="select" name="productCategory" id="productCategory" onChange={this.handleChangeProductCategory}>
                                 <option selected value={0}>Seçiniz</option>
                                 {this.state.productCategories.map((category) => (
                                     <option key={category.productCategoryId} value={category.productCategoryId}>{category.name}</option>
                                 ))}
                             </Input>
-                        </FormGroup>
-                    </Col>
-
-                    <Col md={3}>
-                        <FormGroup>
-                            <Label for="product">Ürün</Label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Ürün</th>
+                            <td>
                             <Input value={this.state.selectedProduct} type="select" name="product" id="product" onChange={this.handleChangeProduct}>
                                 <option selected value={0}>Seçiniz</option>
                                 {this.state.products.map((product) => (
                                     <option key={product.productId} value={product.productId}>{product.brandName} - {product.productName}</option>
                                 ))}
                             </Input>
-                        </FormGroup>
-                    </Col>
-
-                    <Col md={3}>
-                        <FormGroup>
-                            <Label for="quantity">Adet</Label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Adet</th>
+                            <td>
                             <Input type="number" name="quantity" id="quantity" min={0} onChange={this.handleChange}></Input>
-                        </FormGroup>
-                    </Col>
-
-                    <Col md={3}>
-                        <FormGroup>
-                            <Label for="discount">İndirim Oranı</Label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">İndirim Oranı</th>
+                            <td>
                             <Input type="number" name="discount" id="discount" min={0} onChange={this.handleChange}></Input>
-                        </FormGroup>
-                    </Col>
-                </Row>
+                            </td>
+                        </tr>
+                    </tbody>
+                </Table>
                 <Button>Ekle</Button>
             </Form>
         )
@@ -397,9 +442,18 @@ export default class UpdateProcess extends Component {
 
     render() {
         return (
-            <div>
-                {this.updateProcessForm()}
-            </div>
+            <Row>
+                <Col md="6">
+                    {this.updateProcessForm()}
+                </Col>
+
+                <Col md="6">
+                    {this.addConsumedPartForm()}
+                </Col>
+            </Row>
+
+
+
         );
     }
 };
