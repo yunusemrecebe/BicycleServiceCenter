@@ -72,7 +72,7 @@ namespace Business.Concrete
 
             if (result != null)
             {
-                return new ErrorDataResult<ConsumedPart>(Messages.IdValueIsInvalid);
+                return result;
             }
 
             var consumedPart = _consumedPartDal.Get(c => c.ConsumedPartId == id);
@@ -126,11 +126,19 @@ namespace Business.Concrete
         [CacheRemoveAspect("IConsumedPartService.Get")]
         public IResult Update(ConsumedPart consumedPart)
         {
-            IResult result = BusinessRules.Run(CheckIdValueIsTrue(consumedPart.ConsumedPartId));
+            var currentConsumedPart = GetById(consumedPart.ConsumedPartId).Data;
+            IResult result = BusinessRules.Run(CheckIdValueIsTrue(consumedPart.ConsumedPartId),UpdateStockInInventory(consumedPart, currentConsumedPart));
 
             if (result != null)
             {
                 return new ErrorDataResult<ConsumedPart>(Messages.IdValueIsInvalid);
+            }
+
+            var accrualdiscount = consumedPart.Discount - currentConsumedPart.Discount;
+            if (accrualdiscount != 0)
+            {
+                var inventory = _inventoryService.GetByProductId(consumedPart.ProductId).Data;
+                consumedPart.UnitPrice = inventory.SellPrice - (inventory.SellPrice / 100) * (decimal)consumedPart.Discount;
             }
 
             _consumedPartDal.Update(consumedPart);
@@ -156,6 +164,22 @@ namespace Business.Concrete
             {
                 throw new ValidationException(Messages.insufficientStock);
             }
+
+            return new SuccessResult();
+        }
+
+        private IResult UpdateStockInInventory(ConsumedPart consumedPart, ConsumedPart currentConsumedPart)
+        {
+            var accrual = consumedPart.Quantity - currentConsumedPart.Quantity;
+            var inventoryRecord = _inventoryService.GetByProductId(consumedPart.ProductId).Data;
+
+            if (accrual > inventoryRecord.UnitsInStock)
+            {
+                throw new ValidationException(Messages.insufficientStock);
+            }
+
+            inventoryRecord.UnitsInStock = inventoryRecord.UnitsInStock + (-1 * accrual);
+            _inventoryService.Update(inventoryRecord);
 
             return new SuccessResult();
         }
