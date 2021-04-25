@@ -213,7 +213,7 @@ export default class UpdateProcess extends Component {
             .then((response) => response.json())
             .then((data) => this.setState({
                 bicycles: data,
-                selectedBicycleId: data[0].bicycleId,
+                selectedBicycleId: data[0] == null ? 0 : data[0].bicycleId,
                 isProcessLoaded: true
             }));
 
@@ -301,9 +301,11 @@ export default class UpdateProcess extends Component {
                             <td>
                                 {this.state.isProcessLoaded == true ?
                                     <Input value={this.state.selectedBicycleId} type="select" name="bicycle" id="bicycle" onChange={this.handleChangeBicycle} >
-                                        {this.state.bicycles.map((bicycle) => (
+                                        {this.state.selectedBicycleId != 0 ? this.state.bicycles.map((bicycle) => (
                                             <option key={bicycle.bicycleId} value={bicycle.bicycleId}>{bicycle.brandName} {bicycle.modelName}</option>
-                                        ))}
+                                        ))
+                                            :
+                                            <option value="Seçiniz">Seçiniz</option>}
                                     </Input>
                                     :
                                     null
