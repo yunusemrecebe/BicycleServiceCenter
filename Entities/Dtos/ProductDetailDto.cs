@@ -11,5 +11,6 @@ namespace Entities.Dtos
         public string BrandName { get; set; }
         public string CategoryName { get; set; }
         public string ProductCode { get; set; }
+        public bool Status { get; set; }
     }
 }

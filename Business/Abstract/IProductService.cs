@@ -9,6 +9,7 @@ namespace Business.Abstract
     {
         IDataResult<List<Product>> GetList();
         IDataResult<List<ProductDetailDto>> GetListByCategoryId(int id);
+        IDataResult<List<ProductDetailDto>> GetListOnSaleByCategoryId(int id);
         IDataResult<List<ProductDetailDto>> GetProductDetails();
         IDataResult<ProductDetailDto> GetProductDetailsById(int id);
         IDataResult<Product> GetById(int id);

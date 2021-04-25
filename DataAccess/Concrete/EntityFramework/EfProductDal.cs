@@ -24,6 +24,9 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                              join productCategory in context.ProductCategories
                              on product.CategoryId equals productCategory.ProductCategoryId
 
+                             join inventory in context.Inventory
+                             on product.ProductId equals inventory.ProductId
+
                              select new ProductDetailDto
                              {
                                  ProductId = product.ProductId,
@@ -32,7 +35,8 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                                  ProductName = product.Name,
                                  BrandName = productBrand.Name,
                                  CategoryName = productCategory.Name,
-                                 ProductCode = product.ProductCode
+                                 ProductCode = product.ProductCode,
+                                 Status = inventory.Status
                              };
                 return filter == null ? result.ToList() : result.Where(filter).ToList();
             }
@@ -61,7 +65,8 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                                  ProductName = product.Name,
                                  BrandName = productBrand.Name,
                                  CategoryName = productCategory.Name,
-                                 ProductCode = product.ProductCode
+                                 ProductCode = product.ProductCode,
+                                 Status = inventory.Status
                              };
                 return result.Where(filter).SingleOrDefault();
             }

@@ -99,6 +99,18 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("getallonsalebycategoryid")]
+        public IActionResult GetListOnSaleByCategoryId(int id)
+        {
+            var result = _productService.GetListOnSaleByCategoryId(id);
+
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result);
+        }
+
         [HttpGet("getdetails")]
         public IActionResult GetProductDetails()
         {
