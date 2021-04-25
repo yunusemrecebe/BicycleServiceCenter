@@ -1,17 +1,24 @@
 import React, { Component } from 'react';
 import alertify from "alertifyjs";
-import { Button, Form, FormGroup, Label, Input, Row, Col, Table } from "reactstrap";
+import { Button, Form, Input, Row, Col, Table } from "reactstrap";
 
-export default class UpdateProcess extends Component {
+export default class UpdateConsumedParts extends Component {
 
     state = {
-        consumedParts: [],
+        consumedPartId: 0,
+        processId: 0,
+        productId: 0,
+        productCode: "",
+        product: "",
+        unitPrice: 0,
+        totalPrice: 0,
         quantity: 0,
         discount: 0,
+        isLoaded: false
     };
 
     componentDidMount() {
-        this.getConsumedParts(this.props.getProcess);
+        this.getConsumedParts(this.props.getConsumedPart);
     }
 
     handleChange = (event) => {
@@ -28,7 +35,7 @@ export default class UpdateProcess extends Component {
             this.props.history.push("/girisYap")
         }
 
-        let url = "/api/consumedparts/getdetailsbyprocessid?id=" + id;
+        let url = "/api/consumedparts/getdetailsbyid?id=" + id;
         fetch(url, {
             method: 'get',
             headers: {
@@ -36,25 +43,38 @@ export default class UpdateProcess extends Component {
             }
         })
             .then((response) => response.json())
-            .then((data) => this.setState({ consumedParts: data }));
+            .then((data) => this.setState({
+                consumedPartId: data.consumedPartId,
+                processId: data.processId,
+                productId: data.productId,
+                productCode: data.productCode,
+                product: data.product,
+                unitPrice: data.unitPrice,
+                totalPrice: data.totalPrice,
+                quantity: data.quantity,
+                discount: data.discount,
+                isLoaded: true
+            }));
     };
 
-    //Kullanılan ürün ekleme
-    addConsumedPart = (event) => {
+    //Kullanılan ürün güncelleme
+    updateConsumedPart = (event) => {
         event.preventDefault();
 
         const requestOptions = {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                processId: this.state.selectedProcessId,
-                productId: this.state.selectedProduct,
+                consumedPartId: this.state.consumedPartId,
+                processId: this.state.processId,
+                productId: this.state.productId,
+                unitPrice: this.state.unitPrice,
                 quantity: this.state.quantity,
                 discount: this.state.discount,
             }),
         };
 
-        fetch("/api/consumedparts/add", requestOptions)
+        fetch("/api/consumedparts/update", requestOptions)
             .then(async (response) => {
                 const data = await response.json();
 
@@ -63,17 +83,8 @@ export default class UpdateProcess extends Component {
                     return Promise.reject(error);
                 }
 
-                Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
-                this.setState({
-                    selectedProductCategoryId: 0,
-                    selectedProduct: 0,
-                    productId: 0,
-                    quantity: 0,
-                    discount: 0,
-                });
-
                 alertify.success(data.message);
-                this.getConsumedParts(this.props.getProcess);
+                this.props.history.goBack();
             })
 
             .catch((responseError) => {
@@ -90,11 +101,10 @@ export default class UpdateProcess extends Component {
             });
     }
 
-    //Kullanılan ürün ekleme formu
-    addConsumedPartForm() {
+    //Kullanılan ürün güncelleme formu
+    updateConsumedPartForm() {
         return (
-            <Form onSubmit={this.addConsumedPart}>
-                <h1> Kullanılan Ürün Ekle</h1>
+            <Form onSubmit={this.updateConsumedPart}>
                 <Table borderless>
                     <thead>
                         <tr>
@@ -105,40 +115,40 @@ export default class UpdateProcess extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">Ürün Kategorisi</th>
-                            <td>
-                                <Input value={this.state.selectedProductCategoryId} type="select" name="productCategory" id="productCategory" onChange={this.handleChangeProductCategory}>
-                                    <option selected value={0}>Seçiniz</option>
-                                    {this.state.productCategories.map((category) => (
-                                        <option key={category.productCategoryId} value={category.productCategoryId}>{category.name}</option>
-                                    ))}
-                                </Input>
-                            </td>
-                        </tr>
+
                         <tr>
                             <th scope="row">Ürün</th>
                             <td>
-                                <Input value={this.state.selectedProduct} type="select" name="product" id="product" onChange={this.handleChangeProduct}>
-                                    <option selected value={0}>Seçiniz</option>
-                                    {this.state.products.map((product) => (
-                                        <option key={product.productId} value={product.productId}>{product.brandName} - {product.productName}</option>
-                                    ))}
-                                </Input>
+                                <Input value={this.state.product} type="text" name="product" id="product"></Input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Ürün Kodu</th>
+                            <td>
+                                <Input value={this.state.productCode} type="text" name="productCode" id="productCode"></Input>
                             </td>
                         </tr>
                         <tr>
                             <th scope="row">Adet</th>
                             <td>
-                                <Input type="number" name="quantity" id="quantity" defaultValue={0} min={0} onChange={this.handleChange}></Input>
+                                {this.state.isLoaded == true ?
+                                    <Input type="number" name="quantity" id="quantity" defaultValue={this.state.quantity} min={0} onChange={this.handleChange}></Input>
+                                    :
+                                    null
+                                }
                             </td>
                         </tr>
                         <tr>
                             <th scope="row">İndirim Oranı</th>
                             <td>
-                                <Input type="number" name="discount" id="discount" defaultValue={0} min={0} onChange={this.handleChange}></Input>
+                                {this.state.isLoaded == true ?
+                                    <Input type="number" name="discount" id="discount" defaultValue={this.state.discount} min={0} onChange={this.handleChange}></Input>
+                                    :
+                                    null
+                                }
                             </td>
                         </tr>
+
                     </tbody>
                 </Table>
                 <Button>Ekle</Button>
@@ -146,16 +156,15 @@ export default class UpdateProcess extends Component {
         )
     }
 
-
     render() {
         return (
             <div>
+                <h1 className="text-center"> Kullanılan Ürün Bilgilerini Güncelle</h1>
                 <Row>
                     <Col md="6">
-                        {this.addConsumedPartForm()}
+                        {this.updateConsumedPartForm()}
                     </Col>
                 </Row>
-                {this.ListConsumedParts()}
 
             </div>
         );
