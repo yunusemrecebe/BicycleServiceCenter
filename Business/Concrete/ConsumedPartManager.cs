@@ -59,7 +59,7 @@ namespace Business.Concrete
                 PurchasePrice = inventory.PurchasePrice,
                 SellPrice = inventory.SellPrice,
                 UnitsInStock = remainingUnitsInStock,
-                Status = inventory.Status
+                Status = remainingUnitsInStock == 0 ? false : true
             });
             return new SuccessResult(Messages.ConsumedPartAdded);
         }
