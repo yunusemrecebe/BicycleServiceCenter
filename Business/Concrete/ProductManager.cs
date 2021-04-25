@@ -31,7 +31,7 @@ namespace Business.Concrete
         [CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Product product)
         {
-            IResult result = BusinessRules.Run(CheckIfProductIsExists(product.Name));
+            IResult result = BusinessRules.Run(CheckIfProductIsExists(product.Name), CheckIfProductCodeIsExists(product.ProductCode));
 
             if (result != null)
             {
@@ -121,6 +121,18 @@ namespace Business.Concrete
             if (result)
             {
                 return new ErrorResult(Messages.ProductAlreadyExists);
+            }
+
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfProductCodeIsExists(string productCode)
+        {
+            var result = _productDal.GetList(p => p.ProductCode == productCode).Any();
+
+            if (result)
+            {
+                return new ErrorResult(Messages.ProductCodeAlreadyExists);
             }
 
             return new SuccessResult();
