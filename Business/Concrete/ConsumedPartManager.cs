@@ -65,6 +65,7 @@ namespace Business.Concrete
         }
 
         [CacheRemoveAspect("IConsumedPartService.Get")]
+        [TransactionScopeAspect]
         public IResult Delete(int id)
         {
             IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
@@ -75,6 +76,9 @@ namespace Business.Concrete
             }
 
             var consumedPart = _consumedPartDal.Get(c => c.ConsumedPartId == id);
+            var inventory = _inventoryService.GetByProductId(consumedPart.ProductId).Data;
+            inventory.UnitsInStock += consumedPart.Quantity;
+            _inventoryService.Update(inventory);
             _consumedPartDal.Delete(consumedPart);
             return new SuccessResult(Messages.ConsumedPartDeleted);
         }
