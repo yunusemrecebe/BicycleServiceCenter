@@ -532,15 +532,14 @@ export default class UpdateProcess extends Component {
     };
 
     //Servis Hizmeti güncellemek için Servis Hizmeti id'si gönderen fonksiyon
-    setConsumedPart = (id, customer) => {
-        this.props.setProcess(id);
-        this.props.setSelectedCustomer(customer);
+    setConsumedPart = (id) => {
+        this.props.setConsumedPart(id);
     }
 
     //Servis Hizmeti Güncelleme
     updateConsumedPart(id) {
         this.setConsumedPart(id);
-        this.props.history.push("/servisHizmetiGüncelle");
+        this.props.history.push("/kullanılanÜrünüGüncelle");
     };
 
     render() {

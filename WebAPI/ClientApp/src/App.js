@@ -6,9 +6,6 @@ import Employees from './components/Employee/Employees';
 import EmployeeUpdate from './components/Employee/UpdateEmployee';
 import Customers from './components/Customer/Customers';
 import CustomerUpdate from './components/Customer/UpdateCustomer';
-// import Login from './components/Login';
-// import Register from './components/Register';
-// import Logout from './components/Logout';
 import Products from './components/Product/Product';
 import ProductUpdate from './components/Product/UpdateProduct';
 import ProductBrand from './components/Product/ProductBrand';
@@ -25,6 +22,7 @@ import Process from './components/Process/Process';
 import ProcessUpdate from './components/Process/UpdateProcess';
 import Inventory from './components/Inventory/Inventory';
 import InventoryUpdate from './components/Inventory/UpdateInventory';
+import ConsumedPartUpdate from "./components/ConsumedPart/UpdateConsumedPart";
 
 export default class App extends Component {
   static displayName = App.name;
@@ -40,6 +38,7 @@ export default class App extends Component {
     selectedCustomer: undefined,
     selectedProcess: undefined,
     selectedProcessCustomer: undefined,
+    consumedPart: undefined,
   };
 
   setProductBrand = async (brand) => {
@@ -79,15 +78,21 @@ export default class App extends Component {
   };
 
   setProcess = async (process) => {
-    await this.setState({ 
+    await this.setState({
       selectedProcess: process,
-     });
+    });
   };
 
   setSelectedCustomer = async (customer) => {
-    await this.setState({ 
+    await this.setState({
       selectedProcessCustomer: customer
-     });
+    });
+  };
+
+  setConsumedPart = async (consumedPart) => {
+    await this.setState({
+      consumedPart: consumedPart,
+    });
   };
 
 
@@ -118,7 +123,8 @@ export default class App extends Component {
 
         {/* PROCESS İLE İLGİLİ YÖNLENDİRMELER */}
         <Route exact path="/servisHizmeti" render={props => (<Process {...props} setProcess={this.setProcess} setSelectedCustomer={this.setSelectedCustomer} />)} />
-        <Route exact path="/servisHizmetiGüncelle" render={props => (<ProcessUpdate {...props} getCustomer={this.state.selectedProcessCustomer} getProcess={this.state.selectedProcess} />)} />
+        <Route exact path="/servisHizmetiGüncelle" render={props => (<ProcessUpdate {...props} getCustomer={this.state.selectedProcessCustomer} getProcess={this.state.selectedProcess} setConsumedPart={this.setConsumedPart}/>)} />
+        <Route exact path="/servisHizmetiGüncelle" render={props => (<ProcessUpdate {...props} getConsumedPart={this.state.consumedPart}/>)} />
 
         {/* EMPLOYEE İLE İLGİLİ YÖNLENDİRMELER */}
         <Route exact path="/personeller" render={props => (<Employees {...props} setEmployee={this.setEmployee} />)} />
