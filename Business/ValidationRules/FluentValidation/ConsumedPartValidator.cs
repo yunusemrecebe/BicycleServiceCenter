@@ -26,7 +26,8 @@ namespace Business.ValidationRules.FluentValidation
 
             RuleFor(c => c.Discount)
                 .NotNull()
-                .GreaterThanOrEqualTo(0).WithMessage("İndirim oranı 0'dan küçük olmamalıdır!");
+                .GreaterThanOrEqualTo(0).WithMessage("İndirim oranı 0'dan küçük olamaz!")
+                .LessThanOrEqualTo(100).WithMessage("İndirim oranı 100'den büyük olamaz!");
 
         }
     }

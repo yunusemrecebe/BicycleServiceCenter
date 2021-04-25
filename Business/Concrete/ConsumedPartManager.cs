@@ -51,9 +51,9 @@ namespace Business.Concrete
             }
 
             _consumedPartDal.Add(consumedPart);
-            
-            _inventoryService.Update(new Inventory 
-            { 
+
+            _inventoryService.Update(new Inventory
+            {
                 InventoryId = inventory.InventoryId,
                 ProductId = inventory.ProductId,
                 PurchasePrice = inventory.PurchasePrice,
@@ -127,7 +127,7 @@ namespace Business.Concrete
         public IResult Update(ConsumedPart consumedPart)
         {
             var currentConsumedPart = GetById(consumedPart.ConsumedPartId).Data;
-            IResult result = BusinessRules.Run(CheckIdValueIsTrue(consumedPart.ConsumedPartId),UpdateStockInInventory(consumedPart, currentConsumedPart));
+            IResult result = BusinessRules.Run(CheckIdValueIsTrue(consumedPart.ConsumedPartId), UpdateStockInInventory(consumedPart, currentConsumedPart));
 
             if (result != null)
             {
