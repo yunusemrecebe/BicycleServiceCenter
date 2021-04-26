@@ -17,10 +17,12 @@ namespace Business.ValidationRules.FluentValidation
 
             RuleFor(p => p.PurchasePrice)
                 .GreaterThanOrEqualTo(0).WithMessage("Ürün alış fiyatı 0₺'den daha düşük olamaz!")
+                .ScalePrecision(2, 8).WithMessage("999999.99₺'den daha yüksek bir fiyat girişi yapılamaz!")
                 .NotNull().WithMessage("Ürünün alış fiyatı mutlaka girilmelidir!");
 
             RuleFor(p => p.SellPrice)
                 .GreaterThanOrEqualTo(0).WithMessage("Ürün satış fiyatı 0₺'den daha düşük olamaz!")
+                .ScalePrecision(2, 8).WithMessage("999999.99₺'den daha yüksek bir fiyat girişi yapılamaz!")
                 .NotNull().WithMessage("Ürünün satış fiyatı mutlaka girilmelidir!");
 
             RuleFor(p => p.UnitsInStock)

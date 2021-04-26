@@ -9,15 +9,15 @@ namespace Business.ValidationRules.FluentValidation
         {
             RuleFor(c => c.ProcessId)
                 .NotEmpty()
-                .GreaterThan(0).WithMessage("Bu alan mutlaka seçilmelidir!");
+                .GreaterThan(0).WithMessage("Ürünün ekleneceği servis hizmeti mutlaka belirtilmelidir!");
 
             RuleFor(c => c.ProductId)
-                .NotEmpty()
-                .GreaterThan(0).WithMessage("Bu alan mutlaka seçilmelidir!");
+                .NotNull()
+                .GreaterThan(0).WithMessage("Eklenecek ürün mutlaka seçilmelidir!");
 
             RuleFor(c => c.Quantity)
-                .NotEmpty()
-                .GreaterThan(0).WithMessage("Miktar 0'dan küçük olmamalıdır!");
+                .NotNull()
+                .GreaterThan(0).WithMessage("Adet 0'dan büyük olmalıdır!");
 
             RuleFor(c => c.UnitPrice)
                 .NotNull()
