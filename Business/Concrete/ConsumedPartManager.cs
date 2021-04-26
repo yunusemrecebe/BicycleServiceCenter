@@ -134,12 +134,8 @@ namespace Business.Concrete
                 return new ErrorDataResult<ConsumedPart>(Messages.IdValueIsInvalid);
             }
 
-            var accrualdiscount = consumedPart.Discount - currentConsumedPart.Discount;
-            if (accrualdiscount != 0)
-            {
-                var inventory = _inventoryService.GetByProductId(consumedPart.ProductId).Data;
-                consumedPart.UnitPrice = inventory.SellPrice - (inventory.SellPrice / 100) * (decimal)consumedPart.Discount;
-            }
+            var inventory = _inventoryService.GetByProductId(consumedPart.ProductId).Data;
+            consumedPart.UnitPrice = inventory.SellPrice - (inventory.SellPrice / 100) * (decimal)consumedPart.Discount;
 
             _consumedPartDal.Update(consumedPart);
             return new SuccessResult(Messages.ConsumedPartUpdated);
@@ -179,8 +175,8 @@ namespace Business.Concrete
             }
 
             inventoryRecord.UnitsInStock = inventoryRecord.UnitsInStock + (-1 * accrual);
+     
             _inventoryService.Update(inventoryRecord);
-
             return new SuccessResult();
         }
     }

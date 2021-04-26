@@ -21,13 +21,11 @@ namespace Business.ValidationRules.FluentValidation
 
             RuleFor(c => c.UnitPrice)
                 .NotNull()
-                .GreaterThanOrEqualTo(0).WithMessage("Ürün fiyatı 0'dan küçük olmamalıdır")
-                .ScalePrecision(2, 8).WithMessage("999999.99₺'den daha yüksek bir fiyat girişi yapılamaz!");
+                .GreaterThanOrEqualTo(0).WithMessage("Ürün fiyatı 0'dan küçük olmamalıdır");
 
             RuleFor(c => c.Discount)
                 .NotNull()
-                .GreaterThanOrEqualTo(0).WithMessage("İndirim oranı 0'dan küçük olamaz!")
-                .LessThanOrEqualTo(100).WithMessage("İndirim oranı 100'den büyük olamaz!");
+                .GreaterThanOrEqualTo(0).WithMessage("İndirim oranı 0'dan küçük olamaz!");
 
         }
     }

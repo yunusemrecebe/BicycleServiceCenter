@@ -29,7 +29,6 @@ namespace Business.ValidationRules.FluentValidation
 
             RuleFor(c => c.EMail)
                 .MaximumLength(150).WithMessage("Email adresi 150 karakterden daha uzun olamaz!")
-                .Null()
                 .EmailAddress().WithMessage("Lütfen Email adresi formatına uygun bir email adresi giriniz!");
 
             RuleFor(c => c.Adress)

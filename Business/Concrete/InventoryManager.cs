@@ -81,6 +81,11 @@ namespace Business.Concrete
                 inventory.Status = true;
             }
 
+            if (inventory.UnitsInStock == 0)
+            {
+                inventory.Status = false;
+            }
+
             _inventoryDal.Update(inventory);
             return new SuccessResult(Messages.InventoryUpdated);
         }
