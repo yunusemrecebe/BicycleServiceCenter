@@ -1,12 +1,14 @@
 import React, { Component, useState } from "react";
 import alertify from "alertifyjs";
 import { Button, Table, Row, Col, Form, FormGroup, Label, Input } from "reactstrap";
+import Select from 'react-select';
 
 export default class Process extends Component {
     state = {
         processes: [],
         bicycles: [],
         customers: [],
+        customerOptions: [],
         employees: [],
         selectedEmployee: 0,
         selectedBicycle: 0,
@@ -37,8 +39,7 @@ export default class Process extends Component {
     }
 
     handleChangeCustomer = (event) => {
-        this.setState({ isLoaded: true });
-        this.state.selectedCustomer = document.getElementById("owner").value;
+        this.state.selectedCustomer = event.value;
         this.getBicycles(this.state.selectedCustomer);
     }
 
@@ -61,7 +62,7 @@ export default class Process extends Component {
         fetch("/api/processes/add", requestOptions)
             .then(async (response) => {
                 const data = await response.json();
-                
+
                 if (!response.ok) {
                     const error = data;
                     return Promise.reject(error);
@@ -106,13 +107,8 @@ export default class Process extends Component {
                 <Row>
                     <Col md={4}>
                         <FormGroup>
-                            <Label for="owner">Müşteri</Label>
-                            <Input value={this.state.selectedCustomer} type="select" name="owner" id="owner" onChange={this.handleChangeCustomer}>
-                                <option selected value={0} >Seçiniz</option>
-                                {this.state.customers.map((customer) => (
-                                    <option key={customer.customerId} value={customer.customerId} >{customer.firstName} {customer.lastName}</option>
-                                ))}
-                            </Input>
+                            <Label for="completionDate">Müşteri</Label>
+                            {this.select(this.state.customers)}
                         </FormGroup>
                     </Col>
 
@@ -129,7 +125,7 @@ export default class Process extends Component {
                     </Col>
 
                     <Col md={4}>
-                    <FormGroup>
+                        <FormGroup>
                             <Label for="employee">Personel</Label>
                             <Input type="select" name="employee" id="employee" onChange={this.handleChangeEmployee}>
                                 <option selected value={0} >Seçiniz</option>
@@ -140,30 +136,30 @@ export default class Process extends Component {
                         </FormGroup>
                     </Col>
                 </Row>
-                                        
+
                 <Row>
-                   <Col md={4}>
-                   <FormGroup>
-                    <Label for="completionDate">Öngörülen Teslim Tarihi</Label>
-                    <Input type="select" name="completionDate" id="completionDate" onChange={this.handleChange}>
-                        <option selected value="1 Gün" >1 Gün</option>
-                        <option value="1-3 Gün" >1-3 Gün</option>
-                        <option value="3-5 Gün" >3-5 Gün</option>
-                        <option value="1 Hafta" >1 Hafta</option>
-                        <option value="10 Gün" >10 Gün</option>
-                        <option value="20 Gün" >20 Gün</option>
-                    </Input>
-                </FormGroup>
-                    </Col> 
+                    <Col md={4}>
+                        <FormGroup>
+                            <Label for="completionDate">Öngörülen Teslim Tarihi</Label>
+                            <Input type="select" name="completionDate" id="completionDate" onChange={this.handleChange}>
+                                <option selected value="1 Gün" >1 Gün</option>
+                                <option value="1-3 Gün" >1-3 Gün</option>
+                                <option value="3-5 Gün" >3-5 Gün</option>
+                                <option value="1 Hafta" >1 Hafta</option>
+                                <option value="10 Gün" >10 Gün</option>
+                                <option value="20 Gün" >20 Gün</option>
+                            </Input>
+                        </FormGroup>
+                    </Col>
 
                     <Col md={8}>
-                    <FormGroup>
-                    <Label for="diagnostics">Teşhisler</Label>
-                    <Input type="text" name="diagnostics" id="diagnostics" onChange={this.handleChange}></Input>
-                </FormGroup>
-                    </Col> 
+                        <FormGroup>
+                            <Label for="diagnostics">Teşhisler</Label>
+                            <Input type="text" name="diagnostics" id="diagnostics" onChange={this.handleChange}></Input>
+                        </FormGroup>
+                    </Col>
                 </Row>
-                
+
                 <Button>Ekle</Button>
             </Form>
         )
@@ -268,7 +264,7 @@ export default class Process extends Component {
                             <td>{process.employeeName}</td>
                             <td>{process.customerName}</td>
                             <td>{process.bicycle}</td>
-                            <td>{process.startingDate.replace('T',' ')}</td>
+                            <td>{process.startingDate.replace('T', ' ')}</td>
                             <td>{process.competitionDate}</td>
                             <td>{process.status}</td>
                             <td><Button onClick={this.deleteProcess.bind(this, process.processId)} color="danger">Sil</Button></td>
@@ -320,15 +316,32 @@ export default class Process extends Component {
 
     //Servis Hizmeti Güncelleme
     updateProcess(id, customer) {
-        this.setProcess(id, customer );
+        this.setProcess(id, customer);
         this.props.history.push("/servisHizmetiGüncelle");
     };
+
+    select(dizi = []) {
+
+        if (dizi.length != this.state.customerOptions.length) {
+            for (let index = 0; index < dizi.length; index++) {
+                this.state.customerOptions.push({ value: dizi[index].customerId, label: dizi[index].firstName + " " + dizi[index].lastName },)
+            };
+        }
+
+        return <div>
+            <Select
+                id="customerSelect"
+                options={this.state.customerOptions}
+                onChange={this.handleChangeCustomer}
+            />
+        </div>
+
+    }
 
     render() {
         return (
             <div>
                 {this.addProcessForm()}
-
                 <Row>
                     <h1 className="text-center">Sistemde Kayıtlı Olan Hizmetler</h1>
                 </Row>

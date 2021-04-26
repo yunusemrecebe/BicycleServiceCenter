@@ -29,6 +29,7 @@ namespace Business.Concrete
         public IResult Add(Process process)
         {
             process.StartingDate = Convert.ToDateTime(DateTime.Now.ToString("MM/dd/yyyy HH:mm"));
+            process.Status = "Beklemede";
             _processDal.Add(process);
             return new SuccessResult(Messages.ProcessAdded);
         }
