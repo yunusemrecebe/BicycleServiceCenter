@@ -21,6 +21,7 @@ namespace Business.Constants
         public static string UserAlreadyExists = "Bu Kullanıcı Zaten Mevcut!";
         public static string UserRegistered = "Kullanıcı Kaydedildi!";
         public static string AccessTokenCreated = "Access Token Üretildi!";
+        public static string RefreshTokenNotFound = "Refresh Token Bulunamadı!";
         public static string AuthorizationDenied = "Bu İşlem İçin Yeterli Yetkiye Sahip Değilsiniz!";
         
         //Bicycle Brand Messages

@@ -1,7 +1,5 @@
 ﻿using Business.Abstract;
 using Business.Constants;
-using Business.ValidationRules.FluentValidation;
-using Core.Aspects.Autofac.Validation;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Hashing;
@@ -14,21 +12,80 @@ namespace Business.Concrete
     {
         IUserService _userService;
         ITokenHelper _tokenHelper;
+        IRefreshTokenService _refreshTokenService;
 
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper)
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper, IRefreshTokenService refreshTokenService)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
+            _refreshTokenService = refreshTokenService;
         }
 
-        public IDataResult<AccessToken> CreateAccessToken(User user)
+        public IDataResult<Token> CreateAccessToken(User user)
         {
             var claims = _userService.GetClaims(user);
             var accessToken = _tokenHelper.CreateToken(user, claims);
-            return new SuccessDataResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
+            return new SuccessDataResult<Token>(accessToken, Messages.AccessTokenCreated);
         }
 
-        [ValidationAspect(typeof(UserForLoginValidation))]
+        public IDataResult<RefreshToken> CreateRefreshToken(Token token, int userId)
+        {
+            var refreshToken = _refreshTokenService.GetByUserId(userId).Data;
+
+            if (refreshToken == null)
+            {
+                _refreshTokenService.Add(new RefreshToken { UserId = userId, Token = token.RefreshToken, Expiration = token.RefreshTokenExpiration });
+            }
+            else
+            {
+                refreshToken.UserId = userId;
+                refreshToken.Token = token.RefreshToken;
+                refreshToken.Expiration = token.RefreshTokenExpiration;
+                _refreshTokenService.Update(refreshToken);
+            }
+
+            return new SuccessDataResult<RefreshToken>(refreshToken);
+        }
+
+        public IDataResult<Token> CreateAccessTokenByRefreshToken(string refreshToken)
+        {
+            var existingRefreshToken = _refreshTokenService.GetByToken(refreshToken).Data;
+
+            if (existingRefreshToken == null)
+            {
+                return new ErrorDataResult<Token>(Messages.RefreshTokenNotFound);
+            }
+
+            var user = _userService.GetByUserId(existingRefreshToken.UserId).Data;
+
+            if (user == null)
+            {
+                return new ErrorDataResult<Token>(Messages.UserNotFound);
+            }
+
+            var userClaims = _userService.GetClaims(user);
+            var accessToken = _tokenHelper.CreateToken(user, userClaims);
+
+            existingRefreshToken.Token = accessToken.RefreshToken;
+            existingRefreshToken.Expiration = accessToken.RefreshTokenExpiration;
+            _refreshTokenService.Update(existingRefreshToken);
+
+            return new SuccessDataResult<Token>(accessToken);
+        }
+
+        public IResult RevokeRefreshToken(string refreshToken)
+        {
+            var existingRefreshToken = _refreshTokenService.GetByToken(refreshToken).Data;
+
+            if (existingRefreshToken == null)
+            {
+                return new ErrorDataResult<Token>(Messages.RefreshTokenNotFound);
+            }
+
+            _refreshTokenService.Delete(existingRefreshToken);
+            return new SuccessResult();
+        }
+
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
             var userToCheck = _userService.GetByMail(userForLoginDto.Email);
@@ -45,7 +102,6 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(userToCheck, Messages.SuccessfulLogin);
         }
 
-        [ValidationAspect(typeof(UserForRegisterValidator))]
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
         {
             byte[] passwordHash, passwordSalt;

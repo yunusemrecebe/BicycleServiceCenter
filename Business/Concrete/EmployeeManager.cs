@@ -57,7 +57,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.EmployeeDeleted);
         }
 
-        //[SecuredOperation("Employee.Get")]
+        [SecuredOperation("Employee.Get")]
         [CacheAspect]
         public IDataResult<List<Employee>> GetList()
         {

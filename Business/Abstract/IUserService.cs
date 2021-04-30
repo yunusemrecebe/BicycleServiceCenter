@@ -1,6 +1,6 @@
 ﻿using Core.Entities.Concrete;
+using Core.Utilities.Results;
 using System.Collections.Generic;
-
 
 namespace Business.Abstract
 {
@@ -9,5 +9,6 @@ namespace Business.Abstract
         List<OperationClaim> GetClaims(User user);
         void Add(User user);
         User GetByMail(string email);
+        IDataResult<User> GetByUserId(int id);
     }
 }
