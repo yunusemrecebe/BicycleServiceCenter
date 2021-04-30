@@ -27,7 +27,15 @@ namespace Business.BusinessAspects.Autofac
 
         protected override void OnBefore(IInvocation invocation)
         {
+            var exp = _httpContextAccessor.HttpContext.User.GetAccessTokenExpiration();
+
+            if (!exp)
+            {
+                throw new ValidationException(Messages.TokenNotFound);
+            }
+
             var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
+
             foreach (var role in _roles)
             {
                 if (roleClaims.Contains(role))

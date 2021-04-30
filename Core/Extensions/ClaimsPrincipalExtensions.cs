@@ -19,5 +19,15 @@ namespace Core.Extensions
         {
             return claimsPrincipal?.Claims(ClaimTypes.Role);
         }
+
+        public static bool GetAccessTokenExpiration(this ClaimsPrincipal claimsPrincipal)
+        {
+            var x = claimsPrincipal?.Claims("exp");
+            if (x.Count == 0)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }
