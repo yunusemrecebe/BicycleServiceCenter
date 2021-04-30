@@ -23,6 +23,7 @@ import ProcessUpdate from './components/Process/UpdateProcess';
 import Inventory from './components/Inventory/Inventory';
 import InventoryUpdate from './components/Inventory/UpdateInventory';
 import ConsumedPartUpdate from "./components/ConsumedPart/UpdateConsumedPart";
+import Login from "./components/Authentication/Login"
 
 export default class App extends Component {
   static displayName = App.name;
@@ -100,6 +101,7 @@ export default class App extends Component {
     return (
       <Layout>
         <Route exact path='/' component={Home} />
+        <Route exact path='/girisYap' component={Login} />
 
         {/* PRODUCT İLE İLGİLİ YÖNLENDİRMELER */}
         <Route exact path="/ürünMarkası" render={props => (<ProductBrand {...props} setProductBrand={this.setProductBrand} />)} />

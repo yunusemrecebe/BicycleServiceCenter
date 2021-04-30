@@ -26,14 +26,14 @@ export default class AddEmployee extends Component {
     fetch("/api/auth/login", requestOptions)
       .then(async (response) => {
         const data = await response.json();
-        console.log(data.Message)
+
         if (!response.ok) {
           const error = data;
           return Promise.reject(error);
         }
-        
-        let token = data.token;
-        localStorage.setItem('token', data.token);
+
+        localStorage.setItem('token', data.data.accessToken);
+        localStorage.setItem('refreshToken', data.data.refreshToken);
 
         Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
         this.setState({ eMail: "", password: ""});
@@ -41,6 +41,7 @@ export default class AddEmployee extends Component {
       })
 
       .catch((responseError) => {
+
         if (responseError.Errors) {
           if (responseError.Errors.length > 0) {
             for (let i = 0; i < responseError.Errors.length; i++) {

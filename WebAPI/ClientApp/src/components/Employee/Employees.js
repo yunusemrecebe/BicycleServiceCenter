@@ -24,7 +24,7 @@ export default class Employees extends Component {
     // Personel Ekleme
     addEmployee = (event) => {
         event.preventDefault();
-        console.log(this.state.firstName + "\n" + this.state.lastName + "\n" + this.state.phone + "\n" );
+        console.log(this.state.firstName + "\n" + this.state.lastName + "\n" + this.state.phone + "\n");
 
         let token = localStorage.getItem('token');
         if (token == null) {
@@ -34,9 +34,9 @@ export default class Employees extends Component {
 
         const requestOptions = {
             method: "POST",
-            headers: { 
-              "Content-Type": "application/json",
-              'Authorization': `Bearer ${token}` 
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
                 firstName: this.state.firstName,
@@ -57,10 +57,10 @@ export default class Employees extends Component {
                 this.getEmployees();
 
                 Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
-                this.setState({ 
-                  firstName: "",
-                  lastName: "",
-                  phone: "",
+                this.setState({
+                    firstName: "",
+                    lastName: "",
+                    phone: "",
                 });
 
                 alertify.success(data.message);
@@ -73,11 +73,11 @@ export default class Employees extends Component {
                             alertify.error(responseError.Errors[i].ErrorMessage);
                         }
                     }
-                    else{
+                    else {
                         alertify.error(responseError);
                     }
                 }
-                else{
+                else {
                     alertify.error(responseError.message);
                 }
             });
@@ -85,28 +85,28 @@ export default class Employees extends Component {
 
     // Personel Ekleme Formu
     addEmployeeForm() {
-      return (
-          <Form onSubmit={this.addEmployee}>
-              <h1> Personel Ekle</h1>
-              <FormGroup>
-                  <Label for="firstName">Adı</Label>
-                  <Input type="text" name="firstName" id="firstName" onChange={this.handleChange} />
-              </FormGroup>
+        return (
+            <Form onSubmit={this.addEmployee}>
+                <h1> Personel Ekle</h1>
+                <FormGroup>
+                    <Label for="firstName">Adı</Label>
+                    <Input type="text" name="firstName" id="firstName" onChange={this.handleChange} />
+                </FormGroup>
 
-              <FormGroup>
-                  <Label for="lastName">Soyadı</Label>
-                  <Input type="text" name="lastName" id="lastName" onChange={this.handleChange} />
-              </FormGroup>
+                <FormGroup>
+                    <Label for="lastName">Soyadı</Label>
+                    <Input type="text" name="lastName" id="lastName" onChange={this.handleChange} />
+                </FormGroup>
 
-              <FormGroup>
-                  <Label for="phone">Telefon</Label>
-                  <Input type="text" name="phone" id="phone" onChange={this.handleChange}/>
-              </FormGroup>
+                <FormGroup>
+                    <Label for="phone">Telefon</Label>
+                    <Input type="text" name="phone" id="phone" onChange={this.handleChange} />
+                </FormGroup>
 
-              <Button>Ekle</Button>
-          </Form>
-      )
-  }
+                <Button>Ekle</Button>
+            </Form>
+        )
+    }
 
     //Personelleri Db'den Çekme
     getEmployees() {
@@ -123,44 +123,96 @@ export default class Employees extends Component {
                 'Authorization': `Bearer ${token}`
             }
         })
-            .then((response) => response.json())
-            .then((data) => this.setState({ employees: data }));
+            .then(async (response) => {
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                console.log(data);
+                this.setState({ employees: data});
+
+            })
+            .catch((responseError) => {
+                if (responseError.Message == "Token Bulunamadı!") {
+                    this.CreateTokenByRefreshToken();
+                }
+            })
     };
+
+    CreateTokenByRefreshToken() {
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                token: localStorage.getItem('refreshToken'),
+            }),
+        };
+
+        fetch("/api/auth/CreateTokenByRefreshToken", requestOptions)
+            .then(async (response) => {
+                const data = await response.json();
+                console.log(data);
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                localStorage.setItem('token', data.data.accessToken);
+                localStorage.setItem('refreshToken', data.data.refreshToken);
+
+                this.getEmployees();
+
+            })
+
+            .catch((responseError) => {
+                
+            if(responseError.message == "Refresh Token Bulunamadı!"){
+                alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
+                this.props.history.push("/girisYap")
+            }
+                
+            });
+    }
 
     //Db'Den çekilmiş personelleri listeleme
     ListEmployees() {
-      return (
-          <Table hover>
-              <thead>
-                  <tr>
-                      <th>Ad Soyad</th>
-                      <th>Telefon</th>
-                      <th></th>
-                      <th></th>
-                  </tr>
-              </thead>
+        return (
+            <Table hover>
+                <thead>
+                    <tr>
+                        <th>Ad Soyad</th>
+                        <th>Telefon</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
 
-              <tbody>
-                  {this.state.employees.length > 0 ? this.state.employees.map((employee) => (
-                      <tr key={employee.employeeId}>
-                          <td>{employee.firstName} {employee.lastName}</td>
-                          <td>{employee.phone}</td>
-                          <td><Button onClick={this.deleteEmployee.bind(this, employee.employeeId)} color="danger">Sil</Button></td>
-                          <td><Button onClick={this.updateEmployee.bind(this, employee.employeeId)} color="info">Güncelle</Button></td>
-                      </tr>
-                  ))
-                :
-                <h1>Sistemde kayıtlı personel bulunamadı!</h1>
-                }
-              </tbody>
-          </Table>
-      )
-  }
+                <tbody>
+                    {this.state.employees.length > 0 ? this.state.employees.map((employee) => (
+                        <tr key={employee.employeeId}>
+                            <td>{employee.firstName} {employee.lastName}</td>
+                            <td>{employee.phone}</td>
+                            <td><Button onClick={this.deleteEmployee.bind(this, employee.employeeId)} color="danger">Sil</Button></td>
+                            <td><Button onClick={this.updateEmployee.bind(this, employee.employeeId)} color="info">Güncelle</Button></td>
+                        </tr>
+                    ))
+                        :
+                        null
+                    }
+                </tbody>
+            </Table>
+        )
+    }
 
     //Personel Silme
-    deleteEmployee(id){
+    deleteEmployee(id) {
 
-      let token = localStorage.getItem('token');
+        let token = localStorage.getItem('token');
         if (token == null) {
             alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
             this.props.history.push("/girisYap")
@@ -168,13 +220,13 @@ export default class Employees extends Component {
 
         const requestOptions = {
             method: "POST",
-            headers: { 
-              "Content-Type": "application/json",
-              'Authorization': `Bearer ${token}` 
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`
             },
         };
-        
-        fetch("/api/employees/delete?id="+id, requestOptions)
+
+        fetch("/api/employees/delete?id=" + id, requestOptions)
             .then(async (response) => {
                 const data = await response.json();
 
@@ -196,16 +248,16 @@ export default class Employees extends Component {
                         }
                     }
                 }
-            });  
+            });
     };
 
     //Personel güncellemek için Personel İd gönderen fonksiyon
-    setEmployee=(id)=>{
+    setEmployee = (id) => {
         this.props.setEmployee(id);
     }
 
     //Personel Güncelleme
-    updateEmployee(id){
+    updateEmployee(id) {
         this.setEmployee(id);
         this.props.history.push("/PersonelGüncelle");
     };
@@ -213,10 +265,10 @@ export default class Employees extends Component {
     render() {
         return (
             <div>
-               {this.addEmployeeForm()}
+                {this.addEmployeeForm()}
 
                 <Row>
-                <h1 className="text-center">Sistemde Kayıtlı Olan Personeller</h1>
+                    <h1 className="text-center">Sistemde Kayıtlı Olan Personeller</h1>
                 </Row>
                 <Row>
                     <Col md="12">
