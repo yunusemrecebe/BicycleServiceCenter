@@ -23,7 +23,9 @@ import ProcessUpdate from './components/Process/UpdateProcess';
 import Inventory from './components/Inventory/Inventory';
 import InventoryUpdate from './components/Inventory/UpdateInventory';
 import ConsumedPartUpdate from "./components/ConsumedPart/UpdateConsumedPart";
-import Login from "./components/Authentication/Login"
+import Login from "./components/Authentication/Login";
+import Logout from "./components/Authentication/Logout";
+import Register from "./components/Authentication/Register";
 
 export default class App extends Component {
   static displayName = App.name;
@@ -100,9 +102,12 @@ export default class App extends Component {
   render() {
     return (
       <Layout>
+        
         <Route exact path='/' component={Home} />
         <Route exact path='/girisYap' component={Login} />
-
+        <Route exact path='/cikisYap' component={Logout} />
+        <Route exact path='/kayitOl' component={Register} />
+        
         {/* PRODUCT İLE İLGİLİ YÖNLENDİRMELER */}
         <Route exact path="/ürünMarkası" render={props => (<ProductBrand {...props} setProductBrand={this.setProductBrand} />)} />
         <Route exact path="/ÜrünMarkasıGüncelle" render={props => (<ProductBrandUpdate {...props} getProductBrand={this.state.selectedBrand} />)} />

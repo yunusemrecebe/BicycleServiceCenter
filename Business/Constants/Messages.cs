@@ -15,11 +15,12 @@ namespace Business.Constants
         public static string UserAdded = "Kullanıcı Eklendi!";
         public static string UserDeleted = "Kullanıcı Silindi!";
         public static string UserUpdated = "Kullanıcı Güncellendi!";
-        public static string UserNotFound = "Kullanıcı Bulunamadı!";
+        public static string UserNotFound = "Girilen bilgilere ait bir kullanıcı bulunamadı!";
         public static string PasswordError = "Parola Hatalı!";
         public static string SuccessfulLogin = "Giriş Başarılı!";
-        public static string UserAlreadyExists = "Bu Kullanıcı Zaten Mevcut!";
+        public static string UserAlreadyExists = "Bu bilgilere sahip bir kullanıcı kayıtlı!";
         public static string UserRegistered = "Kullanıcı Kaydedildi!";
+        
         public static string AccessTokenCreated = "Access Token Üretildi!";
         public static string TokenNotFound = "Token Bulunamadı!";
         public static string RefreshTokenNotFound = "Refresh Token Bulunamadı!";

@@ -22,7 +22,7 @@ namespace WebAPI.Controllers
             var userToLogin = _authService.Login(userForLoginDto);
             if (!userToLogin.Success)
             {
-                return BadRequest(userToLogin.Message);
+                return BadRequest(userToLogin);
             }
 
             var result = _authService.CreateAccessToken(userToLogin.Data);
@@ -30,7 +30,7 @@ namespace WebAPI.Controllers
 
             if (result.Success)
             {
-                return Ok(result);
+                return Ok(new{Data = result.Data , Message = userToLogin.Message});
             }
 
             return BadRequest(result);

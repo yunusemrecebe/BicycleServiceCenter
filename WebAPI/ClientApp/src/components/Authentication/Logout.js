@@ -1,24 +1,23 @@
 import React, { Component } from "react";
 import Container from "reactstrap/lib/Container";
-import alertify from "alertifyjs";
 
-export default class AddEmployee extends Component {
-
-  handleChange = (event) => {
-    let name = event.target.name;
-    let value = event.target.value;
-    this.setState({ [name]: value });
-  };
-
-  handleSubmit = (event) => {
-    event.preventDefault();
-
-  }
+export default class Logout extends Component {
 
   Logout(){
-    localStorage.removeItem('token');
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        token: localStorage.getItem('refreshToken'),
+      }),
+    };
+
+    fetch("/api/auth/RevokeRefreshToken", requestOptions);
+
+    localStorage.clear();
+
     alert('Başarıyla çıkış yaptınız!');
-    this.props.history.push("/login");
+    this.props.history.push("/girisYap");
   }
 
   render() {

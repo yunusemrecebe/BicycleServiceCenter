@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import Container from "reactstrap/lib/Container";
+import { Button, Row, Col, Form, FormGroup, Label, Input } from "reactstrap";
 import alertify from "alertifyjs";
 
-export default class AddEmployee extends Component {
-  state = { eMail: "", password: "", validationError: "" };
+export default class Login extends Component {
+  state = { eMail: "", password: "" };
 
   handleChange = (event) => {
     let name = event.target.name;
@@ -36,12 +36,14 @@ export default class AddEmployee extends Component {
         localStorage.setItem('refreshToken', data.data.refreshToken);
 
         Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
-        this.setState({ eMail: "", password: ""});
-        alertify.success("Giriş Başarılı!");
+        this.setState({ eMail: "", password: "" });
+
+        alertify.success(data.message);
+        this.props.history.push("/");
       })
 
       .catch((responseError) => {
-
+        console.log(responseError);
         if (responseError.Errors) {
           if (responseError.Errors.length > 0) {
             for (let i = 0; i < responseError.Errors.length; i++) {
@@ -49,40 +51,41 @@ export default class AddEmployee extends Component {
             }
           }
         }
-        if(responseError.Message){
-            console.log("bişey")
-          //alertify.error(responseError.message)
+        else if (responseError.message) {
+          alertify.error(responseError.message);
         }
-        else{
-          alertify.error("Girilen bilgilere ait bir kullanıcı bulunamadı!")
+        else if (responseError.StatusCode == 500) {
+          alertify.error("Bir hata oluştu!");
         }
       });
   };
 
   render() {
     return (
-      <Container>
-        <div id="12">{this.state.validationError}</div>
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor="eMail">EMail</label>
-          <input
-            id="eMail"
-            onChange={this.handleChange}
-            name="eMail"
-            type="text"
-          />
 
-          <label htmlFor="password">Parola</label>
-          <input
-            id="password"
-            onChange={this.handleChange}
-            name="password"
-            type="password"
-          />
+      <Row className="mt-3">
+        <Col md="2"></Col>
 
-          <button>Giriş Yap</button>
-        </form>
-      </Container>
+        <Col md="8">
+          <h1 className="text-center mb-5">Giriş Yap</h1>
+          <Form onSubmit={this.handleSubmit}>
+            <FormGroup>
+              <Label htmlFor="eMail">Email</Label>
+              <Input id="eMail" onChange={this.handleChange} name="eMail" type="text"></Input>
+            </FormGroup>
+
+            <FormGroup>
+              <Label htmlFor="password">Parola</Label>
+              <Input id="password" onChange={this.handleChange} name="password" type="password"></Input>
+            </FormGroup>
+
+            <center><Button>Giriş Yap</Button></center>
+          </Form>
+        </Col>
+
+        <Col md="2"></Col>
+
+      </Row>
     );
   }
 }

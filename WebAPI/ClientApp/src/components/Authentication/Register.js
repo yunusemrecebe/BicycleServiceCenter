@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import Container from "reactstrap/lib/Container";
+import { Button, Row, Col, Form, FormGroup, Label, Input } from "reactstrap";
 import alertify from "alertifyjs";
 
-export default class AddEmployee extends Component {
-  state = { eMail: "", password: "", firstName: "", lastName: "", validationError: "" };
+export default class Register extends Component {
+  state = { eMail: "", password: "", firstName: "", lastName: "" };
 
   handleChange = (event) => {
     let name = event.target.name;
@@ -33,9 +33,10 @@ export default class AddEmployee extends Component {
           const error = data;
           return Promise.reject(error);
         }
-        
+
         Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
-        this.setState({ eMail: "", password: "", firstName: "", lastName: ""});
+        this.setState({ eMail: "", password: "", firstName: "", lastName: "" });
+
         alertify.success("Kayıt Olundu!");
       })
 
@@ -47,11 +48,11 @@ export default class AddEmployee extends Component {
             }
           }
         }
-        if(responseError.Message){
-            console.log("bişey")
+        if (responseError.Message) {
+          console.log("bişey")
           //alertify.error(responseError.message)
         }
-        else{
+        else {
           alertify.error("Hat'a!")
         }
       });
@@ -59,44 +60,36 @@ export default class AddEmployee extends Component {
 
   render() {
     return (
-      <Container>
-        <div id="12">{this.state.validationError}</div>
-        <form onSubmit={this.handleSubmit}>
-        <label htmlFor="firstName">İsim</label>
-          <input
-            id="firstName"
-            onChange={this.handleChange}
-            name="firstName"
-            type="text"
-          />
+      <Row className="mt-3">
+        <Col md="2"></Col>
+        <Col md="8">
+          <Form onSubmit={this.handleSubmit}>
+          <h1 className="text-center mb-5">Kayıt Ol</h1>
+            <FormGroup>
+              <Label htmlFor="firstName">İsim</Label>
+              <Input id="firstName" onChange={this.handleChange} name="firstName" type="text"></Input>
+            </FormGroup>
 
-        <label htmlFor="lastName">Soyisim</label>
-          <input
-            id="lastName"
-            onChange={this.handleChange}
-            name="lastName"
-            type="text"
-          />
+            <FormGroup>
+              <Label htmlFor="lastName">Soyisim</Label>
+              <Input id="lastName" onChange={this.handleChange} name="lastName" type="text"></Input>
+            </FormGroup>
 
-          <label htmlFor="eMail">EMail</label>
-          <input
-            id="eMail"
-            onChange={this.handleChange}
-            name="eMail"
-            type="text"
-          />
+            <FormGroup>
+              <Label htmlFor="eMail">Email</Label>
+              <Input id="eMail" onChange={this.handleChange} name="eMail" type="email"></Input>
+            </FormGroup>
 
-          <label htmlFor="password">Parola</label>
-          <input
-            id="password"
-            onChange={this.handleChange}
-            name="password"
-            type="password"
-          />
+            <FormGroup>
+              <Label htmlFor="password">Parola</Label>
+              <Input id="password" onChange={this.handleChange} name="password" type="password"></Input>
+            </FormGroup>
 
-          <button>Kayıt Yap</button>
-        </form>
-      </Container>
+            <Button>Kayıt Ol</Button>
+          </Form>
+        </Col>
+        <Col md="2"></Col>
+      </Row>
     );
   }
 }
