@@ -1,6 +1,7 @@
 import React, { Component, useState } from "react";
 import alertify from "alertifyjs";
 import { Button, Table, Row, Col, Form, FormGroup, Label, Input } from "reactstrap";
+import Select from 'react-select';
 
 export default class Bicycle extends Component {
     state = {
@@ -13,7 +14,6 @@ export default class Bicycle extends Component {
         selectedCustomer: 0,
         productionDate: 0,
         serialNumber: "",
-        isLoaded: false,
     };
 
     componentDidMount() {
@@ -29,17 +29,16 @@ export default class Bicycle extends Component {
     };
 
     handleChangeBrand = (event) => {
-        this.setState({ isLoaded: true });
-        this.state.selectedBrand = document.getElementById("brand").value;
+        this.state.selectedBrand = event.value;
         this.getBicycleModels(this.state.selectedBrand);
     }
 
     handleChangeModel = (event) => {
-        this.setState({ selectedModel: parseInt(event.target.value) });
+        this.state.selectedModel = event.value;
     }
 
     handleChangeCustomer = (event) => {
-        this.setState({ selectedCustomer: parseInt(event.target.value) });
+        this.state.selectedCustomer = event.value;
     }
 
     // Bisiklet Ekleme
@@ -104,34 +103,15 @@ export default class Bicycle extends Component {
                 <h1> Bisiklet Ekle</h1>
 
                 <FormGroup>
-                    <Label for="owner">Sahibi</Label>
-                    <Input value={this.state.selectedCustomer} type="select" name="owner" id="owner" onChange={this.handleChangeCustomer}>
-                        <option selected value={0} >Seçiniz</option>
-                        {this.state.customers.map((customer) => (
-                            <option key={customer.customerId} value={customer.customerId} >{customer.firstName} {customer.lastName}</option>
-                        ))}
-                    </Input>
+                    {this.CustomerSelect(this.state.customers)}
                 </FormGroup>
 
                 <FormGroup>
-                    <Label for="brand">Marka</Label>
-                    <Input type="select" name="brand" id="brand" onChange={this.handleChangeBrand}>
-                        <option selected value={0} >Seçiniz</option>
-                        {this.state.bicycleBrands.map((bicycleBrand) => (
-                            <option key={bicycleBrand.bicycleBrandId} value={bicycleBrand.bicycleBrandId}>{bicycleBrand.name}</option>
-                        ))}
-                    </Input>
+                    {this.BicycleBrandSelect(this.state.bicycleBrands)}
                 </FormGroup>
-
+                
                 <FormGroup>
-                    <Label for="model">Model</Label>
-                    <Input value={this.state.selectedModel} type="select" name="model" id="model" onChange={this.handleChangeModel}>
-                        <option selected value={0} >Seçiniz</option>
-                        {this.state.isLoaded ? this.state.bicycleModels.map((bicycleModel) => (
-                            <option key={bicycleModel.bicycleModelId} value={bicycleModel.bicycleModelId} >{bicycleModel.name}</option>
-                        )):
-                        null}
-                    </Input>
+                    {this.BicycleModelSelect(this.state.bicycleModels)}
                 </FormGroup>
 
                 <FormGroup>
@@ -147,6 +127,63 @@ export default class Bicycle extends Component {
                 <Button>Ekle</Button>
             </Form>
         )
+    }
+
+    CustomerSelect(dizi = []) {
+        let options = [];
+        if (dizi.length != options.length) {
+            for (let index = 0; index < dizi.length; index++) {
+                options.push({ value: dizi[index].customerId, label: dizi[index].firstName + " " + dizi[index].lastName },)
+            };
+        }
+
+        return <div>
+            <Label for="customerSelect">Müşteri</Label>
+            <Select
+                id="customerSelect"
+                placeholder="Seçiniz"
+                options={options}
+                onChange={this.handleChangeCustomer}
+            />
+        </div>
+    }
+
+    BicycleBrandSelect(dizi = []) {
+        let options = [];
+        if (dizi.length != options.length) {
+            for (let index = 0; index < dizi.length; index++) {
+                options.push({ value: dizi[index].bicycleBrandId, label: dizi[index].name },)
+            };
+        }
+
+        return <div>
+            <Label for="bicycleBrand">Ait Olduğu Marka</Label>
+            <Select
+                id="bicycleBrand"
+                placeholder="Seçiniz"
+                options={options}
+                onChange={this.handleChangeBrand}
+            />
+        </div>
+    }
+
+    BicycleModelSelect(dizi = []) {
+        let options = [];
+        if (dizi.length != options.length) {
+            for (let index = 0; index < dizi.length; index++) {
+                options.push({ value: dizi[index].bicycleModelId, label: dizi[index].name },)
+            };
+        }
+
+        return <div>
+            <Label for="bicycleBrand">Model</Label>
+            <Select
+                id="bicycleModel"
+                placeholder="Seçiniz"
+                options={options}
+                onChange={this.handleChangeModel}
+            />
+        </div>
     }
 
     //Bisiklet Markalarını Db'den Çekme

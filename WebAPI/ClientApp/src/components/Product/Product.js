@@ -1,6 +1,7 @@
 import React, { Component, useState } from "react";
 import alertify from "alertifyjs";
 import { Button, Table, Row, Col, Form, FormGroup, Label, Input } from "reactstrap";
+import Select from 'react-select';
 
 export default class ProductCategory extends Component {
     state = {
@@ -15,11 +16,11 @@ export default class ProductCategory extends Component {
 
 
     handleChangeBrand = (event) => {
-        this.setState({ selectedBrand: parseInt(event.target.value) });
+        this.state.selectedBrand = event.value;
     }
 
     handleChangeCategory = (event) => {
-        this.setState({ selectedCategory: parseInt(event.target.value) });
+        this.state.selectedCategory = event.value;
     }
 
     handleChange = (event) => {
@@ -142,28 +143,54 @@ export default class ProductCategory extends Component {
                 </FormGroup>
 
                 <FormGroup>
-                    <Label for="brand">Marka</Label>
-                    <Input value={this.state.selectedBrand} type="select" name="brand" id="brand" onChange={this.handleChangeBrand}>
-                        <option selected value={0} >Seçiniz</option>
-                        {this.state.productBrands.map((productBrand) => (
-                            <option key={productBrand.productBrandId} value={productBrand.productBrandId}>{productBrand.name}</option>
-                        ))}
-                    </Input>
+                    {this.ProductBrandSelect(this.state.productBrands)}
                 </FormGroup>
 
                 <FormGroup>
-                    <Label for="category">Kategori</Label>
-                    <Input value={this.state.selectedCategory} type="select" name="category" id="category" onChange={this.handleChangeCategory}>
-                        <option selected value={0} >Seçiniz</option>
-                        {this.state.productCategories.map((productCategory) => (
-                            <option key={productCategory.productCategoryId} value={productCategory.productCategoryId} >{productCategory.name}</option>
-                        ))}
-                    </Input>
+                    {this.ProductCategorySelect(this.state.productCategories)}
                 </FormGroup>
 
                 <Button>Ekle</Button>
             </Form>
         )
+    }
+
+    ProductBrandSelect(dizi = []) {
+        let options = [];
+        if (dizi.length != options.length) {
+            for (let index = 0; index < dizi.length; index++) {
+                options.push({ value: dizi[index].productBrandId, label: dizi[index].name },)
+            };
+        }
+
+        return <div>
+            <Label for="brand">Ürün Markası</Label>
+            <Select
+                id="brand"
+                placeholder="Seçiniz"
+                options={options}
+                onChange={this.handleChangeBrand}
+            />
+        </div>
+    }
+
+    ProductCategorySelect(dizi = []) {
+        let options = [];
+        if (dizi.length != options.length) {
+            for (let index = 0; index < dizi.length; index++) {
+                options.push({ value: dizi[index].productCategoryId, label: dizi[index].name },)
+            };
+        }
+
+        return <div>
+            <Label for="category">Ürün Kategorisi</Label>
+            <Select
+                id="category"
+                placeholder="Seçiniz"
+                options={options}
+                onChange={this.handleChangeCategory}
+            />
+        </div>
     }
 
     //Ürün Silme

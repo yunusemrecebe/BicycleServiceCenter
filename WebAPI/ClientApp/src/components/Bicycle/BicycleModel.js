@@ -1,6 +1,7 @@
 import React, { Component, useState } from "react";
 import alertify from "alertifyjs";
 import { Button, Table, Row, Col, Form, FormGroup, Label, Input } from "reactstrap";
+import Select from 'react-select';
 
 export default class BicycleModel extends Component {
     state = {
@@ -23,7 +24,7 @@ export default class BicycleModel extends Component {
     };
 
     handleChangeBrand = (event) => {
-        this.setState({ selectedBrand: parseInt(event.target.value) });
+        this.state.selectedBrand = event.value;
     }
 
     // Model Ekleme
@@ -84,18 +85,31 @@ export default class BicycleModel extends Component {
                 </FormGroup>
 
                 <FormGroup>
-                    <Label for="brand">Ait Olduğu Marka</Label>
-                    <Input value={this.state.selectedBrand} type="select" name="brand" id="brand" onChange={this.handleChangeBrand}>
-                        <option selected value={0} >Seçiniz</option>
-                        {this.state.bicycleBrands.map((bicycleBrand) => (
-                            <option key={bicycleBrand.bicycleBrandId} value={bicycleBrand.bicycleBrandId}>{bicycleBrand.name}</option>
-                        ))}
-                    </Input>
+                    {this.BicycleBrandSelect(this.state.bicycleBrands)}
                 </FormGroup>
   
                 <Button>Ekle</Button>
             </Form>
         )
+    }
+
+    BicycleBrandSelect(dizi = []) {
+        let options = [];
+        if (dizi.length != options.length) {
+            for (let index = 0; index < dizi.length; index++) {
+                options.push({ value: dizi[index].bicycleBrandId, label: dizi[index].name },)
+            };
+        }
+
+        return <div>
+            <Label for="bicycleBrand">Ait Olduğu Marka</Label>
+            <Select
+                id="bicycleBrand"
+                placeholder="Seçiniz"
+                options={options}
+                onChange={this.handleChangeBrand}
+            />
+        </div>
     }
 
     //Model isimlerini Db'den Çekme
