@@ -26,6 +26,7 @@ import ConsumedPartUpdate from "./components/ConsumedPart/UpdateConsumedPart";
 import Login from "./components/Authentication/Login";
 import Logout from "./components/Authentication/Logout";
 import Register from "./components/Authentication/Register";
+import GuardedRoute from "./GuardedRoute";
 
 export default class App extends Component {
   static displayName = App.name;
@@ -42,6 +43,22 @@ export default class App extends Component {
     selectedProcess: undefined,
     selectedProcessCustomer: undefined,
     consumedPart: undefined,
+    isAuthenticated: false
+  };
+
+componentDidMount(){
+  let token = localStorage.getItem('token');
+  if (token == null) {
+      alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
+      this.props.history.push("/girisYap")
+  }
+  else{
+    this.setAuth(true);
+  }
+}
+
+  setAuth = (auth) => {
+    this.setState({isAuthenticated: auth})
   };
 
   setProductBrand = async (brand) => {
@@ -104,8 +121,8 @@ export default class App extends Component {
       <Layout>
         
         <Route exact path='/' component={Home} />
-        <Route exact path='/girisYap' component={Login} />
-        <Route exact path='/cikisYap' component={Logout} />
+        <Route exact path="/girisYap" render={props => (<Login {...props} setAuth={this.setAuth} />)} />
+        <Route exact path="/cikisYap" render={props => (<Logout {...props} setAuth={this.setAuth} />)} />
         <Route exact path='/kayitOl' component={Register} />
         
         {/* PRODUCT İLE İLGİLİ YÖNLENDİRMELER */}
@@ -136,6 +153,10 @@ export default class App extends Component {
         {/* EMPLOYEE İLE İLGİLİ YÖNLENDİRMELER */}
         <Route exact path="/personeller" render={props => (<Employees {...props} setEmployee={this.setEmployee} />)} />
         <Route exact path="/personelGüncelle" render={props => (<EmployeeUpdate {...props} getEmployee={this.state.selectedEmployee} />)} />
+
+        {/* <GuardedRoute path='/personeller' component={Employees} auth = {this.state.isAuthenticated} setEmployee={this.setEmployee} />
+        <GuardedRoute path='/personelGüncelle' component={EmployeeUpdate} auth = {this.state.isAuthenticated} getEmployee={this.state.selectedEmployee} /> */}
+        
 
         {/* CUSTOMER İLE İLGİLİ YÖNLENDİRMELER */}
         <Route exact path="/müşteriler" render={props => (<Customers {...props} setCustomer={this.setCustomer} />)} />

@@ -32,6 +32,8 @@ export default class Login extends Component {
           return Promise.reject(error);
         }
 
+        this.props.setAuth(true);
+        
         localStorage.setItem('token', data.data.accessToken);
         localStorage.setItem('refreshToken', data.data.refreshToken);
 

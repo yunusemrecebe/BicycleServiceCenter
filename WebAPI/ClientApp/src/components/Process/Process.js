@@ -31,11 +31,11 @@ export default class Process extends Component {
     };
 
     handleChangeBicycle = (event) => {
-        this.setState({ selectedBicycle: parseInt(event.target.value) });
+        this.state.selectedBicycle = event.value;
     }
 
     handleChangeEmployee = (event) => {
-        this.setState({ selectedEmployee: parseInt(event.target.value) });
+        this.state.selectedEmployee = event.value;
     }
 
     handleChangeCustomer = (event) => {
@@ -43,126 +43,8 @@ export default class Process extends Component {
         this.getBicycles(this.state.selectedCustomer);
     }
 
-    // Servis Hizmeti Ekleme
-    addProcess = (event) => {
-        event.preventDefault();
-
-        const requestOptions = {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                employeeId: this.state.selectedEmployee,
-                customerId: this.state.selectedCustomer,
-                bicycleId: this.state.selectedBicycle,
-                completionDate: this.state.completionDate,
-                diagnostics: this.state.diagnostics,
-            }),
-        };
-
-        fetch("/api/processes/add", requestOptions)
-            .then(async (response) => {
-                const data = await response.json();
-
-                if (!response.ok) {
-                    const error = data;
-                    return Promise.reject(error);
-                }
-
-                this.getProcesses();
-
-                Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
-                this.setState({
-                    selectedEmployee: 0,
-                    selectedCustomer: 0,
-                    selectedBicycle: 0,
-                    completionDate: "1 Gün",
-                    diagnostics: "",
-                });
-
-                alertify.success(data.message);
-            })
-
-            .catch((responseError) => {
-                if (responseError.Errors) {
-                    if (responseError.Errors.length > 0) {
-                        for (let i = 0; i < responseError.Errors.length; i++) {
-                            alertify.error(responseError.Errors[i].ErrorMessage);
-                        }
-                    }
-                    else {
-                        alertify.error(responseError);
-                    }
-                }
-                else {
-                    alertify.error(responseError.message);
-                }
-            });
-    };
-
-    // Servis Hizmeti Ekleme Formu
-    addProcessForm() {
-        return (
-            <Form onSubmit={this.addProcess}>
-                <h1> Servis Hizmeti Ekle</h1>
-                <Row>
-                    <Col md={4}>
-                        <FormGroup>
-                            <Label for="completionDate">Müşteri</Label>
-                            {this.select(this.state.customers)}
-                        </FormGroup>
-                    </Col>
-
-                    <Col md={4}>
-                        <FormGroup>
-                            <Label for="bicycle">Bisiklet</Label>
-                            <Input type="select" name="bicycle" id="bicycle" onChange={this.handleChangeBicycle}>
-                                <option selected value={0} >Seçiniz</option>
-                                {this.state.bicycles.map((bicycle) => (
-                                    <option key={bicycle.bicycleId} value={bicycle.bicycleId}>{bicycle.brandName} {bicycle.modelName}</option>
-                                ))}
-                            </Input>
-                        </FormGroup>
-                    </Col>
-
-                    <Col md={4}>
-                        <FormGroup>
-                            <Label for="employee">Personel</Label>
-                            <Input type="select" name="employee" id="employee" onChange={this.handleChangeEmployee}>
-                                <option selected value={0} >Seçiniz</option>
-                                {this.state.employees.map((employee) => (
-                                    <option key={employee.employeeId} value={employee.employeeId}>{employee.firstName} {employee.lastName}</option>
-                                ))}
-                            </Input>
-                        </FormGroup>
-                    </Col>
-                </Row>
-
-                <Row>
-                    <Col md={4}>
-                        <FormGroup>
-                            <Label for="completionDate">Öngörülen Teslim Tarihi</Label>
-                            <Input type="select" name="completionDate" id="completionDate" onChange={this.handleChange}>
-                                <option selected value="1 Gün" >1 Gün</option>
-                                <option value="1-3 Gün" >1-3 Gün</option>
-                                <option value="3-5 Gün" >3-5 Gün</option>
-                                <option value="1 Hafta" >1 Hafta</option>
-                                <option value="10 Gün" >10 Gün</option>
-                                <option value="20 Gün" >20 Gün</option>
-                            </Input>
-                        </FormGroup>
-                    </Col>
-
-                    <Col md={8}>
-                        <FormGroup>
-                            <Label for="diagnostics">Teşhisler</Label>
-                            <Input type="text" name="diagnostics" id="diagnostics" onChange={this.handleChange}></Input>
-                        </FormGroup>
-                    </Col>
-                </Row>
-
-                <Button>Ekle</Button>
-            </Form>
-        )
+    handleChangeCompletionDate = (event) => {
+        this.state.completionDate = event.value;
     }
 
     //Müşteriye Göre Bisikletleri Db'den Çekme
@@ -221,6 +103,187 @@ export default class Process extends Component {
             .then((response) => response.json())
             .then((data) => this.setState({ employees: data }));
     };
+
+    // Servis Hizmeti Ekleme
+    addProcess = (event) => {
+        event.preventDefault();
+
+        const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                employeeId: this.state.selectedEmployee,
+                customerId: this.state.selectedCustomer,
+                bicycleId: this.state.selectedBicycle,
+                completionDate: this.state.completionDate,
+                diagnostics: this.state.diagnostics,
+            }),
+        };
+
+        fetch("/api/processes/add", requestOptions)
+            .then(async (response) => {
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                this.getProcesses();
+                
+                Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
+                this.setState({
+                    selectedEmployee: 0,
+                    selectedCustomer: 0,
+                    selectedBicycle: 0,
+                    completionDate: "1 Gün",
+                    diagnostics: "",
+                });
+
+                alertify.success(data.message);
+            })
+
+            .catch((responseError) => {
+                if (responseError.Errors) {
+                    if (responseError.Errors.length > 0) {
+                        for (let i = 0; i < responseError.Errors.length; i++) {
+                            alertify.error(responseError.Errors[i].ErrorMessage);
+                        }
+                    }
+                    else {
+                        alertify.error(responseError);
+                    }
+                }
+                else {
+                    alertify.error(responseError.message);
+                }
+            });
+    };
+
+    // Servis Hizmeti Ekleme Formu
+    addProcessForm() {
+        return (
+            <Form onSubmit={this.addProcess}>
+                <h1> Servis Hizmeti Ekle</h1>
+                <Row>
+                    <Col md={4}>
+                        <FormGroup>
+
+                            {this.CustomerSelect(this.state.customers)}
+                        </FormGroup>
+                    </Col>
+
+                    <Col md={4}>
+                        <FormGroup>
+                            {this.BicycleSelect(this.state.bicycles)}
+                        </FormGroup>
+                    </Col>
+
+                    <Col md={4}>
+                        <FormGroup>
+                            {this.EmployeeSelect(this.state.employees)}
+                        </FormGroup>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col md={4}>
+                        <FormGroup>
+                            {this.CompletionDateSelect()}
+                        </FormGroup>
+                    </Col>
+
+                    <Col md={8}>
+                        <FormGroup>
+                            <Label for="diagnostics">Teşhisler</Label>
+                            <Input type="text" name="diagnostics" id="diagnostics" onChange={this.handleChange}></Input>
+                        </FormGroup>
+                    </Col>
+                </Row>
+
+                <Button>Ekle</Button>
+            </Form>
+        )
+    }
+
+    CustomerSelect(dizi = []) {
+
+        if (dizi.length != this.state.customerOptions.length) {
+            for (let index = 0; index < dizi.length; index++) {
+                this.state.customerOptions.push({ value: dizi[index].customerId, label: dizi[index].firstName + " " + dizi[index].lastName },)
+            };
+        }
+
+        return <div>
+            <Label for="customerSelect">Müşteri</Label>
+            <Select
+                id="customerSelect"
+                placeholder="Seçiniz"
+                options={this.state.customerOptions}
+                onChange={this.handleChangeCustomer}
+            />
+        </div>
+
+    }
+
+    BicycleSelect(dizi = []) {
+        let options = [];
+        if (dizi.length != options.length) {
+            for (let index = 0; index < dizi.length; index++) {
+                options.push({ value: dizi[index].bicycleId, label: dizi[index].brandName + " " + dizi[index].modelName },)
+            };
+        }
+
+        return <div>
+            <Label for="bicycleSelect">Bisiklet</Label>
+            <Select
+                id="bicycleSelect"
+                placeholder="Seçiniz"
+                options={options}
+                onChange={this.handleChangeBicycle}
+            />
+        </div>
+    }
+
+    EmployeeSelect(dizi = []) {
+        let options = [];
+        if (dizi.length != options.length) {
+            for (let index = 0; index < dizi.length; index++) {
+                options.push({ value: dizi[index].employeeId, label: dizi[index].firstName + " " + dizi[index].lastName },)
+            };
+        }
+
+        return <div>
+            <Label for="employeeSelect">Personel</Label>
+            <Select
+                id="employeeSelect"
+                placeholder="Seçiniz"
+                options={options}
+                onChange={this.handleChangeEmployee}
+            />
+        </div>
+    }
+
+    CompletionDateSelect() {
+        let options = [
+            { value: "1 Gün", label: "1 Gün" },
+            { value: "1-3 Gün", label: "1-3 Gün" },
+            { value: "3-5 Gün", label: "3-5 Gün" },
+            { value: "1 Hafta", label: "1 Hafta" },
+            { value: "10 Gün", label: "10 Gün" },
+            { value: "20 Gün", label: "20 Gün" },
+        ];
+
+        return <div>
+            <Label for="completionDate">Öngörülen Teslim Tarihi</Label>
+            <Select
+                id="completionDate"
+                placeholder="Seçiniz"
+                options={options}
+                onChange={this.handleChangeCompletionDate}
+            />
+        </div>
+    }
 
     //Servis Hizmetlerini Db'den çekme
     getProcesses() {
@@ -319,24 +382,6 @@ export default class Process extends Component {
         this.setProcess(id, customer);
         this.props.history.push("/servisHizmetiGüncelle");
     };
-
-    select(dizi = []) {
-
-        if (dizi.length != this.state.customerOptions.length) {
-            for (let index = 0; index < dizi.length; index++) {
-                this.state.customerOptions.push({ value: dizi[index].customerId, label: dizi[index].firstName + " " + dizi[index].lastName },)
-            };
-        }
-
-        return <div>
-            <Select
-                id="customerSelect"
-                options={this.state.customerOptions}
-                onChange={this.handleChangeCustomer}
-            />
-        </div>
-
-    }
 
     render() {
         return (
