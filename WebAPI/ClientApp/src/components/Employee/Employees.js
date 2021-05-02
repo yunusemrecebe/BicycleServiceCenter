@@ -111,10 +111,6 @@ export default class Employees extends Component {
     //Personelleri Db'den Çekme
     getEmployees() {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
 
         let url = "/api/employees/getall";
         fetch(url, {
@@ -131,7 +127,7 @@ export default class Employees extends Component {
                     return Promise.reject(error);
                 }
 
-                this.setState({ employees: data});
+                this.setState({ employees: data });
 
             })
             .catch((responseError) => {
@@ -165,16 +161,14 @@ export default class Employees extends Component {
                 localStorage.setItem('refreshToken', data.data.refreshToken);
 
                 this.getEmployees();
-
             })
 
             .catch((responseError) => {
-                
-            if(responseError.message == "Refresh Token Bulunamadı!"){
-                alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
-                this.props.history.push("/girisYap")
-            }
-                
+
+                if (responseError.message == "Refresh Token Bulunamadı!") {
+                    alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
+                    this.props.history.push("/girisYap")
+                }
             });
     }
 

@@ -109,7 +109,7 @@ export default class Bicycle extends Component {
                 <FormGroup>
                     {this.BicycleBrandSelect(this.state.bicycleBrands)}
                 </FormGroup>
-                
+
                 <FormGroup>
                     {this.BicycleModelSelect(this.state.bicycleModels)}
                 </FormGroup>
@@ -189,10 +189,6 @@ export default class Bicycle extends Component {
     //Bisiklet Markalarını Db'den Çekme
     getBicycleBrands() {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
 
         let url = "/api/bicyclebrands/getall";
         fetch(url, {
@@ -208,10 +204,6 @@ export default class Bicycle extends Component {
     //Bisiklet Modellerini Db'den Çekme
     getBicycleModels(id) {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
 
         let url = "/api/bicyclemodels/getallbybrand?id=" + id;
         fetch(url, {
@@ -222,16 +214,11 @@ export default class Bicycle extends Component {
         })
             .then((response) => response.json())
             .then((data) => this.setState({ bicycleModels: data }));
-
     };
 
     //Bisikletleri Db'den Çekme
     getBicycles() {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
 
         let url = "/api/bicycles/getdetails";
         fetch(url, {
@@ -240,17 +227,27 @@ export default class Bicycle extends Component {
                 'Authorization': `Bearer ${token}`
             }
         })
-            .then((response) => response.json())
-            .then((data) => this.setState({ bicycles: data }));
+            .then(async (response) => {
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                this.setState({ bicycles: data });
+
+            })
+            .catch((responseError) => {
+                if (responseError.Message == "Token Bulunamadı!") {
+                    this.CreateTokenByRefreshToken();
+                }
+            })
     };
 
     //Müşterileri Db'den Çekme
     getCustomers() {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
 
         let url = "/api/customers/getall";
         fetch(url, {
@@ -262,6 +259,41 @@ export default class Bicycle extends Component {
             .then((response) => response.json())
             .then((data) => this.setState({ customers: data }));
     };
+
+    CreateTokenByRefreshToken() {
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                token: localStorage.getItem('refreshToken'),
+            }),
+        };
+
+        fetch("/api/auth/CreateTokenByRefreshToken", requestOptions)
+            .then(async (response) => {
+                const data = await response.json();
+                console.log(data);
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                localStorage.setItem('token', data.data.accessToken);
+                localStorage.setItem('refreshToken', data.data.refreshToken);
+
+                this.componentDidMount();
+            })
+
+            .catch((responseError) => {
+
+                if (responseError.message == "Refresh Token Bulunamadı!") {
+                    alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
+                    this.props.history.push("/girisYap")
+                }
+            });
+    }
 
     //Db'Den çekilmiş biikletleri listeleme
     ListBicycles() {

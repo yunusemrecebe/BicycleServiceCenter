@@ -46,19 +46,19 @@ export default class App extends Component {
     isAuthenticated: false
   };
 
-componentDidMount(){
-  let token = localStorage.getItem('token');
-  if (token == null) {
-      alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-      this.props.history.push("/girisYap")
-  }
-  else{
-    this.setAuth(true);
-  }
-}
+  // componentDidMount() {
+  //   let token = localStorage.getItem('token');
+  //   if (token == null) {
+  //     alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
+  //     this.props.history.push("/girisYap")
+  //   }
+  //   else {
+  //     this.setAuth(true);
+  //   }
+  // }
 
   setAuth = (auth) => {
-    this.setState({isAuthenticated: auth})
+    this.setState({ isAuthenticated: auth })
   };
 
   setProductBrand = async (brand) => {
@@ -119,12 +119,12 @@ componentDidMount(){
   render() {
     return (
       <Layout>
-        
+
         <Route exact path='/' component={Home} />
         <Route exact path="/girisYap" render={props => (<Login {...props} setAuth={this.setAuth} />)} />
         <Route exact path="/cikisYap" render={props => (<Logout {...props} setAuth={this.setAuth} />)} />
         <Route exact path='/kayitOl' component={Register} />
-        
+
         {/* PRODUCT İLE İLGİLİ YÖNLENDİRMELER */}
         <Route exact path="/ürünMarkası" render={props => (<ProductBrand {...props} setProductBrand={this.setProductBrand} />)} />
         <Route exact path="/ÜrünMarkasıGüncelle" render={props => (<ProductBrandUpdate {...props} getProductBrand={this.state.selectedBrand} />)} />
@@ -147,8 +147,8 @@ componentDidMount(){
 
         {/* PROCESS İLE İLGİLİ YÖNLENDİRMELER */}
         <Route exact path="/servisHizmeti" render={props => (<Process {...props} setProcess={this.setProcess} setSelectedCustomer={this.setSelectedCustomer} />)} />
-        <Route exact path="/servisHizmetiGüncelle" render={props => (<ProcessUpdate {...props} getCustomer={this.state.selectedProcessCustomer} getProcess={this.state.selectedProcess} setConsumedPart={this.setConsumedPart}/>)} />
-        <Route exact path="/kullanılanÜrünüGüncelle" render={props => (<ConsumedPartUpdate {...props} getConsumedPart={this.state.consumedPart}/>)} />
+        <Route exact path="/servisHizmetiGüncelle" render={props => (<ProcessUpdate {...props} getCustomer={this.state.selectedProcessCustomer} getProcess={this.state.selectedProcess} setConsumedPart={this.setConsumedPart} />)} />
+        <Route exact path="/kullanılanÜrünüGüncelle" render={props => (<ConsumedPartUpdate {...props} getConsumedPart={this.state.consumedPart} />)} />
 
         {/* EMPLOYEE İLE İLGİLİ YÖNLENDİRMELER */}
         <Route exact path="/personeller" render={props => (<Employees {...props} setEmployee={this.setEmployee} />)} />
@@ -156,7 +156,7 @@ componentDidMount(){
 
         {/* <GuardedRoute path='/personeller' component={Employees} auth = {this.state.isAuthenticated} setEmployee={this.setEmployee} />
         <GuardedRoute path='/personelGüncelle' component={EmployeeUpdate} auth = {this.state.isAuthenticated} getEmployee={this.state.selectedEmployee} /> */}
-        
+
 
         {/* CUSTOMER İLE İLGİLİ YÖNLENDİRMELER */}
         <Route exact path="/müşteriler" render={props => (<Customers {...props} setCustomer={this.setCustomer} />)} />
