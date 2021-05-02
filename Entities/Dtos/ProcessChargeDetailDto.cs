@@ -1,10 +1,11 @@
 ﻿using Core.Entities;
 
-namespace Entities.Concrete
+namespace Entities.Dtos
 {
-    public class ProcessCharge : IEntity
+    public class ProcessChargeDetailDto : IDto
     {
         public int ProcessChargeId { get; set; }
+        public int ProcessId { get; set; }
         public int ConsumedPartId { get; set; }
         public decimal Charge { get; set; }
     }

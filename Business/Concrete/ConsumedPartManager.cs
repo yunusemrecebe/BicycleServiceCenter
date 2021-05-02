@@ -20,11 +20,13 @@ namespace Business.Concrete
     {
         IConsumedPartDal _consumedPartDal;
         IInventoryService _inventoryService;
+        IProcessChargeService _processChargeService;
 
-        public ConsumedPartManager(IConsumedPartDal consumedPartDal, IInventoryService inventoryService)
+        public ConsumedPartManager(IConsumedPartDal consumedPartDal, IInventoryService inventoryService, IProcessChargeService processChargeService)
         {
             _consumedPartDal = consumedPartDal;
             _inventoryService = inventoryService;
+            _processChargeService = processChargeService;
         }
 
         [ValidationAspect(typeof(ConsumedPartValidator))]
@@ -52,6 +54,12 @@ namespace Business.Concrete
 
             _consumedPartDal.Add(consumedPart);
 
+            _processChargeService.Add(new ProcessCharge 
+            { 
+                ConsumedPartId = consumedPart.ConsumedPartId, 
+                Charge = consumedPart.UnitPrice * consumedPart.Quantity 
+            });
+
             _inventoryService.Update(new Inventory
             {
                 InventoryId = inventory.InventoryId,
@@ -61,11 +69,11 @@ namespace Business.Concrete
                 UnitsInStock = remainingUnitsInStock,
                 Status = remainingUnitsInStock == 0 ? false : true
             });
+
             return new SuccessResult(Messages.ConsumedPartAdded);
         }
 
         [CacheRemoveAspect("IConsumedPartService.Get")]
-        [TransactionScopeAspect]
         public IResult Delete(int id)
         {
             IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
@@ -77,9 +85,14 @@ namespace Business.Concrete
 
             var consumedPart = _consumedPartDal.Get(c => c.ConsumedPartId == id);
             var inventory = _inventoryService.GetByProductId(consumedPart.ProductId).Data;
+            var processCharge = _processChargeService.GetByConsumedPartId(consumedPart.ConsumedPartId).Data;
+
             inventory.UnitsInStock += consumedPart.Quantity;
+            
             _inventoryService.Update(inventory);
+            _processChargeService.Delete(processCharge.ProcessChargeId);
             _consumedPartDal.Delete(consumedPart);
+
             return new SuccessResult(Messages.ConsumedPartDeleted);
         }
 
@@ -137,6 +150,10 @@ namespace Business.Concrete
             var inventory = _inventoryService.GetByProductId(consumedPart.ProductId).Data;
             consumedPart.UnitPrice = inventory.SellPrice - (inventory.SellPrice / 100) * (decimal)consumedPart.Discount;
 
+            var processCharge = _processChargeService.GetByConsumedPartId(consumedPart.ConsumedPartId).Data;
+            processCharge.Charge = consumedPart.Quantity * consumedPart.UnitPrice;
+            _processChargeService.Update(processCharge);
+
             _consumedPartDal.Update(consumedPart);
             return new SuccessResult(Messages.ConsumedPartUpdated);
         }
@@ -175,7 +192,8 @@ namespace Business.Concrete
             }
 
             inventoryRecord.UnitsInStock = inventoryRecord.UnitsInStock + (-1 * accrual);
-     
+            
+
             _inventoryService.Update(inventoryRecord);
             return new SuccessResult();
         }

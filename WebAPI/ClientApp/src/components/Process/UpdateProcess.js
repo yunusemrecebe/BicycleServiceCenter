@@ -162,35 +162,9 @@ export default class UpdateProcess extends Component {
             .then((response) => response.json())
             .then((data) => {
                 this.setState({ consumedParts: data });
-                this.CalculateProcessCharge(data);
             } );
             
     };
-
-    //Servis hizmetinde kullanılan ürünlerin toplam ücretini hesaplamak için gerekli verileri al ve toplam ücreti hesapla
-    CalculateProcessCharge(data = []){
-        var totalPrice = 0;
-
-        for (let index = 0; index < data.length; index++) {
-            totalPrice = totalPrice + data[index].totalPrice;
-            console.log(totalPrice);
-        }
-        
-        this.AddProcessCharge(data[0].processId, totalPrice);
-    }
-
-    //Servis hizmetinde kullanılan ürünlerin toplam ücretini dbye gönder
-    AddProcessCharge(processId, charge){
-        const requestOptions = {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                processId: processId,
-                charge : charge
-            }),
-        };
-        fetch("/api/processcharges/add", requestOptions);
-    }
 
     //Servis hizmetinde kullanılan ürünlerin toplam ücretini db'den çek ve göster
     GetProcessCharge(processId){
@@ -201,16 +175,16 @@ export default class UpdateProcess extends Component {
             this.props.history.push("/girisYap")
         }
 
-        let url = "/api/processcharges/getbyprocessid?id=" + processId;
+        let url = "/api/processcharges/calculate?processid=" + processId;
         fetch(url, {
-            method: 'get',
+            method: 'post',
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data.data.charge) 
+                console.log(data) 
                 this.setState({ processCharge: data.data.charge })
                 
         });
@@ -447,6 +421,7 @@ export default class UpdateProcess extends Component {
 
                 alertify.success(data.message);
                 this.getConsumedParts(this.props.getProcess);
+                this.GetProcessCharge(this.props.getProcess);
             })
 
             .catch((responseError) => {
@@ -572,6 +547,7 @@ export default class UpdateProcess extends Component {
                 }
 
                 this.getConsumedParts(this.props.getProcess);
+                this.GetProcessCharge(this.props.getProcess);
                 alertify.warning(data.message);
             })
 

@@ -21,6 +21,18 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
+        public IActionResult Calculate(int processId)
+        {
+            var result = _processChargeService.Calculate(processId);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost]
         public IActionResult Add(ProcessCharge processCharge)
         {
             var result = _processChargeService.Add(processCharge);
@@ -69,9 +81,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetByProcessId(int id)
+        public IActionResult GetByConsumedPartId(int id)
         {
-            var result = _processChargeService.GetByProcessId(id);
+            var result = _processChargeService.GetByConsumedPartId(id);
 
             if (result.Success)
             {
