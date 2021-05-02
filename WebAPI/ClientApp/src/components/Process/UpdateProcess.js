@@ -11,6 +11,7 @@ export default class UpdateProcess extends Component {
         productCategories: [],
         products: [],
         consumedParts: [],
+        processCharge: 0,
         selectedProductCategoryId: 0,
         selectedProduct: 0,
         quantity: 0,
@@ -36,6 +37,7 @@ export default class UpdateProcess extends Component {
         this.getEmployees();
         this.getProductCategories();
         this.getConsumedParts(this.props.getProcess);
+        this.GetProcessCharge(this.props.getProcess);
     }
 
     handleChange = (event) => {
@@ -158,7 +160,60 @@ export default class UpdateProcess extends Component {
             }
         })
             .then((response) => response.json())
-            .then((data) => this.setState({ consumedParts: data }));
+            .then((data) => {
+                this.setState({ consumedParts: data });
+                this.CalculateProcessCharge(data);
+            } );
+            
+    };
+
+    //Servis hizmetinde kullanılan ürünlerin toplam ücretini hesaplamak için gerekli verileri al ve toplam ücreti hesapla
+    CalculateProcessCharge(data = []){
+        var totalPrice = 0;
+
+        for (let index = 0; index < data.length; index++) {
+            totalPrice = totalPrice + data[index].totalPrice;
+            console.log(totalPrice);
+        }
+        
+        this.AddProcessCharge(data[0].processId, totalPrice);
+    }
+
+    //Servis hizmetinde kullanılan ürünlerin toplam ücretini dbye gönder
+    AddProcessCharge(processId, charge){
+        const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                processId: processId,
+                charge : charge
+            }),
+        };
+        fetch("/api/processcharges/add", requestOptions);
+    }
+
+    //Servis hizmetinde kullanılan ürünlerin toplam ücretini db'den çek ve göster
+    GetProcessCharge(processId){
+
+        let token = localStorage.getItem('token');
+        if (token == null) {
+            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
+            this.props.history.push("/girisYap")
+        }
+
+        let url = "/api/processcharges/getbyprocessid?id=" + processId;
+        fetch(url, {
+            method: 'get',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data.data.charge) 
+                this.setState({ processCharge: data.data.charge })
+                
+        });
     };
 
     //Servis Hizmeti Detay Bilgisini Db'den Çekme (ProcessDetailDto)
@@ -554,6 +609,8 @@ export default class UpdateProcess extends Component {
                         {this.addConsumedPartForm()}
                     </Col>
                 </Row>
+                <hr className="mb-3 mt-3" ></hr>
+                <center><h1 className="mb-3">Toplam ücret: {Number.parseFloat(this.state.processCharge).toFixed(2)}</h1></center>
                 {this.ListConsumedParts()}
 
             </div>

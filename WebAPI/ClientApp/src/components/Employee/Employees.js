@@ -131,7 +131,6 @@ export default class Employees extends Component {
                     return Promise.reject(error);
                 }
 
-                console.log(data);
                 this.setState({ employees: data});
 
             })
