@@ -10,6 +10,14 @@
         {
         }
 
+        public ErrorDataResult(T data, int statusCode) : base(data, false, statusCode)
+        {
+        }
+
+        public ErrorDataResult(T data, string message, int statusCode) : base(data, false, message, statusCode)
+        {
+        }
+
         public ErrorDataResult(string message) : base(default, false, message)
         {
 
