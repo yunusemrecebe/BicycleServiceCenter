@@ -47,13 +47,44 @@ export default class Process extends Component {
         this.state.completionDate = event.value;
     }
 
+    CreateTokenByRefreshToken() {
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                token: localStorage.getItem('refreshToken'),
+            }),
+        };
+
+        fetch("/api/auth/CreateTokenByRefreshToken", requestOptions)
+            .then(async (response) => {
+                const data = await response.json();
+                console.log(data);
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                localStorage.setItem('token', data.data.accessToken);
+                localStorage.setItem('refreshToken', data.data.refreshToken);
+
+                this.componentDidMount();
+            })
+
+            .catch((responseError) => {
+
+                if (responseError.message == "Refresh Token Bulunamadı!") {
+                    alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
+                    this.props.history.push("/girisYap")
+                }
+            });
+    }
+
     //Müşteriye Göre Bisikletleri Db'den Çekme
     getBicycles(id) {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
 
         let url = "/api/bicycles/getdetailsbycustomer?id=" + id;
         fetch(url, {
@@ -69,10 +100,6 @@ export default class Process extends Component {
     //Müşterileri Db'den Çekme
     getCustomers() {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
 
         let url = "/api/customers/getall";
         fetch(url, {
@@ -88,10 +115,6 @@ export default class Process extends Component {
     //Personelleri Db'den Çekme
     getEmployees() {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
 
         let url = "/api/employees/getall";
         fetch(url, {
@@ -130,7 +153,7 @@ export default class Process extends Component {
                 }
 
                 this.getProcesses();
-                
+
                 Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
                 this.setState({
                     selectedEmployee: 0,
@@ -288,10 +311,6 @@ export default class Process extends Component {
     //Servis Hizmetlerini Db'den çekme
     getProcesses() {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
 
         let url = "/api/processes/getprocessdetails";
         fetch(url, {
@@ -300,8 +319,22 @@ export default class Process extends Component {
                 'Authorization': `Bearer ${token}`
             }
         })
-            .then((response) => response.json())
-            .then((data) => this.setState({ processes: data }));
+            .then(async (response) => {
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                this.setState({ processes: data });
+
+            })
+            .catch((responseError) => {
+                if (responseError.Message == "Token Bulunamadı!") {
+                    this.CreateTokenByRefreshToken();
+                }
+            })
     };
 
     //Db'Den çekilmiş servis hizmetlerini listeleme

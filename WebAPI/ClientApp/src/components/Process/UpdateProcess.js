@@ -68,13 +68,44 @@ export default class UpdateProcess extends Component {
         this.setState({ selectedProduct: parseInt(event.target.value) });
     }
 
+    CreateTokenByRefreshToken() {
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                token: localStorage.getItem('refreshToken'),
+            }),
+        };
+
+        fetch("/api/auth/CreateTokenByRefreshToken", requestOptions)
+            .then(async (response) => {
+                const data = await response.json();
+                console.log(data);
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                localStorage.setItem('token', data.data.accessToken);
+                localStorage.setItem('refreshToken', data.data.refreshToken);
+
+                this.componentDidMount();
+            })
+
+            .catch((responseError) => {
+
+                if (responseError.message == "Refresh Token Bulunamadı!") {
+                    alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
+                    this.props.history.push("/girisYap")
+                }
+            });
+    }
+
     //Müşterileri Db'den çekme
     getCustomers() {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
 
         let url = "/api/customers/getall";
         fetch(url, {
@@ -90,10 +121,6 @@ export default class UpdateProcess extends Component {
     //Ürün Kategorilerini Db'den çekme
     getProductCategories() {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
 
         let url = "/api/productcategories/getall";
         fetch(url, {
@@ -109,10 +136,6 @@ export default class UpdateProcess extends Component {
     //Ürünleri Kategorilere göre Db'den çekme
     getProductsByCategory(id) {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
 
         let url = "/api/products/getallbycategoryid?id=" + id;
         fetch(url, {
@@ -128,10 +151,6 @@ export default class UpdateProcess extends Component {
     //Personelleri Db'den çekme
     getEmployees() {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
 
         let url = "/api/employees/getall";
         fetch(url, {
@@ -147,10 +166,6 @@ export default class UpdateProcess extends Component {
     //Kullanılan Ürünleri Db'den çekme
     getConsumedParts(id) {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
 
         let url = "/api/consumedparts/getdetailsbyprocessid?id=" + id;
         fetch(url, {
@@ -162,18 +177,14 @@ export default class UpdateProcess extends Component {
             .then((response) => response.json())
             .then((data) => {
                 this.setState({ consumedParts: data });
-            } );
-            
+            });
+
     };
 
     //Servis hizmetinde kullanılan ürünlerin toplam ücretini db'den çek ve göster
-    GetProcessCharge(processId){
+    GetProcessCharge(processId) {
 
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
 
         let url = "/api/processcharges/calculate?processid=" + processId;
         fetch(url, {
@@ -184,19 +195,15 @@ export default class UpdateProcess extends Component {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data) 
+                console.log(data)
                 this.setState({ processCharge: data.data.charge })
-                
-        });
+
+            });
     };
 
     //Servis Hizmeti Detay Bilgisini Db'den Çekme (ProcessDetailDto)
     getProcessDetailsById(id) {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
 
         let url = "/api/processes/getprocessdetailsbyid?id=" + id;
         fetch(url, {
@@ -205,9 +212,15 @@ export default class UpdateProcess extends Component {
                 'Authorization': `Bearer ${token}`
             }
         })
-            .then((response) => response.json())
-            .then((data) => this.setState(
-                {
+            .then(async (response) => {
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                this.setState({
                     selectedProcessId: data.processId,
                     selectedEmployeeId: data.employeeId,
                     selectedCustomerId: data.customerId,
@@ -220,17 +233,20 @@ export default class UpdateProcess extends Component {
                     diagnostics: data.diagnostics,
                     status: data.status,
                     isProcessLoaded: true,
-                }));
+                });
+
+            })
+            .catch((responseError) => {
+                if (responseError.Message == "Token Bulunamadı!") {
+                    this.CreateTokenByRefreshToken();
+                }
+            })
     };
 
     //Müşteriye Göre Bisikletleri Db'den Çekme
     getBicyclesByCustomer(id) {
 
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
 
         let url = "/api/bicycles/getdetailsbycustomer?id=" + id;
         fetch(url, {
@@ -316,11 +332,17 @@ export default class UpdateProcess extends Component {
                             <th scope="row">Müşteri</th>
 
                             <td>
-                                <Input value={this.state.selectedCustomerId} type="select" name="owner" id="owner" onChange={this.handleChangeCustomer}>
-                                    {this.state.customers.map((customer) => (
-                                        <option key={customer.customerId} value={customer.customerId} >{customer.firstName} {customer.lastName}</option>
-                                    ))}
-                                </Input>
+                                {this.state.isProcessLoaded == true ?
+                                    <Input value={this.state.selectedCustomerId} type="select" name="owner" id="owner" onChange={this.handleChangeCustomer}>
+                                        {this.state.selectedCustomerId != 0 ? this.state.customers.map((customer) => (
+                                            <option key={customer.customerId} value={customer.customerId} >{customer.firstName} {customer.lastName}</option>
+                                        ))
+                                            :
+                                            <option value="Seçiniz">Seçiniz</option>}
+                                    </Input>
+                                    :
+                                    null
+                                }
                             </td>
                         </tr>
 
@@ -346,11 +368,17 @@ export default class UpdateProcess extends Component {
                             <th scope="row">Personel</th>
 
                             <td>
-                                <Input value={this.state.selectedEmployeeId} type="select" name="employee" id="employee" onChange={this.handleChangeEmployee}>
-                                    {this.state.employees.map((employee) => (
+                                {this.state.isProcessLoaded == true ?
+                                    <Input value={this.state.selectedEmployeeId} type="select" name="employee" id="employee" onChange={this.handleChangeEmployee}>
+                                        {this.state.selectedEmployeeId != 0 ? this.state.employees.map((employee) => (
                                         <option key={employee.employeeId} value={employee.employeeId}>{employee.firstName} {employee.lastName}</option>
-                                    ))}
-                                </Input>
+                                    ))
+                                            :
+                                            <option value="Seçiniz">Seçiniz</option>}
+                                    </Input>
+                                    :
+                                    null
+                                }
                             </td>
                         </tr>
 

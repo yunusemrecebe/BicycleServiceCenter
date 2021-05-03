@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
@@ -67,17 +68,20 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Process>>(_processDal.GetList().ToList());
         }
 
+        [CacheAspect]
         public IDataResult<List<Process>> GetListByFilter(Expression<Func<Process, bool>> filter)
         {
             return new SuccessDataResult<List<Process>>(_processDal.GetList(filter).ToList());
         }
 
+        [SecuredOperation("Admin")]
         [CacheAspect]
         public IDataResult<List<ProcessDetailDto>> GetProcessDetails()
         {
             return new SuccessDataResult<List<ProcessDetailDto>>(_processDal.GetProcessDetails().ToList());
         }
 
+        [SecuredOperation("Admin")]
         public IDataResult<ProcessDetailDto> GetProcessDetailsById(int id)
         {
             return new SuccessDataResult<ProcessDetailDto>(_processDal.GetProcessDetailsById(id));
