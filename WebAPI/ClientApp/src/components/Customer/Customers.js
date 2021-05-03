@@ -23,6 +23,41 @@ export default class Customers extends Component {
         this.setState({ [name]: value });
     };
 
+    CreateTokenByRefreshToken() {
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                token: localStorage.getItem('refreshToken'),
+            }),
+        };
+
+        fetch("/api/auth/CreateTokenByRefreshToken", requestOptions)
+            .then(async (response) => {
+                const data = await response.json();
+                console.log(data);
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                localStorage.setItem('token', data.data.accessToken);
+                localStorage.setItem('refreshToken', data.data.refreshToken);
+
+                this.componentDidMount();
+            })
+
+            .catch((responseError) => {
+
+                if (responseError.message == "Refresh Token Bulunamadı!") {
+                    alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
+                    this.props.history.push("/girisYap")
+                }
+            });
+    }
+
     // Müşteri Ekleme
     addCustomer = (event) => {
         event.preventDefault();
@@ -35,9 +70,9 @@ export default class Customers extends Component {
 
         const requestOptions = {
             method: "POST",
-            headers: { 
-              "Content-Type": "application/json",
-              'Authorization': `Bearer ${token}` 
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
                 firstName: this.state.firstName,
@@ -60,12 +95,12 @@ export default class Customers extends Component {
                 this.getCustomers();
 
                 Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
-                this.setState({ 
-                  firstName: "",
-                  lastName: "",
-                  phone: "",
-                  eMail: "",
-                  adress: "",
+                this.setState({
+                    firstName: "",
+                    lastName: "",
+                    phone: "",
+                    eMail: "",
+                    adress: "",
                 });
 
                 alertify.success(data.message);
@@ -78,11 +113,11 @@ export default class Customers extends Component {
                             alertify.error(responseError.Errors[i].ErrorMessage);
                         }
                     }
-                    else{
+                    else {
                         alertify.error(responseError);
                     }
                 }
-                else{
+                else {
                     alertify.error(responseError.message);
                 }
             });
@@ -90,46 +125,42 @@ export default class Customers extends Component {
 
     // Müşteri Ekleme Formu
     addCustomerForm() {
-      return (
-          <Form onSubmit={this.addCustomer}>
-              <h1> Müşteri Ekle</h1>
-              <FormGroup>
-                  <Label for="firstName">Adı</Label>
-                  <Input type="text" name="firstName" id="firstName" onChange={this.handleChange} />
-              </FormGroup>
+        return (
+            <Form onSubmit={this.addCustomer}>
+                <h1> Müşteri Ekle</h1>
+                <FormGroup>
+                    <Label for="firstName">Adı</Label>
+                    <Input type="text" name="firstName" id="firstName" onChange={this.handleChange} />
+                </FormGroup>
 
-              <FormGroup>
-                  <Label for="lastName">Soyadı</Label>
-                  <Input type="text" name="lastName" id="lastName" onChange={this.handleChange} />
-              </FormGroup>
+                <FormGroup>
+                    <Label for="lastName">Soyadı</Label>
+                    <Input type="text" name="lastName" id="lastName" onChange={this.handleChange} />
+                </FormGroup>
 
-              <FormGroup>
-                  <Label for="phone">Telefon</Label>
-                  <Input type="text" name="phone" id="phone" onChange={this.handleChange}/>
-              </FormGroup>
+                <FormGroup>
+                    <Label for="phone">Telefon</Label>
+                    <Input type="text" name="phone" id="phone" onChange={this.handleChange} />
+                </FormGroup>
 
-              <FormGroup>
-                  <Label for="eMail">Email</Label>
-                  <Input type="email" name="eMail" id="eMail" onChange={this.handleChange}/>
-              </FormGroup>
+                <FormGroup>
+                    <Label for="eMail">Email</Label>
+                    <Input type="email" name="eMail" id="eMail" onChange={this.handleChange} />
+                </FormGroup>
 
-              <FormGroup>
-                  <Label for="adress">Adres</Label>
-                  <Input type="adress" name="adress" id="adress" onChange={this.handleChange}/>
-              </FormGroup>
+                <FormGroup>
+                    <Label for="adress">Adres</Label>
+                    <Input type="adress" name="adress" id="adress" onChange={this.handleChange} />
+                </FormGroup>
 
-              <Button>Ekle</Button>
-          </Form>
-      )
-  }
+                <Button>Ekle</Button>
+            </Form>
+        )
+    }
 
     //Müşterileri Db'den Çekme
     getCustomers() {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
 
         let url = "/api/customers/getall";
         fetch(url, {
@@ -138,48 +169,62 @@ export default class Customers extends Component {
                 'Authorization': `Bearer ${token}`
             }
         })
-            .then((response) => response.json())
-            .then((data) => this.setState({ customers: data }));
+            .then(async (response) => {
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                this.setState({ customers: data });
+
+            })
+            .catch((responseError) => {
+                if (responseError.Message == "Token Bulunamadı!") {
+                    this.CreateTokenByRefreshToken();
+                }
+            })
     };
 
     //Db'Den çekilmiş müşterileri listeleme
     ListCustomers() {
-      return (
-          <Table hover>
-              <thead>
-                  <tr>
-                      <th>Ad Soyad</th>
-                      <th>Telefon</th>
-                      <th>EMail</th>
-                      <th>Adres</th>
-                      <th></th>
-                      <th></th>
-                  </tr>
-              </thead>
+        return (
+            <Table hover>
+                <thead>
+                    <tr>
+                        <th>Ad Soyad</th>
+                        <th>Telefon</th>
+                        <th>EMail</th>
+                        <th>Adres</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
 
-              <tbody>
-                  {this.state.customers.length > 0 ? this.state.customers.map((customer) => (
-                      <tr key={customer.customerId}>
-                          <td>{customer.firstName} {customer.lastName}</td>
-                          <td>{customer.phone}</td>
-                          <td>{customer.eMail}</td>
-                          <td>{customer.adress}</td>
-                          <td><Button onClick={this.deleteCustomer.bind(this, customer.customerId)} color="danger">Sil</Button></td>
-                          <td><Button onClick={this.updateCustomer.bind(this, customer.customerId)} color="info">Güncelle</Button></td>
-                      </tr>
-                  ))
-                :
-                <h1>Sistemde kayıtlı müşteri bulunamadı!</h1>
-                }
-              </tbody>
-          </Table>
-      )
-  }
+                <tbody>
+                    {this.state.customers.length > 0 ? this.state.customers.map((customer) => (
+                        <tr key={customer.customerId}>
+                            <td>{customer.firstName} {customer.lastName}</td>
+                            <td>{customer.phone}</td>
+                            <td>{customer.eMail}</td>
+                            <td>{customer.adress}</td>
+                            <td><Button onClick={this.deleteCustomer.bind(this, customer.customerId)} color="danger">Sil</Button></td>
+                            <td><Button onClick={this.updateCustomer.bind(this, customer.customerId)} color="info">Güncelle</Button></td>
+                        </tr>
+                    ))
+                        :
+                        <h1>Sistemde kayıtlı müşteri bulunamadı!</h1>
+                    }
+                </tbody>
+            </Table>
+        )
+    }
 
     //Müşteri Silme
-    deleteCustomer(id){
+    deleteCustomer(id) {
 
-      let token = localStorage.getItem('token');
+        let token = localStorage.getItem('token');
         if (token == null) {
             alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
             this.props.history.push("/girisYap")
@@ -187,13 +232,13 @@ export default class Customers extends Component {
 
         const requestOptions = {
             method: "POST",
-            headers: { 
-              "Content-Type": "application/json",
-              'Authorization': `Bearer ${token}` 
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`
             },
         };
-        
-        fetch("/api/customers/delete?id="+id, requestOptions)
+
+        fetch("/api/customers/delete?id=" + id, requestOptions)
             .then(async (response) => {
                 const data = await response.json();
 
@@ -215,16 +260,16 @@ export default class Customers extends Component {
                         }
                     }
                 }
-            });  
+            });
     };
 
     //Müşteri güncellemek için Müşteri İd gönderen fonksiyon
-    setCustomer=(id)=>{
+    setCustomer = (id) => {
         this.props.setCustomer(id);
     }
 
     //Müşteri Güncelleme
-    updateCustomer(id){
+    updateCustomer(id) {
         this.setCustomer(id);
         this.props.history.push("/müşteriGüncelle");
     };
@@ -232,10 +277,10 @@ export default class Customers extends Component {
     render() {
         return (
             <div>
-               {this.addCustomerForm()}
+                {this.addCustomerForm()}
 
                 <Row>
-                <h1 className="text-center">Sistemde Kayıtlı Olan Müşteriler</h1>
+                    <h1 className="text-center">Sistemde Kayıtlı Olan Müşteriler</h1>
                 </Row>
                 <Row>
                     <Col md="12">

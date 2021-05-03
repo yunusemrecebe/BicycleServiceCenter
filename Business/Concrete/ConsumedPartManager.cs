@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
@@ -113,11 +114,13 @@ namespace Business.Concrete
             return new SuccessDataResult<ConsumedPart>(_consumedPartDal.Get(p => p.ProductId == id));
         }
 
+        [SecuredOperation("Admin")]
         public IDataResult<ConsumedPartDetailDto> GetConsumedPartDetailsById(int id)
         {
             return new SuccessDataResult<ConsumedPartDetailDto>(_consumedPartDal.GetConsumedPartDetails(c => c.ConsumedPartId == id));
         }
 
+        [SecuredOperation("Admin")]
         [CacheAspect]
         public IDataResult<List<ConsumedPartDetailDto>> GetConsumedPartDetailsList()
         {
