@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
@@ -51,6 +52,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.BicycleBrandDeleted);
         }
 
+        [SecuredOperation("Admin")]
         [CacheAspect]
         public IDataResult<List<BicycleBrand>> GetList()
         {

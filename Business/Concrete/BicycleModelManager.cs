@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
@@ -76,12 +77,14 @@ namespace Business.Concrete
             return new SuccessDataResult<BicycleModelDto>(_bicycleModelDal.GetBicycleModelDetailsById(id));
         }
 
+        [SecuredOperation("Admin")]
         [CacheAspect]
         public IDataResult<List<BicycleModelDto>> GetDetails()
         {
             return new SuccessDataResult<List<BicycleModelDto>>(_bicycleModelDal.GetBicycleModelDetails().ToList());
         }
 
+        [SecuredOperation("Admin")]
         [CacheAspect]
         public IDataResult<List<BicycleModel>> GetList()
         {

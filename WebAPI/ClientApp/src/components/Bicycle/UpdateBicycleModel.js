@@ -28,6 +28,41 @@ export default class UpdateBicycleModel extends Component {
         this.setState({ selectedBrandId: parseInt(event.target.value) });
     }
 
+    CreateTokenByRefreshToken() {
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                token: localStorage.getItem('refreshToken'),
+            }),
+        };
+
+        fetch("/api/auth/CreateTokenByRefreshToken", requestOptions)
+            .then(async (response) => {
+                const data = await response.json();
+                console.log(data);
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                localStorage.setItem('token', data.data.accessToken);
+                localStorage.setItem('refreshToken', data.data.refreshToken);
+
+                this.componentDidMount();
+            })
+
+            .catch((responseError) => {
+
+                if (responseError.message == "Refresh Token Bulunamadı!") {
+                    alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
+                    this.props.history.push("/girisYap")
+                }
+            });
+    }
+
     //Marka isimlerini Db'den Çekme
     getBicycleBrands() {
         let token = localStorage.getItem('token');
@@ -47,29 +82,38 @@ export default class UpdateBicycleModel extends Component {
             .then((data) => this.setState({ bicycleBrands: data }));
     };
 
-    //Model Bilgisini Db'den Çekme
+    //Bisiklet Modellerini Db'den Çekme
     getBicycleModel(id) {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
 
-        let url = "/api/bicyclemodels/getdetailsbyid?id="+id;
+        let url = "/api/bicyclemodels/getdetailsbyid?id=" + id;
         fetch(url, {
             method: 'get',
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
-            .then((response) => response.json())
-            .then((data) => this.setState(
-                { 
+            .then(async (response) => {
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                this.setState({ 
                     selectedModelId: data.bicycleModelId,
                     selectedBrandId: data.bicycleBrandId,
                     selectedBrandName: data.bicycleBrandName,
                     selectedModelName: data.bicycleModelName,
-                }));
+                 });
+
+            })
+            .catch((responseError) => {
+                if (responseError.Message == "Token Bulunamadı!") {
+                    this.CreateTokenByRefreshToken();
+                }
+            })
     };
 
     //Model Bilgilerini Güncelleme

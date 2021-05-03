@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
@@ -48,6 +49,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.BicycleDeleted);
         }
 
+        [SecuredOperation("Admin")]
         public IDataResult<List<BicycleDetailDto>> GetBicycleDetails()
         {
             return new SuccessDataResult<List<BicycleDetailDto>>(_bicycleDal.GetBicycleDetailsList().ToList());
