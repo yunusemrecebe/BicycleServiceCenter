@@ -38,6 +38,41 @@ export default class UpdateInventory extends Component {
         this.getBicycles(this.state.selectedCustomer);
     }
 
+    CreateTokenByRefreshToken() {
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                token: localStorage.getItem('refreshToken'),
+            }),
+        };
+
+        fetch("/api/auth/CreateTokenByRefreshToken", requestOptions)
+            .then(async (response) => {
+                const data = await response.json();
+                console.log(data);
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                localStorage.setItem('token', data.data.accessToken);
+                localStorage.setItem('refreshToken', data.data.refreshToken);
+
+                this.componentDidMount();
+            })
+
+            .catch((responseError) => {
+
+                if (responseError.message == "Refresh Token Bulunamadı!") {
+                    alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
+                    this.props.history.push("/girisYap")
+                }
+            });
+    }
+
     //Envantere güncelleme
     updateInventory = (event) => {
         event.preventDefault();
@@ -58,7 +93,7 @@ export default class UpdateInventory extends Component {
         fetch("/api/inventory/update", requestOptions)
             .then(async (response) => {
                 const data = await response.json();
-                
+
                 if (!response.ok) {
                     const error = data;
                     return Promise.reject(error);
@@ -101,39 +136,39 @@ export default class UpdateInventory extends Component {
         return (
             <Form onSubmit={this.updateInventory}>
                 <Row className="mt-3">
-                <Col md={3}></Col> 
+                    <Col md={3}></Col>
                     <Col md={6}>
-                    <h1> {this.state.product}</h1>
-                    </Col> 
-                    <Col md={3}></Col> 
-                    </Row>
-                    {this.state.isLoaded ?
+                        <h1> {this.state.product}</h1>
+                    </Col>
+                    <Col md={3}></Col>
+                </Row>
+                {this.state.isLoaded ?
 
                     <Row className="mt-5">
-                    <Col md={3}>
-                        <FormGroup>
-                            <Label for="purchasePrice">Alış Fiyatı</Label>
-                            <Input type="number" name="purchasePrice" id="purchasePrice" defaultValue={this.state.purchasePrice} onChange={this.handleChange} min="0.00" step="0.001" max="9999999.0000" presicion={4}/>
-                        </FormGroup>
-                    </Col> 
+                        <Col md={3}>
+                            <FormGroup>
+                                <Label for="purchasePrice">Alış Fiyatı</Label>
+                                <Input type="number" name="purchasePrice" id="purchasePrice" defaultValue={this.state.purchasePrice} onChange={this.handleChange} min="0.00" step="0.001" max="9999999.0000" presicion={4} />
+                            </FormGroup>
+                        </Col>
 
-                    <Col md={3}>
-                        <FormGroup>
-                            <Label for="sellPrice">Satış Fiyatı</Label>
-                            <Input type="number" name="sellPrice" id="sellPrice" defaultValue={this.state.sellPrice} onChange={this.handleChange} />
-                        </FormGroup>
-                    </Col> 
+                        <Col md={3}>
+                            <FormGroup>
+                                <Label for="sellPrice">Satış Fiyatı</Label>
+                                <Input type="number" name="sellPrice" id="sellPrice" defaultValue={this.state.sellPrice} onChange={this.handleChange} />
+                            </FormGroup>
+                        </Col>
 
-                    <Col md={3}>
-                        <FormGroup>
-                            <Label for="unitsInStock">Stoktaki Miktar</Label>
-                            <Input type="number" name="unitsInStock" id="unitsInStock" defaultValue={this.state.unitsInStock} onChange={this.handleChange} min="0"/>
-                        </FormGroup>
-                    </Col>
+                        <Col md={3}>
+                            <FormGroup>
+                                <Label for="unitsInStock">Stoktaki Miktar</Label>
+                                <Input type="number" name="unitsInStock" id="unitsInStock" defaultValue={this.state.unitsInStock} onChange={this.handleChange} min="0" />
+                            </FormGroup>
+                        </Col>
 
-                    <Col md={2} className="mt-4">
-                        <Button>Güncelle</Button>
-                    </Col>
+                        <Col md={2} className="mt-4">
+                            <Button>Güncelle</Button>
+                        </Col>
                     </Row>
                     :
                     null
@@ -157,17 +192,31 @@ export default class UpdateInventory extends Component {
                 'Authorization': `Bearer ${token}`
             }
         })
-            .then((response) => response.json())
-            .then((data) => this.setState({      
-                inventoryId: data.inventoryId,
-                productId: data.productId,
-                product: data.product,
-                purchasePrice: data.purchasePrice,
-                sellPrice: data.sellPrice,
-                unitsInStock: data.unitsInStock,
-                status: data.status,
-                isLoaded: true,
-            }));
+            .then(async (response) => {
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                this.setState({
+                    inventoryId: data.inventoryId,
+                    productId: data.productId,
+                    product: data.product,
+                    purchasePrice: data.purchasePrice,
+                    sellPrice: data.sellPrice,
+                    unitsInStock: data.unitsInStock,
+                    status: data.status,
+                    isLoaded: true,
+                });
+
+            })
+            .catch((responseError) => {
+                if (responseError.Message == "Token Bulunamadı!") {
+                    this.CreateTokenByRefreshToken();
+                }
+            })
     };
 
     render() {
