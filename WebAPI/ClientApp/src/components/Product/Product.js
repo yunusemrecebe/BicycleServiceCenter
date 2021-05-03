@@ -35,13 +35,44 @@ export default class ProductCategory extends Component {
         this.getProductCategories();
     }
 
+    CreateTokenByRefreshToken() {
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                token: localStorage.getItem('refreshToken'),
+            }),
+        };
+
+        fetch("/api/auth/CreateTokenByRefreshToken", requestOptions)
+            .then(async (response) => {
+                const data = await response.json();
+                console.log(data);
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                localStorage.setItem('token', data.data.accessToken);
+                localStorage.setItem('refreshToken', data.data.refreshToken);
+
+                this.componentDidMount();
+            })
+
+            .catch((responseError) => {
+
+                if (responseError.message == "Refresh Token Bulunamadı!") {
+                    alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
+                    this.props.history.push("/girisYap")
+                }
+            });
+    }
+
     //Ürün Markalarını Db'den Çekme
     getProductBrands() {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/login")
-        }
 
         let url = "/api/productbrands/getall";
         fetch(url, {
@@ -57,10 +88,6 @@ export default class ProductCategory extends Component {
     //Ürün Kategorilerini Db'den Çekme
     getProductCategories() {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/login")
-        }
 
         let url = "/api/productcategories/getall";
         fetch(url, {
@@ -240,10 +267,6 @@ export default class ProductCategory extends Component {
     //Ürünleri Db'den Çekme
     getProducts() {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
 
         let url = "/api/products/getdetails";
         fetch(url, {
@@ -252,8 +275,22 @@ export default class ProductCategory extends Component {
                 'Authorization': `Bearer ${token}`
             }
         })
-            .then((response) => response.json())
-            .then((data) => this.setState({ products: data }));
+        .then(async (response) => {
+            const data = await response.json();
+
+            if (!response.ok) {
+                const error = data;
+                return Promise.reject(error);
+            }
+
+            this.setState({ products: data });
+
+        })
+        .catch((responseError) => {
+            if (responseError.Message == "Token Bulunamadı!") {
+                this.CreateTokenByRefreshToken();
+            }
+        })
     };
 
     //Db'Den çekilmiş kategorileri listeleme

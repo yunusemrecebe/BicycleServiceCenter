@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
@@ -56,6 +57,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.ProductBrandDeleted);
         }
 
+        [SecuredOperation("Admin")]
         public IDataResult<ProductBrand> GetById(int id)
         {
             IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
@@ -68,6 +70,7 @@ namespace Business.Concrete
             return new SuccessDataResult<ProductBrand>(_productBrandDal.Get(p => p.ProductBrandId == id));
         }
 
+        [SecuredOperation("Admin")]
         [CacheAspect]
         public IDataResult<List<ProductBrand>> GetList()
         {

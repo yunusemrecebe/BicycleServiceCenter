@@ -16,12 +16,13 @@ export default class UpdateProductCategory extends Component {
         selectedCategoryName: "",
         productCode: "",
         productName: "",
+        isProductLoaded: false,
     };
 
     componentDidMount() {
-        this.getProductDetailsById(this.props.getProduct);
         this.getProductBrands();
         this.getProductCategories();
+        this.getProductDetailsById(this.props.getProduct);
     }
 
     handleChange = (event) => {
@@ -38,13 +39,44 @@ export default class UpdateProductCategory extends Component {
         this.setState({ selectedCategoryId: parseInt(event.target.value) });
     }
 
+    CreateTokenByRefreshToken() {
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                token: localStorage.getItem('refreshToken'),
+            }),
+        };
+
+        fetch("/api/auth/CreateTokenByRefreshToken", requestOptions)
+            .then(async (response) => {
+                const data = await response.json();
+                console.log(data);
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                localStorage.setItem('token', data.data.accessToken);
+                localStorage.setItem('refreshToken', data.data.refreshToken);
+
+                this.componentDidMount();
+            })
+
+            .catch((responseError) => {
+
+                if (responseError.message == "Refresh Token Bulunamadı!") {
+                    alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
+                    this.props.history.push("/girisYap")
+                }
+            });
+    }
+
     //Ürün Markalarını Db'den Çekme
     getProductBrands() {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/login")
-        }
 
         let url = "/api/productbrands/getall";
         fetch(url, {
@@ -60,10 +92,6 @@ export default class UpdateProductCategory extends Component {
     //Ürün Kategorilerini Db'den Çekme
     getProductCategories() {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/login")
-        }
 
         let url = "/api/productcategories/getall";
         fetch(url, {
@@ -74,16 +102,11 @@ export default class UpdateProductCategory extends Component {
         })
             .then((response) => response.json())
             .then((data) => this.setState({ productCategories: data }));
-        console.log(this.state.productId);
     };
 
     //Ürün Detay Bilgisini Db'den Çekme (ProductDetailDto)
     getProductDetailsById(id) {
         let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-            this.props.history.push("/login")
-        }
 
         let url = "/api/products/getdetailsbyid?id=" + id;
         fetch(url, {
@@ -92,9 +115,15 @@ export default class UpdateProductCategory extends Component {
                 'Authorization': `Bearer ${token}`
             }
         })
-            .then((response) => response.json())
-            .then((data) => this.setState(
-                {
+            .then(async (response) => {
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                this.setState({
                     productId: data.productId,
                     selectedBrandId: data.brandId,
                     selectedCategoryId: data.categoryId,
@@ -102,7 +131,14 @@ export default class UpdateProductCategory extends Component {
                     selectedCategoryName: data.categoryName,
                     productName: data.productName,
                     productCode: data.productCode,
-                }));
+                    isProductLoaded: true,
+                });
+            })
+            .catch((responseError) => {
+                if (responseError.Message == "Token Bulunamadı!") {
+                    this.CreateTokenByRefreshToken();
+                }
+            })
     };
 
     //Ürün güncelleme
@@ -129,7 +165,7 @@ export default class UpdateProductCategory extends Component {
                     const error = data;
                     return Promise.reject(error);
                 }
-                
+
                 alertify.success(data.message);
                 this.props.history.push("/Ürünler");
             })
@@ -165,20 +201,34 @@ export default class UpdateProductCategory extends Component {
 
                 <FormGroup>
                     <Label for="brand">Marka</Label>
-                    <Input value={this.state.selectedBrandId} type="select" name="selectedBrandId" id="brand" onChange={this.handleChangeBrand}>
-                        {this.state.productBrands.map((productBrand) => (
-                            <option key={productBrand.productBrandId} value={productBrand.productBrandId}>{productBrand.name}</option>
-                        ))}
-                    </Input>
+                    {this.state.isProductLoaded == true ?
+                        <Input value={this.state.selectedBrandId} type="select" name="selectedBrandId" id="brand" onChange={this.handleChangeBrand}>
+                            {this.state.selectedBrandId != 0 ? this.state.productBrands.map((productBrand) => (
+                                <option key={productBrand.productBrandId} value={productBrand.productBrandId}>{productBrand.name}</option>
+                            ))
+                                :
+                                <option>Seçiniz</option>
+                            }
+                        </Input>
+                        :
+                        null
+                    }
                 </FormGroup>
 
                 <FormGroup>
                     <Label for="category">Kategori</Label>
-                    <Input value={this.state.selectedCategoryId} type="select" name="selectedCategoryId" id="category" onChange={this.handleChangeCategory}>
-                        {this.state.productCategories.map((productCategory) => (
-                            <option key={productCategory.productCategoryId} value={productCategory.productCategoryId} >{productCategory.name}</option>
-                        ))}
-                    </Input>
+                    {this.state.isProductLoaded == true ?
+                        <Input value={this.state.selectedCategoryId} type="select" name="selectedCategoryId" id="category" onChange={this.handleChangeCategory}>
+                            {this.state.productCategories != 0 ? this.state.productCategories.map((productCategory) => (
+                                <option key={productCategory.productCategoryId} value={productCategory.productCategoryId} >{productCategory.name}</option>
+                            ))
+                                :
+                                <option>Seçiniz</option>
+                            }
+                        </Input>
+                        :
+                        null
+                    }
                 </FormGroup>
 
                 <Button>Güncelle</Button>

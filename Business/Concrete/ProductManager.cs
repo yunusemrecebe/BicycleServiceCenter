@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
@@ -58,6 +59,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.ProductDeleted);
         }
 
+        [SecuredOperation("Admin")]
         public IDataResult<Product> GetById(int id)
         {
             IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
@@ -70,29 +72,34 @@ namespace Business.Concrete
             return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == id));
         }
 
+        [SecuredOperation("Admin")]
         public IDataResult<ProductDetailDto> GetProductDetailsById(int id)
         {
             return new SuccessDataResult<ProductDetailDto>(_productDal.GetProductDetails(p => p.ProductId == id));
         }
 
+        [SecuredOperation("Admin")]
         [CacheAspect]
         public IDataResult<List<Product>> GetList()
         {
             return new SuccessDataResult<List<Product>>(_productDal.GetList().ToList());
         }
 
+        [SecuredOperation("Admin")]
         [CacheAspect]
         public IDataResult<List<ProductDetailDto>> GetListByCategoryId(int id)
         {
             return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetailsList(p => p.CategoryId == id).ToList());
         }
 
+        [SecuredOperation("Admin")]
         [CacheAspect]
         public IDataResult<List<ProductDetailDto>> GetListOnSaleByCategoryId(int id)
         {
             return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetailsList(p => p.CategoryId == id && p.Status == true).ToList());
         }
 
+        [SecuredOperation("Admin")]
         [CacheAspect]
         public IDataResult<List<ProductDetailDto>> GetProductDetails()
         {
