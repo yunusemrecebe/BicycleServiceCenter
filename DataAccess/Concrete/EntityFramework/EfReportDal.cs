@@ -8,19 +8,57 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfReportDal : IReportDal
     {
-        //public ReportForCustomerDto GetReportForCustomer(int customerId)
-        //{
-        //    using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
-        //    {
-        //        int TotalQuantityOfReceivedProcesses = context.Processes.Where(p => p.CustomerId == customerId).Count();
-                
-        //        decimal OverallCharge = from processCharge in context.ProcessCharges
-                                        
-        //                                join process in context.Processes
-        //                                on processCharge.
+        public ReportForCustomerDto GetReportForCustomer(int customerId)
+        {
+            using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
+            {
+                int TotalQuantityOfReceivedProcesses = context.Processes.Where(p => p.CustomerId == customerId).Count();
 
-        //    }
-        //}
+                var OverallCharge = from processCharge in context.ProcessCharges
+
+                                    join process in context.Processes
+                                    on processCharge.ProcessId equals process.ProcessId
+
+                                    where process.CustomerId == customerId
+
+                                    select processCharge.Charge;
+
+                var PurchasedProducts = from consumedPart in context.ConsumedParts
+
+                                        join product in context.Products
+                                        on consumedPart.ProductId equals product.ProductId
+
+                                        join productBrand in context.ProductBrands
+                                        on product.BrandId equals productBrand.ProductBrandId
+
+                                        join process in context.Processes
+                                        on consumedPart.ProcessId equals process.ProcessId
+
+                                        where process.CustomerId == customerId
+
+                                        select new ConsumedPartDetailDto
+                                        {
+                                            ConsumedPartId = consumedPart.ConsumedPartId,
+                                            ProcessId = process.ProcessId,
+                                            ProductId = product.ProductId,
+                                            ProductCode = product.ProductCode,
+                                            Product = $"{productBrand.Name} {product.Name}",
+                                            Quantity = consumedPart.Quantity,
+                                            Discount = consumedPart.Discount,
+                                            UnitPrice = consumedPart.UnitPrice,
+                                            TotalPrice = consumedPart.UnitPrice * consumedPart.Quantity
+                                        };
+
+                return new ReportForCustomerDto
+                {
+                    CustomerId = customerId,
+                    OverallCharge = OverallCharge.Sum(),
+                    PurchasedProducts = PurchasedProducts.ToList(),
+                    TotalQuantityOfReceivedProcesses = TotalQuantityOfReceivedProcesses
+                };
+
+            }
+        }
 
         public ReportForEmployeeDto GetReportForEmployee(int employeeId)
         {

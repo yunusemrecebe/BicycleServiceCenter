@@ -7,5 +7,6 @@ namespace Business.Abstract
     {
         IDataResult<ReportForProductDto> GetReportForProduct(int productId);
         IDataResult<ReportForEmployeeDto> GetReportForEmployee(int employeeId);
+        IDataResult<ReportForCustomerDto> GetReportForCustomer(int customerId);
     }
 }

@@ -15,6 +15,18 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
+        public IActionResult GetReportForCustomer(int customerId)
+        {
+            var result = _reportService.GetReportForCustomer(customerId);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost]
         public IActionResult GetReportForEmployee(int employeeId)
         {
             var result = _reportService.GetReportForEmployee(employeeId);
