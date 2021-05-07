@@ -19,20 +19,18 @@ namespace DataAccess.Concrete.EntityFramework
                              join consumedPart in context.ConsumedParts
                              on processCharge.ConsumedPartId equals consumedPart.ConsumedPartId
 
-                             join process in context.Processes
-                             on consumedPart.ProcessId equals process.ProcessId
-
-                             where process.ProcessId == processId
+                             where processCharge.ProcessId == processId
 
                              select new ProcessChargeDetailDto
                              {
                                  ProcessChargeId = processCharge.ProcessChargeId,
-                                 ProcessId = process.ProcessId,
+                                 ProcessId = processCharge.ProcessId,
                                  ConsumedPartId = consumedPart.ConsumedPartId,
                                  Charge = consumedPart.UnitPrice * consumedPart.Quantity
                              };
 
                 result.ToList();
+
                 decimal charge = 0;
 
                 foreach (var item in result)

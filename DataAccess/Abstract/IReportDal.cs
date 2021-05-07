@@ -6,5 +6,6 @@ namespace DataAccess.Abstract
     {
         ReportForProductDto GetReportForProduct(int productId);
         ReportForEmployeeDto GetReportForEmployee(int employeeId);
+        //ReportForCustomerDto GetReportForCustomer(int customerId);
     }
 }

@@ -58,6 +58,7 @@ namespace Business.Concrete
             _processChargeService.Add(new ProcessCharge 
             { 
                 ConsumedPartId = consumedPart.ConsumedPartId, 
+                ProcessId = consumedPart.ProcessId,
                 Charge = consumedPart.UnitPrice * consumedPart.Quantity 
             });
 

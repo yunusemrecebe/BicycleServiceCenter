@@ -8,6 +8,20 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfReportDal : IReportDal
     {
+        //public ReportForCustomerDto GetReportForCustomer(int customerId)
+        //{
+        //    using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
+        //    {
+        //        int TotalQuantityOfReceivedProcesses = context.Processes.Where(p => p.CustomerId == customerId).Count();
+                
+        //        decimal OverallCharge = from processCharge in context.ProcessCharges
+                                        
+        //                                join process in context.Processes
+        //                                on processCharge.
+
+        //    }
+        //}
+
         public ReportForEmployeeDto GetReportForEmployee(int employeeId)
         {
             using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
