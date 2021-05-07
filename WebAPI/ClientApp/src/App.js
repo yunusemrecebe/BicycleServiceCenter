@@ -27,6 +27,7 @@ import Login from "./components/Authentication/Login";
 import Logout from "./components/Authentication/Logout";
 import Register from "./components/Authentication/Register";
 import GuardedRoute from "./GuardedRoute";
+import ReportForCustomer from "./components/Report/ReportForCustomer";
 
 export default class App extends Component {
   static displayName = App.name;
@@ -161,6 +162,9 @@ export default class App extends Component {
         {/* CUSTOMER İLE İLGİLİ YÖNLENDİRMELER */}
         <Route exact path="/müşteriler" render={props => (<Customers {...props} setCustomer={this.setCustomer} />)} />
         <Route exact path="/müşteriGüncelle" render={props => (<CustomerUpdate {...props} getCustomer={this.state.selectedCustomer} />)} />
+
+        {/* REPORT İLE İLGİLİ YÖNLENDİRMELER */}
+        <Route exact path="/müşteriRaporu" render={props => (<ReportForCustomer {...props} setCustomer={this.setCustomer} />)} />
       </Layout>
     );
   }
