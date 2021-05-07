@@ -5,5 +5,6 @@ namespace DataAccess.Abstract
     public interface IReportDal
     {
         ReportForProductDto GetReportForProduct(int productId);
+        ReportForEmployeeDto GetReportForEmployee(int employeeId);
     }
 }

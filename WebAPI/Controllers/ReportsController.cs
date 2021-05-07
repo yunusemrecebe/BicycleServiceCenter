@@ -15,9 +15,21 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetReportForProductByProductId(int productId)
+        public IActionResult GetReportForEmployee(int employeeId)
         {
-            var result = _reportService.GetReportForProductByProductId(productId);
+            var result = _reportService.GetReportForEmployee(employeeId);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost]
+        public IActionResult GetReportForProduct(int productId)
+        {
+            var result = _reportService.GetReportForProduct(productId);
 
             if (result.Success)
             {

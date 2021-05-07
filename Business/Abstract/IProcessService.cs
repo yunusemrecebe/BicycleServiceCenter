@@ -14,7 +14,6 @@ namespace Business.Abstract
         IDataResult<List<ProcessDetailDto>> GetProcessDetails();
         IDataResult<ProcessDetailDto> GetProcessDetailsById(int id);
         IDataResult<Process> GetById(int id);
-        IDataResult<Process> GetByEmployee(int employeeId);
         IResult Add(Process process);
         IResult Update(Process process);
         IResult Delete(int id);
