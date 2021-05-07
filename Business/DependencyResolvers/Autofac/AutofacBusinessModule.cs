@@ -51,6 +51,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<ProductCategoryManager>().As<IProductCategoryService>().SingleInstance();
             builder.RegisterType<EfProductCategoryDal>().As<IProductCategoryDal>().SingleInstance();
 
+            builder.RegisterType<ReportManager>().As<IReportService>().SingleInstance();
+            builder.RegisterType<EfReportDal>().As<IReportDal>().SingleInstance();
+
             builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();
             builder.RegisterType<EfUserDal>().As<IUserDal>().SingleInstance();
 

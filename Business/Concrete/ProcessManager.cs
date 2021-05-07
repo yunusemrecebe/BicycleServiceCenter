@@ -50,6 +50,18 @@ namespace Business.Concrete
             return new SuccessResult(Messages.ProcessDeleted);
         }
 
+        public IDataResult<Process> GetByEmployee(int employeeId)
+        {
+            IResult result = BusinessRules.Run(CheckEmployeeIdValueIsTrue(employeeId));
+
+            if (result != null)
+            {
+                return new ErrorDataResult<Process>(Messages.IdValueIsInvalid);
+            }
+
+            return new SuccessDataResult<Process>(_processDal.Get(p => p.EmployeeId == employeeId));
+        }
+
         public IDataResult<Process> GetById(int id)
         {
             IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
@@ -105,6 +117,18 @@ namespace Business.Concrete
         private IResult CheckIdValueIsTrue(int id)
         {
             var result = _processDal.Get(x => x.ProcessId == id);
+
+            if (result == null)
+            {
+                return new ErrorResult(Messages.IdValueIsInvalid);
+            }
+
+            return new SuccessResult();
+        }
+
+        private IResult CheckEmployeeIdValueIsTrue(int employeeId)
+        {
+            var result = _processDal.Get(x => x.EmployeeId == employeeId);
 
             if (result == null)
             {
