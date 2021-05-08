@@ -18,7 +18,7 @@ export default class Menu extends Component {
             [11, "Stok Yönetimi", "/envanter"],
             [12, "Müşteri Raporu", "/müşteriRaporu"],
             [13, "Personel Raporu", "/personelRaporu"],
-            [14, "Ürün", "/ürünRaporu"]
+            [14, "Ürün Raporu", "/ürünRaporu"]
         ],
         collapsed: true,
         currentCategory: 0

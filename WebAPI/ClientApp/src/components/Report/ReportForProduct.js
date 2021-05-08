@@ -5,18 +5,10 @@ import Select from 'react-select';
 export default  class ReportForCustomer extends Component {
     state = {
         reportDetails: [],
-        products: [],
-        selectedProduct:0
     }
 
     componentDidMount(){
-        this.getProducts();
-    }
-
-    handleChangeProduct = (event) => {
-        this.state.selectedProduct = event.value;
-        console.log(event);
-        this.getReport(this.state.selectedProduct);
+        this.getReport();
     }
 
     CreateTokenByRefreshToken() {
@@ -54,33 +46,11 @@ export default  class ReportForCustomer extends Component {
             });
     }
 
-    //Ürünleri Db'den Çekme
-    getProducts() {
-        let token = localStorage.getItem('token');
-
-        let url = "/api/products/getdetails";
-        fetch(url, {
-            method: 'get',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then(async (response) => {
-            const data = await response.json();
-
-            if (!response.ok) {
-                const error = data;
-                return Promise.reject(error);
-            }
-            this.setState({ products: data });
-        })
-    };
-
     //Raporu ilgili kullanıcıya göre db'den çekme
-    getReport(id) {
+    getReport() {
         let token = localStorage.getItem('token');
 
-        let url = "/api/reports/GetReportForProduct?productId=" + id;
+        let url = "/api/reports/GetReportForProductList";
         fetch(url, {
             method: 'get',
             headers: {
@@ -132,40 +102,10 @@ export default  class ReportForCustomer extends Component {
         )
     }
 
-    ProductSelect(dizi = []) {
-        let options = [];
-
-        if (dizi.length != options.length) {
-            for (let index = 0; index < dizi.length; index++) {
-                options.push({ value: dizi[index].productId, label: dizi[index].productCode + " - " + dizi[index].brandName + " " + dizi[index].productName },)
-            };
-        }
-
-        return <div>
-            <Label for="customerSelect">Ürünler</Label>
-            <Select
-                id="productSelect"
-                placeholder="Seçiniz"
-                options={options}
-                onChange={this.handleChangeProduct}
-            />
-        </div>
-
-    }
-
     render() {
         return (
             <div>
                 <center><h1> Ürün Hakkında Rapor Oluşturma</h1></center>
-                <Row>
-                    <Col md={4}>
-                        <FormGroup>
-                            {this.ProductSelect(this.state.products)}
-                        </FormGroup>
-                    </Col>
-                </Row>
-                <hr></hr>
-                <h1>Satın Aldığı Ürünler </h1>
                 <br></br>
                 {this.ListToReport()}
             </div>
