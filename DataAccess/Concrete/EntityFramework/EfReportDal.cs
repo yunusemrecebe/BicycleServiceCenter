@@ -1,8 +1,10 @@
 ﻿using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework.Abstract;
 using Entities.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace DataAccess.Concrete.EntityFramework
 {
@@ -74,6 +76,35 @@ namespace DataAccess.Concrete.EntityFramework
                     TotalQuantityOfHandledService = TotalQuantityOfHandledService
                 };
             }
+        }
+
+        public List<ReportForEmployeeDto> GetReportForEmployeeList(Expression<Func<bool, ReportForEmployeeDto>> filter = null)
+        {
+            List<ReportForEmployeeDto> employees = new List<ReportForEmployeeDto>();
+
+            using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
+            {
+                foreach (var employee in context.Employees)
+                {
+                    int TotalQuantityOfHandledService;
+
+                    //using ()
+                    //{
+                        BicycleServiceCenterContext context1 = new BicycleServiceCenterContext();
+                        TotalQuantityOfHandledService = context1.Processes.Where(p => p.EmployeeId == employee.EmployeeId).Count();
+                    //};
+
+                    employees.Add(new ReportForEmployeeDto
+                    {
+                        EmployeeId = employee.EmployeeId,
+                        Employee = $"{employee.FirstName} {employee.LastName}",
+                        TotalQuantityOfHandledService = TotalQuantityOfHandledService
+                    });
+                }
+
+            }
+
+            return employees;
         }
 
         public ReportForProductDto GetReportForProduct(int productId)

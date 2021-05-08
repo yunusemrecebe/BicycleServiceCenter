@@ -1,9 +1,11 @@
 ﻿using Business.Abstract;
 using Business.Constants;
-using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Dtos;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Business.Concrete
 {
@@ -44,6 +46,11 @@ namespace Business.Concrete
             }
 
             return new SuccessDataResult<ReportForEmployeeDto>(_reportDal.GetReportForEmployee(employeeId));
+        }
+
+        public IDataResult<List<ReportForEmployeeDto>> GetReportForEmployeeList()
+        {
+            return new SuccessDataResult<List<ReportForEmployeeDto>>(_reportDal.GetReportForEmployeeList());
         }
 
         public IDataResult<ReportForProductDto> GetReportForProduct(int productId)
