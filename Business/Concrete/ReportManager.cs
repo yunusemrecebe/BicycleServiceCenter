@@ -64,5 +64,10 @@ namespace Business.Concrete
 
             return new SuccessDataResult<ReportForProductDto>(_reportDal.GetReportForProduct(productId));
         }
+
+        public IDataResult<List<ReportForProductDto>> GetReportForProductList()
+        {
+            return new SuccessDataResult<List<ReportForProductDto>>(_reportDal.GetReportForProductList());
+        }
     }
 }

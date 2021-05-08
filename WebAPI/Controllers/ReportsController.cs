@@ -61,5 +61,17 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+
+        [HttpGet]
+        public IActionResult GetReportForProductList()
+        {
+            var result = _reportService.GetReportForProductList();
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }

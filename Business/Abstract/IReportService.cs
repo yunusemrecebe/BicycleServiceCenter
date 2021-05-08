@@ -9,6 +9,7 @@ namespace Business.Abstract
     public interface IReportService
     {
         IDataResult<ReportForProductDto> GetReportForProduct(int productId);
+        IDataResult<List<ReportForProductDto>> GetReportForProductList();
         IDataResult<ReportForEmployeeDto> GetReportForEmployee(int employeeId);
         IDataResult<List<ReportForEmployeeDto>> GetReportForEmployeeList();
         IDataResult<ReportForCustomerDto> GetReportForCustomer(int customerId);

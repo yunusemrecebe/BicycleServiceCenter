@@ -126,5 +126,34 @@ namespace DataAccess.Concrete.EntityFramework
                 return result.Where(p => p.ProductId == productId).SingleOrDefault();
             }
         }
+
+        public List<ReportForProductDto> GetReportForProductList(Expression<Func<bool, ReportForProductDto>> filter = null)
+        {
+            using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
+            {
+                List<ReportForProductDto> products = new List<ReportForProductDto>();
+
+                foreach (var product in context.Products)
+                {
+
+                    BicycleServiceCenterContext context1 = new BicycleServiceCenterContext();
+                    int TotalQuantityOfSale = context1.ConsumedParts.Where(p => p.ProductId == product.ProductId).Sum(p => p.Quantity);
+                    decimal TotalPriceOfSale = context1.ConsumedParts.Where(p => p.ProductId == product.ProductId).Sum(p => p.UnitPrice * p.Quantity);
+                    var productBrand = context1.ProductBrands.Where(p => p.ProductBrandId == product.BrandId).SingleOrDefault();
+
+                    products.Add(
+                        new ReportForProductDto
+                        {
+                            ProductId = product.ProductId,
+                            ProductCode = product.ProductCode,
+                            Product = $"{productBrand.Name} {product.Name}",
+                            TotalQuantityOfSale = TotalQuantityOfSale,
+                            TotalPriceOfSale = TotalPriceOfSale
+                        });
+                }
+
+                return products;
+            }
+        }
     }
 }
