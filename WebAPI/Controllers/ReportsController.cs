@@ -50,7 +50,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-       [HttpPost]
+       [HttpGet]
         public IActionResult GetReportForProduct(int productId)
         {
             var result = _reportService.GetReportForProduct(productId);

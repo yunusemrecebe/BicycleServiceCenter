@@ -29,6 +29,7 @@ import Register from "./components/Authentication/Register";
 import GuardedRoute from "./GuardedRoute";
 import ReportForCustomer from "./components/Report/ReportForCustomer";
 import ReportForEmployee from "./components/Report/ReportForEmployee";
+import ReportForProduct from "./components/Report/ReportForProduct";
 
 export default class App extends Component {
   static displayName = App.name;
@@ -167,6 +168,7 @@ export default class App extends Component {
         {/* REPORT İLE İLGİLİ YÖNLENDİRMELER */}
         <Route exact path='/müşteriRaporu' component={ReportForCustomer} />
         <Route exact path='/personelRaporu' component={ReportForEmployee} />
+        <Route exact path='/ürünRaporu' component={ReportForProduct} />
 
       </Layout>
     );
