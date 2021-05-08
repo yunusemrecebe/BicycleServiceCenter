@@ -86,13 +86,8 @@ namespace DataAccess.Concrete.EntityFramework
             {
                 foreach (var employee in context.Employees)
                 {
-                    int TotalQuantityOfHandledService;
-
-                    //using ()
-                    //{
-                        BicycleServiceCenterContext context1 = new BicycleServiceCenterContext();
-                        TotalQuantityOfHandledService = context1.Processes.Where(p => p.EmployeeId == employee.EmployeeId).Count();
-                    //};
+                    BicycleServiceCenterContext context1 = new BicycleServiceCenterContext();
+                    int TotalQuantityOfHandledService = context1.Processes.Where(p => p.EmployeeId == employee.EmployeeId).Count();
 
                     employees.Add(new ReportForEmployeeDto
                     {
