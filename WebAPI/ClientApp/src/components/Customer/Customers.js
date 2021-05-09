@@ -4,17 +4,12 @@ import { Button, Table, Row, Col, Form, FormGroup, Label, Input } from "reactstr
 
 export default class Customers extends Component {
     state = {
-        customers: [],
         firstName: "",
         lastName: "",
         phone: "",
         eMail: "",
         adress: ""
     };
-
-    componentDidMount() {
-        this.getCustomers();
-    }
 
     //form verilerini state içerisine aktaran fonksiyon
     handleChange = (event) => {
@@ -158,35 +153,6 @@ export default class Customers extends Component {
         )
     }
 
-    //Müşterileri Db'den Çekme
-    getCustomers() {
-        let token = localStorage.getItem('token');
-
-        let url = "/api/customers/getall";
-        fetch(url, {
-            method: 'get',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(async (response) => {
-                const data = await response.json();
-
-                if (!response.ok) {
-                    const error = data;
-                    return Promise.reject(error);
-                }
-
-                this.setState({ customers: data });
-
-            })
-            .catch((responseError) => {
-                if (responseError.Message == "Token Bulunamadı!") {
-                    this.CreateTokenByRefreshToken();
-                }
-            })
-    };
-
     //Db'Den çekilmiş müşterileri listeleme
     ListCustomers() {
         return (
@@ -203,13 +169,13 @@ export default class Customers extends Component {
                 </thead>
 
                 <tbody>
-                    {this.state.customers.length > 0 ? this.state.customers.map((customer) => (
+                    {this.props.listCustomers.length > 0 ? this.props.listCustomers.map((customer) => (
                         <tr key={customer.customerId}>
                             <td>{customer.firstName} {customer.lastName}</td>
                             <td>{customer.phone}</td>
                             <td>{customer.eMail}</td>
                             <td>{customer.adress}</td>
-                            <td><Button onClick={this.deleteCustomer.bind(this, customer.customerId)} color="danger">Sil</Button></td>
+                            <td><Button onClick={this.props.deleteCustomer.bind(this, customer.customerId)} color="danger">Sil</Button></td>
                             <td><Button onClick={this.updateCustomer.bind(this, customer.customerId)} color="info">Güncelle</Button></td>
                         </tr>
                     ))
@@ -221,48 +187,6 @@ export default class Customers extends Component {
         )
     }
 
-    //Müşteri Silme
-    deleteCustomer(id) {
-
-        let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
-
-        const requestOptions = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                'Authorization': `Bearer ${token}`
-            },
-        };
-
-        fetch("/api/customers/delete?id=" + id, requestOptions)
-            .then(async (response) => {
-                const data = await response.json();
-
-                if (!response.ok) {
-                    const error = data;
-                    alertify.error(data.message);
-                    return Promise.reject(error);
-                }
-
-                this.getCustomers();
-                alertify.warning(data.message);
-            })
-
-            .catch((responseError) => {
-                if (responseError.Errors) {
-                    if (responseError.Errors.length > 0) {
-                        for (let i = 0; i < responseError.Errors.length; i++) {
-                            alertify.error(responseError.Errors[i].ErrorMessage);
-                        }
-                    }
-                }
-            });
-    };
-
     //Müşteri güncellemek için Müşteri İd gönderen fonksiyon
     setCustomer = (id) => {
         this.props.setCustomer(id);
@@ -271,7 +195,7 @@ export default class Customers extends Component {
     //Müşteri Güncelleme
     updateCustomer(id) {
         this.setCustomer(id);
-        this.props.history.push("/müşteriGüncelle");
+        this.props.history.push("/musteriler/guncelle");
     };
 
     render() {
