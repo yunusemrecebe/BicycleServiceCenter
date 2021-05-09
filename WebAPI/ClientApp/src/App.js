@@ -27,7 +27,6 @@ import ConsumedPartUpdate from "./components/ConsumedPart/UpdateConsumedPart";
 import Login from "./components/Authentication/Login";
 import Logout from "./components/Authentication/Logout";
 import Register from "./components/Authentication/Register";
-import GuardedRoute from "./GuardedRoute";
 import ReportForCustomer from "./components/Report/ReportForCustomer";
 import ReportForEmployee from "./components/Report/ReportForEmployee";
 import ReportForProduct from "./components/Report/ReportForProduct";
@@ -49,18 +48,9 @@ export default class App extends Component {
     selectedProcess: undefined,
     selectedProcessCustomer: undefined,
     consumedPart: undefined,
-    isAuthenticated: false
   };
 
   componentDidMount() {
-    // let token = localStorage.getItem('token');
-    // if (token == null) {
-    //   alert('Bu sayfayı görüntüleyebilmek için giriş yapmalısınız!');
-    //   this.props.history.push("/girisYap")
-    // }
-    // else {
-    //   this.setAuth(true);
-    // }
     this.getCustomers();
   }
 

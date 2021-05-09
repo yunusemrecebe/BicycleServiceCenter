@@ -1,54 +1,161 @@
-import React, { Component } from "react";
-import { ListGroup, ListGroupItem, Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from "reactstrap";
-import { Link } from 'react-router-dom';
+/* eslint-disable react/display-name, jsx-a11y/click-events-have-key-events */
+import { Navigation } from "react-minimal-side-navigation";
+import { useHistory, useLocation } from "react-router-dom";
+//import Icon from "awesome-react-icons";
+import React, { useState } from "react";
 
-export default class Menu extends Component {
-    state = {
-        categories: [
-            [1, "Anasayfa", "/"],
-            [2, "Ürün Markası", "/ürünMarkası"],
-            [3, "Ürün Kategorisi", "/ürünKategorisi"],
-            [4, "Ürünler", "/ürünler"],
-            [5, "Personeller", "/personeller"],
-            [6, "Müşteriler", "/müşteriler"],
-            [7, "Bisiklet Markası", "/bisikletMarkası"],
-            [8, "Bisiklet Modeli", "/bisikletModeli"],
-            [9, "Bisikletler", "/bisikletler"],
-            [10, "Servis Hizmeti", "/servisHizmeti"],
-            [11, "Stok Yönetimi", "/envanter"],
-            [12, "Müşteri Raporu", "/müşteriRaporu"],
-            [13, "Personel Raporu", "/personelRaporu"],
-            [14, "Ürün Raporu", "/ürünRaporu"]
-        ],
-        collapsed: true,
-        currentCategory: 0
-    };
+import "react-minimal-side-navigation/lib/ReactMinimalSideNavigation.css";
 
-    toggleNavbar(event) {
-        event.preventDefault();
-        this.setState({
-            collapsed: !this.state.collapsed
-        });
-    }
+const NavSidebar = () => {
+  const history = useHistory();
+  const location = useLocation();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-    render() {
-        return (
-            <div>
-                <ListGroup>
-                    {this.state.categories.map(category => (
-                        <ListGroupItem key={category[0]} active={category[0] == this.state.currentCategory?true:false} >
-                            <ul>
-                                <li>
-                                <NavItem>
-                                            <NavLink tag={Link} className="text-dark" to={category[2]}>{category[1]} </NavLink>
-                                        </NavItem>
-                                </li>
-                            </ul>
-                                        
-                        </ListGroupItem>
-                    ))}
-                </ListGroup>
-            </div>
-        );
-    }
-}
+  return (
+    <React.Fragment>
+      {/* Sidebar */}
+      <div
+        className={`fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 ease-out transform translate-x-0 bg-white border-r-2 lg:translate-x-0 lg:static lg:inset-0 ${isSidebarOpen ? "ease-out translate-x-0" : "ease-in -translate-x-full"
+          }`}
+      >
+        <div className="flex items-center justify-center mt-10 text-center py-6">
+        </div>
+
+        <Navigation
+          activeItemId={location.pathname}
+          onSelect={({ itemId }) => {
+            history.push(itemId);
+          }}
+          items={[
+            {
+              title: "Anasayfa",
+              itemId: "/",
+            },
+            {
+              title: "Ürünler",
+              itemId: "/urun/listele",
+              subNav: [
+                {
+                  title: "Ürün Ekle",
+                  itemId: "/urun/ekle"
+                },
+                {
+                  title: "Ürün Markaları",
+                  itemId: "/urun/marka/listele"
+                },
+                {
+                  title: "Ürün Markası Ekle",
+                  itemId: "/urun/marka/ekle"
+                },
+                {
+                  title: "Ürün Modelleri",
+                  itemId: "/urun/model/listele"
+                },
+                {
+                  title: "Ürün Modeli Ekle",
+                  itemId: "/urun/model/ekle"
+                },
+              ]
+            },
+            {
+              title: "Personeller",
+              itemId: "/personel/listele",
+              subNav: [
+                {
+                  title: "Ürün Ekle",
+                  itemId: "/personel/ekle"
+                },
+              ]
+            },
+            {
+              title: "Müşteriler",
+              itemId: "/musteri/listele",
+              subNav: [
+                {
+                  title: "Müşteri Ekle",
+                  itemId: "/musteri/ekle"
+                }
+              ]
+            },
+            {
+              title: "Bisikletler",
+              itemId: "/bisiklet/listele",
+              subNav: [
+                {
+                  title: "Bisiklet Ekle",
+                  itemId: "/bisiklet/ekle"
+                },
+                {
+                  title: "Bisiklet Markaları",
+                  itemId: "/bisiklet/marka/listele"
+                },
+                {
+                  title: "Bisiklet Markası Ekle",
+                  itemId: "/bisiklet/marka/ekle"
+                },
+                {
+                  title: "Bisiklet Modelleri",
+                  itemId: "/bisiklet/model/listele"
+                },
+                {
+                  title: "Bisiklet Modeli Ekle",
+                  itemId: "/bisiklet/model/ekle"
+                }
+              ]
+            },
+            {
+              title: "Servis Hizmetleri",
+              itemId: "/servis/listele",
+              subNav: [
+                {
+                  title: "Servis Hizmeti Ekle",
+                  itemId: "/servis/ekle"
+                }
+              ]
+            },
+            {
+              title: "Stok Yonetimi",
+              itemId: "/stok/listele",
+            },
+            {
+              title: "Raporlar",
+              subNav: [
+                {
+                  title: "Müşteri Raporu",
+                  itemId: "/rapor/musteri"
+                },
+                {
+                  title: "Personel Raporu",
+                  itemId: "/rapor/personel"
+                },
+                {
+                  title: "Ürün Raporu",
+                  itemId: "/rapor/urun"
+                },
+              ]
+            }
+          ]}
+        />
+
+        <div className="absolute bottom-0 w-full my-8">
+          <Navigation
+            activeItemId={location.pathname}
+            items={[
+              {
+                title: "Settings",
+                itemId: "/settings",
+                // elemBefore: () => <Icon name="activity" />
+              }
+            ]}
+            onSelect={({ itemId }) => {
+              history.push(itemId);
+            }}
+          />
+        </div>
+      </div>
+    </React.Fragment>
+  );
+};
+
+
+export default NavSidebar;
