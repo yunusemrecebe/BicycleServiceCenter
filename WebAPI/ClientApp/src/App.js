@@ -114,38 +114,38 @@ export default class App extends Component {
 
   CreateTokenByRefreshToken() {
     const requestOptions = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            token: localStorage.getItem('refreshToken'),
-        }),
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: localStorage.getItem('refreshToken'),
+      }),
     };
 
     fetch("/api/auth/CreateTokenByRefreshToken", requestOptions)
-        .then(async (response) => {
-            const data = await response.json();
-            console.log(data);
-            if (!response.ok) {
-                const error = data;
-                return Promise.reject(error);
-            }
+      .then(async (response) => {
+        const data = await response.json();
+        console.log(data);
+        if (!response.ok) {
+          const error = data;
+          return Promise.reject(error);
+        }
 
-            localStorage.setItem('token', data.data.accessToken);
-            localStorage.setItem('refreshToken', data.data.refreshToken);
+        localStorage.setItem('token', data.data.accessToken);
+        localStorage.setItem('refreshToken', data.data.refreshToken);
 
-            this.componentDidMount();
-        })
+        this.componentDidMount();
+      })
 
-        .catch((responseError) => {
+      .catch((responseError) => {
 
-            if (responseError.message == "Refresh Token Bulunamadı!") {
-                alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
-                this.props.history.push("/girisYap")
-            }
-        });
-}
+        if (responseError.message == "Refresh Token Bulunamadı!") {
+          alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
+          this.props.history.push("/girisYap")
+        }
+      });
+  }
 
   //Müşterileri Db'den Çekme
   getCustomers() {
@@ -181,42 +181,42 @@ export default class App extends Component {
 
     let token = localStorage.getItem('token');
     if (token == null) {
-        alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
-        this.props.history.push("/girisYap")
+      alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
+      this.props.history.push("/girisYap")
     }
 
     const requestOptions = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            'Authorization': `Bearer ${token}`
-        },
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`
+      },
     };
 
     fetch("/api/customers/delete?id=" + id, requestOptions)
-        .then(async (response) => {
-            const data = await response.json();
+      .then(async (response) => {
+        const data = await response.json();
 
-            if (!response.ok) {
-                const error = data;
-                alertify.error(data.message);
-                return Promise.reject(error);
+        if (!response.ok) {
+          const error = data;
+          alertify.error(data.message);
+          return Promise.reject(error);
+        }
+
+        this.getCustomers();
+        alertify.warning(data.message);
+      })
+
+      .catch((responseError) => {
+        if (responseError.Errors) {
+          if (responseError.Errors.length > 0) {
+            for (let i = 0; i < responseError.Errors.length; i++) {
+              alertify.error(responseError.Errors[i].ErrorMessage);
             }
-
-            this.getCustomers();
-            alertify.warning(data.message);
-        })
-
-        .catch((responseError) => {
-            if (responseError.Errors) {
-                if (responseError.Errors.length > 0) {
-                    for (let i = 0; i < responseError.Errors.length; i++) {
-                        alertify.error(responseError.Errors[i].ErrorMessage);
-                    }
-                }
-            }
-        });
-};
+          }
+        }
+      });
+  };
 
   render() {
     return (
@@ -224,51 +224,47 @@ export default class App extends Component {
         <Route exact path='/test' component={Test} />
 
         <Route exact path='/' component={Home} />
-        <Route exact path="/girisYap" render={props => (<Login {...props} setAuth={this.setAuth} />)} />
-        <Route exact path="/cikisYap" render={props => (<Logout {...props} setAuth={this.setAuth} />)} />
-        <Route exact path='/kayitOl' component={Register} />
+        <Route exact path="/kullanici/giris" render={props => (<Login {...props} setAuth={this.setAuth} />)} />
+        <Route exact path="/kullanici/cikis" render={props => (<Logout {...props} setAuth={this.setAuth} />)} />
+        <Route exact path='/kullanici/kayit' component={Register} />
 
         {/* PRODUCT İLE İLGİLİ YÖNLENDİRMELER */}
-        <Route exact path="/ürünMarkası" render={props => (<ProductBrand {...props} setProductBrand={this.setProductBrand} />)} />
-        <Route exact path="/ÜrünMarkasıGüncelle" render={props => (<ProductBrandUpdate {...props} getProductBrand={this.state.selectedBrand} />)} />
-        <Route exact path="/ürünKategorisi" render={props => (<ProductCategory {...props} setProductCategory={this.setProductCategory} />)} />
-        <Route exact path="/ÜrünKategorisiGüncelle" render={props => (<ProductCategoryUpdate {...props} getProductCategory={this.state.selectedCategory} />)} />
-        <Route exact path="/ürünler" render={props => (<Products {...props} setProduct={this.setProduct} />)} />
-        <Route exact path="/ÜrünGüncelle" render={props => (<ProductUpdate {...props} getProduct={this.state.selectedProduct} />)} />
+        <Route exact path="/urun/listele" render={props => (<Products {...props} setProduct={this.setProduct} />)} />
+        <Route exact path="/urun/guncelle" render={props => (<ProductUpdate {...props} getProduct={this.state.selectedProduct} />)} />
+        <Route exact path="/urun/marka/listele" render={props => (<ProductBrand {...props} setProductBrand={this.setProductBrand} />)} />
+        <Route exact path="/urun/marka/guncelle" render={props => (<ProductBrandUpdate {...props} getProductBrand={this.state.selectedBrand} />)} />
+        <Route exact path="/urun/kategori/listele" render={props => (<ProductCategory {...props} setProductCategory={this.setProductCategory} />)} />
+        <Route exact path="/urun/kategori/listele" render={props => (<ProductCategoryUpdate {...props} getProductCategory={this.state.selectedCategory} />)} />
 
         {/* INVENTORY İLE İLGİLİ YÖNLENDİRMELER*/}
-        <Route exact path="/envanter" render={props => (<Inventory {...props} setInventory={this.setInventory} />)} />
-        <Route exact path="/envanterGüncelle" render={props => (<InventoryUpdate {...props} getInventory={this.state.selectedInventory} />)} />
+        <Route exact path="/stok/listele" render={props => (<Inventory {...props} setInventory={this.setInventory} />)} />
+        <Route exact path="/stok/guncelle" render={props => (<InventoryUpdate {...props} getInventory={this.state.selectedInventory} />)} />
 
         {/* BICYCLE İLE İLGİLİ YÖNLENDİRMELER */}
-        <Route exact path="/bisikletMarkası" render={props => (<BicycleBrand {...props} setBicycleBrand={this.setBicycleBrand} />)} />
-        <Route exact path="/bisikletMarkasıGüncelle" render={props => (<BicycleBrandUpdate {...props} getBicycleBrand={this.state.selectedBicycleBrand} />)} />
-        <Route exact path="/bisikletModeli" render={props => (<BicycleModel {...props} setBicycleModel={this.setBicycleModel} />)} />
-        <Route exact path="/bisikletModeliGüncelle" render={props => (<BicycleModelUpdate {...props} getBicycleModel={this.state.selectedBicycleModel} />)} />
-        <Route exact path="/bisikletler" render={props => (<Bicycle {...props} setBicycle={this.setBicycle} />)} />
-        <Route exact path="/bisikletGüncelle" render={props => (<BicycleUpdate {...props} getBicycle={this.state.selectedBicycle} />)} />
+        <Route exact path="/bisiklet/listele" render={props => (<Bicycle {...props} setBicycle={this.setBicycle} />)} />
+        <Route exact path="/bisiklet/guncelle" render={props => (<BicycleUpdate {...props} getBicycle={this.state.selectedBicycle} />)} />
+        <Route exact path="/bisiklet/marka/listele" render={props => (<BicycleBrand {...props} setBicycleBrand={this.setBicycleBrand} />)} />
+        <Route exact path="/bisiklet/marka/guncelle" render={props => (<BicycleBrandUpdate {...props} getBicycleBrand={this.state.selectedBicycleBrand} />)} />
+        <Route exact path="/bisiklet/model/listele" render={props => (<BicycleModel {...props} setBicycleModel={this.setBicycleModel} />)} />
+        <Route exact path="/bisiklet/model/guncelle" render={props => (<BicycleModelUpdate {...props} getBicycleModel={this.state.selectedBicycleModel} />)} />
 
         {/* PROCESS İLE İLGİLİ YÖNLENDİRMELER */}
-        <Route exact path="/servisHizmeti" render={props => (<Process {...props} setProcess={this.setProcess} setSelectedCustomer={this.setSelectedCustomer} />)} />
-        <Route exact path="/servisHizmetiGüncelle" render={props => (<ProcessUpdate {...props} getCustomer={this.state.selectedProcessCustomer} getProcess={this.state.selectedProcess} setConsumedPart={this.setConsumedPart} />)} />
-        <Route exact path="/kullanılanÜrünüGüncelle" render={props => (<ConsumedPartUpdate {...props} getConsumedPart={this.state.consumedPart} />)} />
+        <Route exact path="/servis/listele" render={props => (<Process {...props} setProcess={this.setProcess} setSelectedCustomer={this.setSelectedCustomer} />)} />
+        <Route exact path="/servis/guncelle" render={props => (<ProcessUpdate {...props} getCustomer={this.state.selectedProcessCustomer} getProcess={this.state.selectedProcess} setConsumedPart={this.setConsumedPart} />)} />
+        <Route exact path="/servis/guncelle/urun/guncelle" render={props => (<ConsumedPartUpdate {...props} getConsumedPart={this.state.consumedPart} />)} />
 
         {/* EMPLOYEE İLE İLGİLİ YÖNLENDİRMELER */}
-        <Route exact path="/personeller" render={props => (<Employees {...props} setEmployee={this.setEmployee} />)} />
-        <Route exact path="/personelGüncelle" render={props => (<EmployeeUpdate {...props} getEmployee={this.state.selectedEmployee} />)} />
-
-        {/* <GuardedRoute path='/personeller' component={Employees} auth = {this.state.isAuthenticated} setEmployee={this.setEmployee} />
-        <GuardedRoute path='/personelGüncelle' component={EmployeeUpdate} auth = {this.state.isAuthenticated} getEmployee={this.state.selectedEmployee} /> */}
-
+        <Route exact path="/personel/listele" render={props => (<Employees {...props} setEmployee={this.setEmployee} />)} />
+        <Route exact path="/personel/guncelle" render={props => (<EmployeeUpdate {...props} getEmployee={this.state.selectedEmployee} />)} />
 
         {/* CUSTOMER İLE İLGİLİ YÖNLENDİRMELER */}
-        <Route exact path="/musteriler/listele" render={props => (<Customers {...props} setCustomer={this.setCustomer} deleteCustomer={this.deleteCustomer} listCustomers={this.state.customers} />)} />
-        <Route exact path="/musteriler/guncelle" render={props => (<CustomerUpdate {...props} getCustomer={this.state.selectedCustomer} />)} />
+        <Route exact path="/musteri/listele" render={props => (<Customers {...props} setCustomer={this.setCustomer} deleteCustomer={this.deleteCustomer} listCustomers={this.state.customers} />)} />
+        <Route exact path="/musteri/guncelle" render={props => (<CustomerUpdate {...props} getCustomer={this.state.selectedCustomer} />)} />
 
         {/* REPORT İLE İLGİLİ YÖNLENDİRMELER */}
-        <Route exact path='/müşteriRaporu' component={ReportForCustomer} />
-        <Route exact path='/personelRaporu' component={ReportForEmployee} />
-        <Route exact path='/ürünRaporu' component={ReportForProduct} />
+        <Route exact path='/rapor/musteri' component={ReportForCustomer} />
+        <Route exact path='/rapor/personel' component={ReportForEmployee} />
+        <Route exact path='/rapor/urun' component={ReportForProduct} />
 
       </Layout>
     );

@@ -48,12 +48,12 @@ const NavSidebar = () => {
                   itemId: "/urun/marka/ekle"
                 },
                 {
-                  title: "Ürün Modelleri",
-                  itemId: "/urun/model/listele"
+                  title: "Ürün Kategorileri",
+                  itemId: "/urun/kategori/listele"
                 },
                 {
-                  title: "Ürün Modeli Ekle",
-                  itemId: "/urun/model/ekle"
+                  title: "Ürün Kartegorisi Ekle",
+                  itemId: "/urun/kategori/ekle"
                 },
               ]
             },
