@@ -209,7 +209,7 @@ export default class BicycleBrand extends Component {
     //Marka İsmi Güncelleme
     updateBicycleBrand(id){
         this.setBicycleBrand(id);
-        this.props.history.push("/BisikletMarkasıGüncelle");
+        this.props.history.push("/bisiklet/marka/guncelle");
     };
 
     render() {

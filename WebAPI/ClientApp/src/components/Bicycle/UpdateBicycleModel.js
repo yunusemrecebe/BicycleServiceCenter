@@ -141,7 +141,7 @@ export default class UpdateBicycleModel extends Component {
                 }
 
                 alertify.success(data.message);
-                this.props.history.push("/bisikletModeli");
+                this.props.history.push("/bisiklet/model/listele");
             })
 
             .catch((responseError) => {

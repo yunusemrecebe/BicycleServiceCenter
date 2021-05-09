@@ -368,7 +368,7 @@ export default class Bicycle extends Component {
     //Bisiklet Güncelleme
     updateBicycle(id) {
         this.setBicycle(id);
-        this.props.history.push("/BisikletGüncelle");
+        this.props.history.push("/bisiklet/guncelle");
     };
 
     render() {

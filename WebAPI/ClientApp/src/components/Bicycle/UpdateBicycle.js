@@ -192,7 +192,7 @@ export default class UpdateBicycle extends Component {
                 }
                 
                 alertify.success(data.message);
-                this.props.history.push("/bisikletler");
+                this.props.history.push("/bisiklet/listele");
             })
 
             .catch((responseError) => {

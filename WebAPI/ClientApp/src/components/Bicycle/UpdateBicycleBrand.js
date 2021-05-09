@@ -107,7 +107,7 @@ export default class UpdateBicycleBrand extends Component {
                 }
 
                 alertify.success(data.message);
-                this.props.history.push("/bisikletMarkası");
+                this.props.history.push("/bisiklet/marka/listele");
             })
 
             .catch((responseError) => {

@@ -258,7 +258,7 @@ export default class BicycleModel extends Component {
     //Model İsmi Güncelleme
     updateBicycleModel(id){
         this.setBicycleModel(id);
-        this.props.history.push("/BisikletModeliGüncelle");
+        this.props.history.push("/bisiklet/model/guncelle");
     };
 
     render() {
