@@ -81,7 +81,7 @@ export default class ProductBrand extends Component {
 
                 Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
                 this.setState({ name: "" });
-                
+
                 alertify.success(data.message);
             })
 
@@ -170,10 +170,8 @@ export default class ProductBrand extends Component {
 
     //Marka İsmi Güncelleme
     updateProductBrand(id) {
-        //this.props.setProductBrand(id)
         this.setProductBrand(id);
-        //localStorage.setItem('productBrandId',id)
-        this.props.history.push("/ÜrünMarkasıGüncelle");
+        this.props.history.push("/urun/marka/guncelle");
     };
 
     //Db'Den çekilmiş marka isimlerini listeleme

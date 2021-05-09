@@ -106,7 +106,7 @@ export default class UpdateProductBrand extends Component {
                 }
 
                 alertify.success(data.message);
-                this.props.history.push("/ÜrünMarkası");
+                this.props.history.push("/urun/marka/listele");
             })
 
             .catch((responseError) => {

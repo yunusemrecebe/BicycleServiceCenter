@@ -234,7 +234,7 @@ export default class App extends Component {
         <Route exact path="/urun/marka/listele" render={props => (<ProductBrand {...props} setProductBrand={this.setProductBrand} />)} />
         <Route exact path="/urun/marka/guncelle" render={props => (<ProductBrandUpdate {...props} getProductBrand={this.state.selectedBrand} />)} />
         <Route exact path="/urun/kategori/listele" render={props => (<ProductCategory {...props} setProductCategory={this.setProductCategory} />)} />
-        <Route exact path="/urun/kategori/listele" render={props => (<ProductCategoryUpdate {...props} getProductCategory={this.state.selectedCategory} />)} />
+        <Route exact path="/urun/kategori/guncelle" render={props => (<ProductCategoryUpdate {...props} getProductCategory={this.state.selectedCategory} />)} />
 
         {/* INVENTORY İLE İLGİLİ YÖNLENDİRMELER*/}
         <Route exact path="/stok/listele" render={props => (<Inventory {...props} setInventory={this.setInventory} />)} />

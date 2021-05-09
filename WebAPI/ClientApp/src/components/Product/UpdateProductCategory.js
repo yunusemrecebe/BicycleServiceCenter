@@ -110,7 +110,7 @@ export default class UpdateProductCategory extends Component {
                 }
 
                 alertify.success("Ürün Kategorisi Güncellendi!");
-                this.props.history.push("/ÜrünKategorisi");
+                this.props.history.push("/urun/kategori/listele");
             })
 
             .catch((responseError) => {

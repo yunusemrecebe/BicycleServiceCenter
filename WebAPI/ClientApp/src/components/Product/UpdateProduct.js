@@ -167,7 +167,7 @@ export default class UpdateProductCategory extends Component {
                 }
 
                 alertify.success(data.message);
-                this.props.history.push("/Ürünler");
+                this.props.history.push("/urun/listele");
             })
 
             .catch((responseError) => {

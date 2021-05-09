@@ -169,7 +169,7 @@ export default class ProductCategory extends Component {
     //Ürün Kategorisi Güncelleme
     updateProductCategory(id) {
         this.setProductCategory(id);
-        this.props.history.push("/ÜrünKategorisiGüncelle");
+        this.props.history.push("/urun/kategori/guncelle");
     };
 
     //Db'Den çekilmiş kategorileri listeleme
