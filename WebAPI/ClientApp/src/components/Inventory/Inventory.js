@@ -160,7 +160,7 @@ export default class Inventory extends Component {
     //Envanter Güncelleme
     updateStock(id) {
         this.setInventory(id);
-        this.props.history.push("/envanterGüncelle");
+        this.props.history.push("/stok/guncelle");
     };
 
     render() {

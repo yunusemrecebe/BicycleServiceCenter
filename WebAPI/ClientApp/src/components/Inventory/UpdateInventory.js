@@ -111,7 +111,7 @@ export default class UpdateInventory extends Component {
                 });
 
                 alertify.success(data.message);
-                this.props.history.push("/envanter");
+                this.props.history.push("/stok/listele");
             })
 
             .catch((responseError) => {
