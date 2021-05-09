@@ -21,6 +21,7 @@ import BicycleModelUpdate from './components/Bicycle/UpdateBicycleModel';
 import Bicycle from './components/Bicycle/Bicycle';
 import BicycleUpdate from './components/Bicycle/UpdateBicycle';
 import Process from './components/Process/Process';
+import ProcessAdd from './components/Process/AddProcess';
 import ProcessUpdate from './components/Process/UpdateProcess';
 import Inventory from './components/Inventory/Inventory';
 import InventoryUpdate from './components/Inventory/UpdateInventory';
@@ -32,6 +33,7 @@ import ReportForCustomer from "./components/Report/ReportForCustomer";
 import ReportForEmployee from "./components/Report/ReportForEmployee";
 import ReportForProduct from "./components/Report/ReportForProduct";
 import Test from "./components/test";
+import Navbar from "./components/NavBar";
 
 let result = false;
 
@@ -122,7 +124,7 @@ export default class App extends Component {
     fetch("/api/auth/CreateTokenByRefreshToken", requestOptions)
       .then(async (response) => {
         const data = await response.json();
-        console.log(data);
+
         if (!response.ok) {
           const error = data;
           return Promise.reject(error);
@@ -138,7 +140,7 @@ export default class App extends Component {
 
         if (responseError.message == "Refresh Token Bulunamadı!") {
           alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
-          this.props.history.push("/girisYap")
+          this.props.history.push("/kullanici/giris")
         }
       });
   }
@@ -274,6 +276,7 @@ export default class App extends Component {
     return (
       <Layout>
         <Route exact path='/test' component={Test} />
+        <Route exact path='/navbar' component={Navbar} />
 
         <Route exact path='/' component={Home} />
         <Route exact path="/kullanici/giris" render={props => (<Login {...props} setAuth={this.setAuth} />)} />
@@ -302,6 +305,7 @@ export default class App extends Component {
 
         {/* PROCESS İLE İLGİLİ YÖNLENDİRMELER */}
         <Route exact path="/servis/listele" render={props => (<Process {...props} setProcess={this.setProcess} setSelectedCustomer={this.setSelectedCustomer} />)} />
+        <Route exact path="/servis/ekle" render={props => (<ProcessAdd {...props} />)} />
         <Route exact path="/servis/guncelle" render={props => (<ProcessUpdate {...props} getCustomer={this.state.selectedProcessCustomer} getProcess={this.state.selectedProcess} setConsumedPart={this.setConsumedPart} />)} />
         <Route exact path="/servis/guncelle/urun/guncelle" render={props => (<ConsumedPartUpdate {...props} getConsumedPart={this.state.consumedPart} />)} />
 

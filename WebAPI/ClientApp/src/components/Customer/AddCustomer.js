@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+import { Button, Form, Table, Input } from "reactstrap";
 
 export default class Customers extends Component {
     state = {
@@ -14,7 +14,6 @@ export default class Customers extends Component {
         let name = event.target.name;
         let value = event.target.value;
         this.setState({ [name]: value });
-        this.state.data[name] = value;
     };
 
     componentDidUpdate(){
@@ -31,31 +30,60 @@ export default class Customers extends Component {
     render() {
         return (
             <Form onSubmit={this.sendData}>
-                <br></br>
-                <FormGroup>
-                    <Label for="firstName">Adı</Label>
-                    <Input type="text" name="firstName" id="firstName" onChange={this.handleChange} />
-                </FormGroup>
+                <center><h1>Müşteri Ekle</h1></center>
+                <Table borderless>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Adı</th>
 
-                <FormGroup>
-                    <Label for="lastName">Soyadı</Label>
-                    <Input type="text" name="lastName" id="lastName" onChange={this.handleChange} />
-                </FormGroup>
+                            <td>
+                            <Input type="text" name="firstName" id="firstName" onChange={this.handleChange} />
+                            </td>
+                        </tr>
 
-                <FormGroup>
-                    <Label for="phone">Telefon</Label>
-                    <Input type="text" name="phone" id="phone" onChange={this.handleChange} />
-                </FormGroup>
+                        <tr>
+                            <th scope="row">Soyadı</th>
 
-                <FormGroup>
-                    <Label for="eMail">Email</Label>
-                    <Input type="email" name="eMail" id="eMail" onChange={this.handleChange} />
-                </FormGroup>
+                            <td>
+                            <Input type="text" name="lastName" id="lastName" onChange={this.handleChange} />
+                            </td>
+                        </tr>
 
-                <FormGroup>
-                    <Label for="adress">Adres</Label>
-                    <Input type="adress" name="adress" id="adress" onChange={this.handleChange} />
-                </FormGroup>
+                        <tr>
+                            <th scope="row">Telefon</th>
+
+                            <td>
+                            <Input type="text" name="phone" id="phone" onChange={this.handleChange} />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Email</th>
+
+                            <td>
+                            <Input type="email" name="eMail" id="eMail" onChange={this.handleChange} />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Adres</th>
+
+                            <td>
+                            <Input type="adress" name="adress" id="adress" onChange={this.handleChange} />
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </Table>
 
                 <Button>Ekle</Button>
             </Form>
