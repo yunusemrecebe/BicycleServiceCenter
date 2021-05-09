@@ -32,39 +32,13 @@ const NavSidebar = () => {
               itemId: "/",
             },
             {
-              title: "Ürünler",
-              itemId: "/urun/listele",
+              title: "Servis Hizmetleri",
+              itemId: "/servis/listele",
               subNav: [
                 {
-                  title: "Ürün Ekle",
-                  itemId: "/urun/ekle"
-                },
-                {
-                  title: "Ürün Markaları",
-                  itemId: "/urun/marka/listele"
-                },
-                {
-                  title: "Ürün Markası Ekle",
-                  itemId: "/urun/marka/ekle"
-                },
-                {
-                  title: "Ürün Kategorileri",
-                  itemId: "/urun/kategori/listele"
-                },
-                {
-                  title: "Ürün Kartegorisi Ekle",
-                  itemId: "/urun/kategori/ekle"
-                },
-              ]
-            },
-            {
-              title: "Personeller",
-              itemId: "/personel/listele",
-              subNav: [
-                {
-                  title: "Ürün Ekle",
-                  itemId: "/personel/ekle"
-                },
+                  title: "Servis Hizmeti Ekle",
+                  itemId: "/servis/ekle"
+                }
               ]
             },
             {
@@ -104,18 +78,50 @@ const NavSidebar = () => {
               ]
             },
             {
-              title: "Servis Hizmetleri",
-              itemId: "/servis/listele",
+              title: "Ürünler",
+              itemId: "/urun/listele",
               subNav: [
                 {
-                  title: "Servis Hizmeti Ekle",
-                  itemId: "/servis/ekle"
-                }
+                  title: "Ürün Ekle",
+                  itemId: "/urun/ekle"
+                },
+                {
+                  title: "Ürün Markaları",
+                  itemId: "/urun/marka/listele"
+                },
+                {
+                  title: "Ürün Markası Ekle",
+                  itemId: "/urun/marka/ekle"
+                },
+                {
+                  title: "Ürün Kategorileri",
+                  itemId: "/urun/kategori/listele"
+                },
+                {
+                  title: "Ürün Kartegorisi Ekle",
+                  itemId: "/urun/kategori/ekle"
+                },
               ]
             },
             {
               title: "Stok Yonetimi",
               itemId: "/stok/listele",
+              subNav: [
+                {
+                  title: "Ürün Ekle",
+                  itemId: "/stok/ekle"
+                },
+              ]
+            },
+            {
+              title: "Personeller",
+              itemId: "/personel/listele",
+              subNav: [
+                {
+                  title: "Ürün Ekle",
+                  itemId: "/personel/ekle"
+                },
+              ]
             },
             {
               title: "Raporlar",
@@ -136,22 +142,6 @@ const NavSidebar = () => {
             }
           ]}
         />
-
-        <div className="absolute bottom-0 w-full my-8">
-          <Navigation
-            activeItemId={location.pathname}
-            items={[
-              {
-                title: "Settings",
-                itemId: "/settings",
-                // elemBefore: () => <Icon name="activity" />
-              }
-            ]}
-            onSelect={({ itemId }) => {
-              history.push(itemId);
-            }}
-          />
-        </div>
       </div>
     </React.Fragment>
   );
