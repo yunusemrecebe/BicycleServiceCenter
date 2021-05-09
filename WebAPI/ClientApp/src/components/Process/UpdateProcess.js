@@ -293,7 +293,7 @@ export default class UpdateProcess extends Component {
                 }
 
                 alertify.success(data.message);
-                this.props.history.push("/servisHizmeti");
+                this.props.history.push("/servis/listele");
             })
 
             .catch((responseError) => {
@@ -598,7 +598,7 @@ export default class UpdateProcess extends Component {
     //Servis Hizmeti Güncelleme
     updateConsumedPart(id) {
         this.setConsumedPart(id);
-        this.props.history.push("/kullanılanÜrünüGüncelle");
+        this.props.history.push("/servis/guncelle/urun/guncelle");
     };
 
     render() {

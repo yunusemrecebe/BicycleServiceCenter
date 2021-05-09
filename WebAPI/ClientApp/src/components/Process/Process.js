@@ -413,7 +413,7 @@ export default class Process extends Component {
     //Servis Hizmeti Güncelleme
     updateProcess(id, customer) {
         this.setProcess(id, customer);
-        this.props.history.push("/servisHizmetiGüncelle");
+        this.props.history.push("/servis/guncelle");
     };
 
     render() {
