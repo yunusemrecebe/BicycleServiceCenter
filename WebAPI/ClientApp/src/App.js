@@ -6,6 +6,7 @@ import { Home } from './components/Home';
 import Employees from './components/Employee/Employees';
 import EmployeeUpdate from './components/Employee/UpdateEmployee';
 import Customers from './components/Customer/Customers';
+import CustomerAdd from './components/Customer/AddCustomer';
 import CustomerUpdate from './components/Customer/UpdateCustomer';
 import Products from './components/Product/Product';
 import ProductUpdate from './components/Product/UpdateProduct';
@@ -32,8 +33,11 @@ import ReportForEmployee from "./components/Report/ReportForEmployee";
 import ReportForProduct from "./components/Report/ReportForProduct";
 import Test from "./components/test";
 
+let result = false;
+
 export default class App extends Component {
   static displayName = App.name;
+
   state = {
     customers: [],
     selectedBrand: undefined,
@@ -53,10 +57,6 @@ export default class App extends Component {
   componentDidMount() {
     this.getCustomers();
   }
-
-  setAuth = (auth) => {
-    this.setState({ isAuthenticated: auth })
-  };
 
   setProductBrand = async (brand) => {
     await this.setState({ selectedBrand: brand });
@@ -101,15 +101,11 @@ export default class App extends Component {
   };
 
   setSelectedCustomer = async (customer) => {
-    await this.setState({
-      selectedProcessCustomer: customer
-    });
+    await this.setState({ selectedProcessCustomer: customer });
   };
 
   setConsumedPart = async (consumedPart) => {
-    await this.setState({
-      consumedPart: consumedPart,
-    });
+    await this.setState({ consumedPart: consumedPart });
   };
 
   CreateTokenByRefreshToken() {
@@ -176,14 +172,69 @@ export default class App extends Component {
       })
   };
 
+  // Müşteri Ekleme
+  addCustomer = (firstName, lastName, phone, eMail, adress) => {
+    let token = localStorage.getItem('token');
+
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        firstName: firstName,
+        lastName: lastName,
+        phone: phone,
+        eMail: eMail,
+        adress: adress,
+      }),
+    };
+
+    fetch("/api/customers/add", requestOptions)
+      .then(async (response) => {
+        const data = await response.json();
+
+        if (!response.ok) {
+          const error = data;
+          return Promise.reject(error);
+        }
+
+        this.getCustomers();
+
+        Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
+        this.setState({
+          firstName: "",
+          lastName: "",
+          phone: "",
+          eMail: "",
+          adress: "",
+        });
+
+        alertify.success(data.message);      
+        result = true;
+      })
+
+      .catch((responseError) => {
+        if (responseError.Errors) {
+          if (responseError.Errors.length > 0) {
+            for (let i = 0; i < responseError.Errors.length; i++) {
+              alertify.error(responseError.Errors[i].ErrorMessage);
+            }
+          }
+          else {
+            alertify.error(responseError);
+          }
+        }
+        else {
+          alertify.error(responseError.message);
+        }
+      });
+  };
+
   //Müşteri Silme
   deleteCustomer = (id) => {
-
     let token = localStorage.getItem('token');
-    if (token == null) {
-      alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
-      this.props.history.push("/girisYap")
-    }
 
     const requestOptions = {
       method: "POST",
@@ -204,6 +255,7 @@ export default class App extends Component {
         }
 
         this.getCustomers();
+
         alertify.warning(data.message);
       })
 
@@ -258,7 +310,8 @@ export default class App extends Component {
         <Route exact path="/personel/guncelle" render={props => (<EmployeeUpdate {...props} getEmployee={this.state.selectedEmployee} />)} />
 
         {/* CUSTOMER İLE İLGİLİ YÖNLENDİRMELER */}
-        <Route exact path="/musteri/listele" render={props => (<Customers {...props} setCustomer={this.setCustomer} deleteCustomer={this.deleteCustomer} listCustomers={this.state.customers} />)} />
+        <Route exact path="/musteri/listele" render={props => (<Customers {...props} listCustomers={this.state.customers} deleteCustomer={this.deleteCustomer} setCustomer={this.setCustomer} />)} />
+        <Route exact path="/musteri/ekle" render={props => (<CustomerAdd {...props} addCustomer={this.addCustomer} result = {result} />)} />
         <Route exact path="/musteri/guncelle" render={props => (<CustomerUpdate {...props} getCustomer={this.state.selectedCustomer} />)} />
 
         {/* REPORT İLE İLGİLİ YÖNLENDİRMELER */}
