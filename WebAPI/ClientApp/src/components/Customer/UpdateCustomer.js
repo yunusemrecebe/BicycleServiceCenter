@@ -114,7 +114,7 @@ export default class UpdateCustomer extends Component {
                 }
 
                 alertify.success(data.message);
-                this.props.history.push("/Müşteriler");
+                this.props.history.push("/musteri/listele");
             })
 
             .catch((responseError) => {

@@ -195,7 +195,7 @@ export default class Customers extends Component {
     //Müşteri Güncelleme
     updateCustomer(id) {
         this.setCustomer(id);
-        this.props.history.push("/musteriler/guncelle");
+        this.props.history.push("/musteri/guncelle");
     };
 
     render() {
