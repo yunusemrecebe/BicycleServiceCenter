@@ -252,7 +252,7 @@ export default class Employees extends Component {
     //Personel Güncelleme
     updateEmployee(id) {
         this.setEmployee(id);
-        this.props.history.push("/PersonelGüncelle");
+        this.props.history.push("/personel/guncelle");
     };
 
     render() {

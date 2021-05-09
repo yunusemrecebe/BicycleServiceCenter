@@ -65,7 +65,7 @@ export default class UpdateEmployee extends Component {
                 }
 
                 alertify.success(data.message);
-                this.props.history.push("/Personeller");
+                this.props.history.push("/personel/listele");
             })
 
             .catch((responseError) => {
