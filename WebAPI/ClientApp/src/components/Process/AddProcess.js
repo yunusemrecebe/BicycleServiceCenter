@@ -180,10 +180,10 @@ export default class AddProcess extends Component {
                 }
             });
     };
-
+    
     // Servis Hizmeti Ekleme Formu
     addProcessForm() {
-        return <div style= {{height: 600 + 'px'}}>
+        return <div style= {{minHeight: 750 + 'px'}}>
              <Form onSubmit={this.addProcess}>
                 <h1> Servis Hizmeti Ekle</h1>
                 <Table borderless>
