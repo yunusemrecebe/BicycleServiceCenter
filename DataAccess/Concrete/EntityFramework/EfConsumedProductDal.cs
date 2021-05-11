@@ -10,71 +10,71 @@ using System.Linq;
 
 namespace DataAccess.Concrete.EntityFramework.Concrete
 {
-    public class EfConsumedPartDal : EfEntityRepositoryBase<ConsumedPart, BicycleServiceCenterContext>, IConsumedPartDal
+    public class EfConsumedProductDal : EfEntityRepositoryBase<ConsumedProduct, BicycleServiceCenterContext>, IConsumedProductDal
     {
-        public ConsumedPartDetailDto GetConsumedPartDetails(Expression<Func<ConsumedPartDetailDto, bool>> filter)
+        public ConsumedProductDetailDto GetConsumedProductDetails(Expression<Func<ConsumedProductDetailDto, bool>> filter)
         {
             using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
             {
-                var result = from consumedPart in context.ConsumedParts
+                var result = from consumedProduct in context.ConsumedProducts
 
                              join product in context.Products
-                             on consumedPart.ProductId equals product.ProductId
+                             on consumedProduct.ProductId equals product.ProductId
 
                              join process in context.Processes
-                             on consumedPart.ProcessId equals process.ProcessId
+                             on consumedProduct.ProcessId equals process.ProcessId
 
                              join inventory in context.Inventory
-                             on consumedPart.ProductId equals inventory.ProductId
+                             on consumedProduct.ProductId equals inventory.ProductId
 
                              join productBrand in context.ProductBrands
                              on product.BrandId equals productBrand.ProductBrandId
 
-                             select new ConsumedPartDetailDto
+                             select new ConsumedProductDetailDto
                              {
-                                 ConsumedPartId = consumedPart.ConsumedPartId,
+                                 ConsumedProductId = consumedProduct.ConsumedProductId,
                                  ProductId = product.ProductId,
                                  ProcessId = process.ProcessId,
                                  ProductCode = product.ProductCode,
                                  Product = productBrand.Name + " " + product.Name,
                                  UnitPrice = inventory.SellPrice,
-                                 TotalPrice = inventory.SellPrice * consumedPart.Quantity,
-                                 Quantity = consumedPart.Quantity,
-                                 Discount = consumedPart.Discount
+                                 TotalPrice = inventory.SellPrice * consumedProduct.Quantity,
+                                 Quantity = consumedProduct.Quantity,
+                                 Discount = consumedProduct.Discount
                              };
                 return result.Where(filter).SingleOrDefault();
             }
         }
 
-        public List<ConsumedPartDetailDto> GetConsumedPartDetailsList(Expression<Func<ConsumedPartDetailDto, bool>> filter = null)
+        public List<ConsumedProductDetailDto> GetConsumedProductDetailsList(Expression<Func<ConsumedProductDetailDto, bool>> filter = null)
         {
             using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
             {
-                var result = from consumedPart in context.ConsumedParts
+                var result = from consumedProduct in context.ConsumedProducts
 
                              join product in context.Products
-                             on consumedPart.ProductId equals product.ProductId
+                             on consumedProduct.ProductId equals product.ProductId
 
                              join process in context.Processes
-                             on consumedPart.ProcessId equals process.ProcessId
+                             on consumedProduct.ProcessId equals process.ProcessId
 
                              join inventory in context.Inventory
-                             on consumedPart.ProductId equals inventory.ProductId
+                             on consumedProduct.ProductId equals inventory.ProductId
 
                              join productBrand in context.ProductBrands
                              on product.BrandId equals productBrand.ProductBrandId
 
-                             select new ConsumedPartDetailDto
+                             select new ConsumedProductDetailDto
                              {
-                                 ConsumedPartId = consumedPart.ConsumedPartId,
+                                 ConsumedProductId = consumedProduct.ConsumedProductId,
                                  ProductId = product.ProductId,
                                  ProcessId = process.ProcessId,
                                  ProductCode = product.ProductCode,
                                  Product = productBrand.Name + " " + product.Name,
                                  UnitPrice = inventory.SellPrice,
-                                 TotalPrice = consumedPart.UnitPrice * consumedPart.Quantity,
-                                 Quantity = consumedPart.Quantity,
-                                 Discount = consumedPart.Discount
+                                 TotalPrice = consumedProduct.UnitPrice * consumedProduct.Quantity,
+                                 Quantity = consumedProduct.Quantity,
+                                 Discount = consumedProduct.Discount
                              };
                 return filter == null ? result.ToList() : result.Where(filter).ToList();
             }

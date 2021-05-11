@@ -12,7 +12,7 @@ namespace Business.ValidationRules.FluentValidation
     {
         public ProcessChargeValidator()
         {
-            RuleFor(p => p.ConsumedPartId)
+            RuleFor(p => p.ConsumedProductId)
                 .GreaterThan(0).WithMessage("Ücreti hesaplanacak olan servis hizmeti belirtilmelidir!");
 
             RuleFor(p => p.Charge)

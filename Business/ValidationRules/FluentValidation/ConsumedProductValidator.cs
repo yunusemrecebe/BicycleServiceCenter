@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace Business.ValidationRules.FluentValidation
 {
-    public class ConsumedPartValidator : AbstractValidator<ConsumedPart>
+    public class ConsumedProductValidator : AbstractValidator<ConsumedProduct>
     {
-        public ConsumedPartValidator()
+        public ConsumedProductValidator()
         {
             RuleFor(c => c.ProcessId)
                 .NotEmpty()

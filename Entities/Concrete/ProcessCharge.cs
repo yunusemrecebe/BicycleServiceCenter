@@ -6,7 +6,7 @@ namespace Entities.Concrete
     {
         public int ProcessChargeId { get; set; }
         public int ProcessId { get; set; }
-        public int ConsumedPartId { get; set; }
+        public int ConsumedProductId { get; set; }
         public decimal Charge { get; set; }
     }
 }

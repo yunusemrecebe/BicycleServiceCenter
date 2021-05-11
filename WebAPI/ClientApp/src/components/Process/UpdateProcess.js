@@ -10,7 +10,7 @@ export default class UpdateProcess extends Component {
         employees: [],
         productCategories: [],
         products: [],
-        consumedParts: [],
+        consumedProducts: [],
         processCharge: 0,
         selectedProductCategoryId: 0,
         selectedProduct: 0,
@@ -36,7 +36,7 @@ export default class UpdateProcess extends Component {
         this.getCustomers();
         this.getEmployees();
         this.getProductCategories();
-        this.getConsumedParts(this.props.getProcess);
+        this.getConsumedProducts(this.props.getProcess);
         this.GetProcessCharge(this.props.getProcess);
     }
 
@@ -164,10 +164,10 @@ export default class UpdateProcess extends Component {
     };
 
     //Kullanılan Ürünleri Db'den çekme
-    getConsumedParts(id) {
+    getConsumedProducts(id) {
         let token = localStorage.getItem('token');
 
-        let url = "/api/consumedparts/getdetailsbyprocessid?id=" + id;
+        let url = "/api/consumedproducts/getdetailsbyprocessid?id=" + id;
         fetch(url, {
             method: 'get',
             headers: {
@@ -176,7 +176,7 @@ export default class UpdateProcess extends Component {
         })
             .then((response) => response.json())
             .then((data) => {
-                this.setState({ consumedParts: data });
+                this.setState({ consumedProducts: data });
             });
 
     };
@@ -415,7 +415,7 @@ export default class UpdateProcess extends Component {
     }
 
     //Kullanılan ürün ekleme
-    addConsumedPart = (event) => {
+    addConsumedProduct = (event) => {
         event.preventDefault();
 
         const requestOptions = {
@@ -429,7 +429,7 @@ export default class UpdateProcess extends Component {
             }),
         };
 
-        fetch("/api/consumedparts/add", requestOptions)
+        fetch("/api/consumedproducts/add", requestOptions)
             .then(async (response) => {
                 const data = await response.json();
 
@@ -448,7 +448,7 @@ export default class UpdateProcess extends Component {
                 });
 
                 alertify.success(data.message);
-                this.getConsumedParts(this.props.getProcess);
+                this.getConsumedProducts(this.props.getProcess);
                 this.GetProcessCharge(this.props.getProcess);
             })
 
@@ -467,9 +467,9 @@ export default class UpdateProcess extends Component {
     }
 
     //Kullanılan ürün ekleme formu
-    addConsumedPartForm() {
+    addConsumedProductForm() {
         return (
-            <Form onSubmit={this.addConsumedPart}>
+            <Form onSubmit={this.addConsumedProduct}>
                 <h1> Kullanılan Ürün Ekle</h1>
                 <Table borderless>
                     <thead>
@@ -523,7 +523,7 @@ export default class UpdateProcess extends Component {
     }
 
     //Db'Den çekilmiş kullanılan ürünleri listeleme
-    ListConsumedParts() {
+    ListConsumedProducts() {
         return (
             <Table hover>
                 <thead>
@@ -540,16 +540,16 @@ export default class UpdateProcess extends Component {
                 </thead>
 
                 <tbody>
-                    {this.state.consumedParts.map((consumedPart) => (
-                        <tr key={consumedPart.consumedPartId}>
-                            <td>{consumedPart.productCode}</td>
-                            <td>{consumedPart.product}</td>
-                            <td>{consumedPart.quantity}</td>
-                            <td>{consumedPart.unitPrice}</td>
-                            <td>{consumedPart.totalPrice}</td>
-                            <td>{consumedPart.discount}</td>
-                            <td><Button onClick={this.deleteConsumedPart.bind(this, consumedPart.consumedPartId)} color="danger">Sil</Button></td>
-                            <td><Button onClick={this.updateConsumedPart.bind(this, consumedPart.consumedPartId)} color="info">Güncelle</Button></td>
+                    {this.state.consumedProducts.map((consumedProduct) => (
+                        <tr key={consumedProduct.consumedProductId}>
+                            <td>{consumedProduct.productCode}</td>
+                            <td>{consumedProduct.product}</td>
+                            <td>{consumedProduct.quantity}</td>
+                            <td>{consumedProduct.unitPrice}</td>
+                            <td>{consumedProduct.totalPrice}</td>
+                            <td>{consumedProduct.discount}</td>
+                            <td><Button onClick={this.deleteConsumedProduct.bind(this, consumedProduct.consumedProductId)} color="danger">Sil</Button></td>
+                            <td><Button onClick={this.updateConsumedProduct.bind(this, consumedProduct.consumedProductId)} color="info">Güncelle</Button></td>
                         </tr>
                     ))}
                 </tbody>
@@ -558,14 +558,14 @@ export default class UpdateProcess extends Component {
     }
 
     //Kullanılan Ürün Silme
-    deleteConsumedPart(id) {
+    deleteConsumedProduct(id) {
 
         const requestOptions = {
             method: "POST",
             headers: { "Content-Type": "application/json" },
         };
 
-        fetch("/api/consumedparts/delete?id=" + id, requestOptions)
+        fetch("/api/consumedproducts/delete?id=" + id, requestOptions)
             .then(async (response) => {
                 const data = await response.json();
 
@@ -574,7 +574,7 @@ export default class UpdateProcess extends Component {
                     return Promise.reject(error);
                 }
 
-                this.getConsumedParts(this.props.getProcess);
+                this.getConsumedProducts(this.props.getProcess);
                 this.GetProcessCharge(this.props.getProcess);
                 alertify.warning(data.message);
             })
@@ -591,13 +591,13 @@ export default class UpdateProcess extends Component {
     };
 
     //Servis Hizmeti güncellemek için Servis Hizmeti id'si gönderen fonksiyon
-    setConsumedPart = (id) => {
-        this.props.setConsumedPart(id);
+    setConsumedProduct = (id) => {
+        this.props.setConsumedProduct(id);
     }
 
     //Servis Hizmeti Güncelleme
-    updateConsumedPart(id) {
-        this.setConsumedPart(id);
+    updateConsumedProduct(id) {
+        this.setConsumedProduct(id);
         this.props.history.push("/servis/guncelle/urun/guncelle");
     };
 
@@ -610,12 +610,12 @@ export default class UpdateProcess extends Component {
                     </Col>
 
                     <Col md="6">
-                        {this.addConsumedPartForm()}
+                        {this.addConsumedProductForm()}
                     </Col>
                 </Row>
                 <hr className="mb-3 mt-3" ></hr>
                 <center><h1 className="mb-3">Toplam ücret: {Number.parseFloat(this.state.processCharge).toFixed(2)}</h1></center>
-                {this.ListConsumedParts()}
+                {this.ListConsumedProducts()}
 
             </div>
 

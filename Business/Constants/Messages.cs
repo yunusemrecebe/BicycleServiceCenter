@@ -44,10 +44,10 @@ namespace Business.Constants
         public static string BicycleUpdated = "Bisiklet Güncellendi!";
         public static string BicycleExists = "Sistemde Kayıtlı Olan Bir Bisiklet Girdiniz!";
 
-        //Consumed Part Messages
-        public static string ConsumedPartAdded = "İşlemde Kullanılan Ürün Eklendi!";
-        public static string ConsumedPartDeleted = "İşlemde Kullanılan Ürün Silindi!";
-        public static string ConsumedPartUpdated = "İşlemde Kullanılan Ürün Güncellendi!";
+        //Consumed Product Messages
+        public static string ConsumedProductAdded = "İşlemde Kullanılan Ürün Eklendi!";
+        public static string ConsumedProductDeleted = "İşlemde Kullanılan Ürün Silindi!";
+        public static string ConsumedProductUpdated = "İşlemde Kullanılan Ürün Güncellendi!";
 
         //Customer Messages
         public static string CustomerAdded = "Müşteri Eklendi!";
@@ -74,7 +74,7 @@ namespace Business.Constants
         public static string ProductCategoryUpdated = "Ürün Kategorisi Güncellendi!";
         public static string ProductCategoryAlreadyExists = "Sistemde Kayıtlı Olan Bir Ürün Kategorisi Girdiniz!";
         public static string ProductHasStock = "Envanter'de stok kaydı bulunan bir ürün silinemez!";
-        public static string ProductIsUsedInConsumedParts = "Servis hizmetinde kullanılmış bir ürün silinemez!";
+        public static string ProductIsUsedInConsumedProducts = "Servis hizmetinde kullanılmış bir ürün silinemez!";
 
         //Product Messages
         public static string ProductAdded = "Ürün Eklendi!";

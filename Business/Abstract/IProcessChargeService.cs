@@ -11,7 +11,7 @@ namespace Business.Abstract
         IDataResult<List<ProcessCharge>> GetListByProcessId(int processId);
         IDataResult<ProcessChargeDetailDto> Calculate(int processId);
         IDataResult<ProcessCharge> GetById(int id);
-        IDataResult<ProcessCharge> GetByConsumedPartId(int id);
+        IDataResult<ProcessCharge> GetByConsumedProductId(int id);
         IResult Add(ProcessCharge processCharge);
         IResult Delete(int id);
         IResult Update(ProcessCharge processCharge);

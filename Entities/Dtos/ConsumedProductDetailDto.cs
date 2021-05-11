@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Entities.Dtos
 {
-    public class ConsumedPartDetailDto : IDto
+    public class ConsumedProductDetailDto : IDto
     {
-        public int ConsumedPartId { get; set; }
+        public int ConsumedProductId { get; set; }
         public int ProcessId { get; set; }
         public int ProductId { get; set; }
         public string ProductCode { get; set; }

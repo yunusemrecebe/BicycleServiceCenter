@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import alertify from "alertifyjs";
 import { Button, Form, Input, Row, Col, Table } from "reactstrap";
 
-export default class UpdateConsumedParts extends Component {
+export default class UpdateConsumedProducts extends Component {
 
     state = {
-        consumedPartId: 0,
+        consumedProductId: 0,
         processId: 0,
         productId: 0,
         productCode: "",
@@ -18,7 +18,7 @@ export default class UpdateConsumedParts extends Component {
     };
 
     componentDidMount() {
-        this.getConsumedParts(this.props.getConsumedPart);
+        this.getConsumedProducts(this.props.getConsumedProduct);
     }
 
     handleChange = (event) => {
@@ -63,10 +63,10 @@ export default class UpdateConsumedParts extends Component {
     }
 
     //Kullanılan Ürünleri Db'den çekme
-    getConsumedParts(id) {
+    getConsumedProducts(id) {
         let token = localStorage.getItem('token');
 
-        let url = "/api/consumedparts/getdetailsbyid?id=" + id;
+        let url = "/api/consumedproducts/getdetailsbyid?id=" + id;
         fetch(url, {
             method: 'get',
             headers: {
@@ -82,7 +82,7 @@ export default class UpdateConsumedParts extends Component {
             }
 
             this.setState({ 
-                consumedPartId: data.consumedPartId,
+                consumedProductId: data.consumedProductId,
                 processId: data.processId,
                 productId: data.productId,
                 productCode: data.productCode,
@@ -103,14 +103,14 @@ export default class UpdateConsumedParts extends Component {
     };
 
     //Kullanılan ürün güncelleme
-    updateConsumedPart = (event) => {
+    updateConsumedProduct = (event) => {
         event.preventDefault();
 
         const requestOptions = {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                consumedPartId: this.state.consumedPartId,
+                consumedProductId: this.state.consumedProductId,
                 processId: this.state.processId,
                 productId: this.state.productId,
                 unitPrice: this.state.unitPrice,
@@ -119,7 +119,7 @@ export default class UpdateConsumedParts extends Component {
             }),
         };
 
-        fetch("/api/consumedparts/update", requestOptions)
+        fetch("/api/consumedproducts/update", requestOptions)
             .then(async (response) => {
                 const data = await response.json();
 
@@ -147,9 +147,9 @@ export default class UpdateConsumedParts extends Component {
     }
 
     //Kullanılan ürün güncelleme formu
-    updateConsumedPartForm() {
+    updateConsumedProductForm() {
         return (
-            <Form onSubmit={this.updateConsumedPart}>
+            <Form onSubmit={this.updateConsumedProduct}>
                 <Table borderless>
                     <thead>
                         <tr>
@@ -207,7 +207,7 @@ export default class UpdateConsumedParts extends Component {
                 <h1 className="text-center"> Kullanılan Ürün Bilgilerini Güncelle</h1>
                 <Row>
                     <Col md="6">
-                        {this.updateConsumedPartForm()}
+                        {this.updateConsumedProductForm()}
                     </Col>
                 </Row>
 

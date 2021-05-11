@@ -8,6 +8,6 @@ namespace Entities.Dtos
         public int CustomerId { get; set; }
         public int TotalQuantityOfReceivedProcesses { get; set; }
         public decimal OverallCharge { get; set; }
-        public List<ConsumedPartDetailDto> PurchasedProducts { get; set; }
+        public List<ConsumedProductDetailDto> PurchasedProducts { get; set; }
     }
 }

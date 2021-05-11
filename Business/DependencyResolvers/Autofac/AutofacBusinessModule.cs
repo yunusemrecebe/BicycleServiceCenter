@@ -24,8 +24,8 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<BicycleManager>().As<IBicycleService>().SingleInstance();
             builder.RegisterType<EfBicycleDal>().As<IBicycleDal>().SingleInstance();
 
-            builder.RegisterType<ConsumedPartManager>().As<IConsumedPartService>().SingleInstance();
-            builder.RegisterType<EfConsumedPartDal>().As<IConsumedPartDal>().SingleInstance();
+            builder.RegisterType<ConsumedProductManager>().As<IConsumedProductService>().SingleInstance();
+            builder.RegisterType<EfConsumedProductDal>().As<IConsumedProductDal>().SingleInstance();
 
             builder.RegisterType<CustomerManager>().As<ICustomerService>().SingleInstance();
             builder.RegisterType<EfCustomerDal>().As<ICustomerDal>().SingleInstance();

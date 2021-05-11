@@ -2,9 +2,9 @@
 
 namespace Entities.Concrete
 {
-    public class ConsumedPart : IEntity
+    public class ConsumedProduct : IEntity
     {
-        public int ConsumedPartId { get; set; }
+        public int ConsumedProductId { get; set; }
         public int ProcessId { get; set; }
         public int ProductId { get; set; }
         public decimal UnitPrice { get; set; }

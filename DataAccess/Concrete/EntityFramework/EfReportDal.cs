@@ -25,30 +25,30 @@ namespace DataAccess.Concrete.EntityFramework
 
                                     select processCharge.Charge;
 
-                var PurchasedProducts = from consumedPart in context.ConsumedParts
+                var PurchasedProducts = from consumedProduct in context.ConsumedProducts
 
                                         join product in context.Products
-                                        on consumedPart.ProductId equals product.ProductId
+                                        on consumedProduct.ProductId equals product.ProductId
 
                                         join productBrand in context.ProductBrands
                                         on product.BrandId equals productBrand.ProductBrandId
 
                                         join process in context.Processes
-                                        on consumedPart.ProcessId equals process.ProcessId
+                                        on consumedProduct.ProcessId equals process.ProcessId
 
                                         where process.CustomerId == customerId
 
-                                        select new ConsumedPartDetailDto
+                                        select new ConsumedProductDetailDto
                                         {
-                                            ConsumedPartId = consumedPart.ConsumedPartId,
+                                            ConsumedProductId = consumedProduct.ConsumedProductId,
                                             ProcessId = process.ProcessId,
                                             ProductId = product.ProductId,
                                             ProductCode = product.ProductCode,
                                             Product = $"{productBrand.Name} {product.Name}",
-                                            Quantity = consumedPart.Quantity,
-                                            Discount = consumedPart.Discount,
-                                            UnitPrice = consumedPart.UnitPrice,
-                                            TotalPrice = consumedPart.UnitPrice * consumedPart.Quantity
+                                            Quantity = consumedProduct.Quantity,
+                                            Discount = consumedProduct.Discount,
+                                            UnitPrice = consumedProduct.UnitPrice,
+                                            TotalPrice = consumedProduct.UnitPrice * consumedProduct.Quantity
                                         };
 
                 return new ReportForCustomerDto
@@ -106,8 +106,8 @@ namespace DataAccess.Concrete.EntityFramework
         {
             using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
             {
-                int TotalQuantityOfSale = context.ConsumedParts.Where(p => p.ProductId == productId).Sum(p => p.Quantity);
-                decimal TotalPriceOfSale = context.ConsumedParts.Where(p => p.ProductId == productId).Sum(p => p.UnitPrice * p.Quantity);
+                int TotalQuantityOfSale = context.ConsumedProducts.Where(p => p.ProductId == productId).Sum(p => p.Quantity);
+                decimal TotalPriceOfSale = context.ConsumedProducts.Where(p => p.ProductId == productId).Sum(p => p.UnitPrice * p.Quantity);
 
                 var result = from product in context.Products
 
@@ -137,8 +137,8 @@ namespace DataAccess.Concrete.EntityFramework
                 {
 
                     BicycleServiceCenterContext context1 = new BicycleServiceCenterContext();
-                    int TotalQuantityOfSale = context1.ConsumedParts.Where(p => p.ProductId == product.ProductId).Sum(p => p.Quantity);
-                    decimal TotalPriceOfSale = context1.ConsumedParts.Where(p => p.ProductId == product.ProductId).Sum(p => p.UnitPrice * p.Quantity);
+                    int TotalQuantityOfSale = context1.ConsumedProducts.Where(p => p.ProductId == product.ProductId).Sum(p => p.Quantity);
+                    decimal TotalPriceOfSale = context1.ConsumedProducts.Where(p => p.ProductId == product.ProductId).Sum(p => p.UnitPrice * p.Quantity);
                     var productBrand = context1.ProductBrands.Where(p => p.ProductBrandId == product.BrandId).SingleOrDefault();
 
                     products.Add(

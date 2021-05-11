@@ -19,9 +19,9 @@ namespace Business.Concrete
     {
         IProductDal _productDal;
         IInventoryService _inventoryService;
-        IConsumedPartService _consumedPartService;
+        IConsumedProductService _consumedPartService;
 
-        public ProductManager(IProductDal productDal, IInventoryService inventoryService, IConsumedPartService consumedPartService)
+        public ProductManager(IProductDal productDal, IInventoryService inventoryService, IConsumedProductService consumedPartService)
         {
             _productDal = productDal;
             _inventoryService = inventoryService;
@@ -175,7 +175,7 @@ namespace Business.Concrete
 
             if (result != null)
             {
-                return new ErrorResult(Messages.ProductIsUsedInConsumedParts);
+                return new ErrorResult(Messages.ProductIsUsedInConsumedProducts);
             }
 
             return new SuccessResult();

@@ -5,7 +5,7 @@ import Select from 'react-select';
 export default  class ReportForCustomer extends Component {
     state = {
         reportDetails: [],
-        consumedParts: [],
+        consumedProducts: [],
         customers: [],
         selectedCustomer:0
     }
@@ -88,7 +88,7 @@ export default  class ReportForCustomer extends Component {
                     return Promise.reject(error);
                 }
 
-                this.setState({ reportDetails: data.data, consumedParts: data.data.purchasedProducts });
+                this.setState({ reportDetails: data.data, consumedProducts: data.data.purchasedProducts });
 
             })
             .catch((responseError) => {
@@ -114,14 +114,14 @@ export default  class ReportForCustomer extends Component {
                 </thead>
 
                 <tbody>
-                    {this.state.consumedParts.map((consumedPart) => (
-                        <tr key={consumedPart.consumedPartId}>
-                            <td>{consumedPart.productCode}</td>
-                            <td>{consumedPart.product}</td>
-                            <td>{consumedPart.quantity}</td>
-                            <td>{consumedPart.unitPrice}</td>
-                            <td>{consumedPart.totalPrice}</td>
-                            <td>{consumedPart.discount}</td>
+                    {this.state.consumedProducts.map((consumedProduct) => (
+                        <tr key={consumedProduct.consumedProductId}>
+                            <td>{consumedProduct.productCode}</td>
+                            <td>{consumedProduct.product}</td>
+                            <td>{consumedProduct.quantity}</td>
+                            <td>{consumedProduct.unitPrice}</td>
+                            <td>{consumedProduct.totalPrice}</td>
+                            <td>{consumedProduct.discount}</td>
                         </tr>
                     ))}
                 </tbody>

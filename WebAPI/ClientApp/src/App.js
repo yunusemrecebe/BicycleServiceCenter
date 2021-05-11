@@ -25,7 +25,7 @@ import ProcessAdd from './components/Process/AddProcess';
 import ProcessUpdate from './components/Process/UpdateProcess';
 import Inventory from './components/Inventory/Inventory';
 import InventoryUpdate from './components/Inventory/UpdateInventory';
-import ConsumedPartUpdate from "./components/ConsumedPart/UpdateConsumedPart";
+import ConsumedProductUpdate from "./components/ConsumedProduct/UpdateConsumedProduct";
 import Login from "./components/Authentication/Login";
 import Logout from "./components/Authentication/Logout";
 import Register from "./components/Authentication/Register";
@@ -53,7 +53,7 @@ export default class App extends Component {
     selectedCustomer: undefined,
     selectedProcess: undefined,
     selectedProcessCustomer: undefined,
-    consumedPart: undefined,
+    consumedProduct: undefined,
   };
 
   componentDidMount() {
@@ -106,8 +106,8 @@ export default class App extends Component {
     await this.setState({ selectedProcessCustomer: customer });
   };
 
-  setConsumedPart = async (consumedPart) => {
-    await this.setState({ consumedPart: consumedPart });
+  setConsumedProduct = async (consumedProduct) => {
+    await this.setState({ consumedProduct: consumedProduct });
   };
 
   CreateTokenByRefreshToken() {
@@ -306,8 +306,8 @@ export default class App extends Component {
         {/* PROCESS İLE İLGİLİ YÖNLENDİRMELER */}
         <Route exact path="/servis/listele" render={props => (<Process {...props} setProcess={this.setProcess} setSelectedCustomer={this.setSelectedCustomer} />)} />
         <Route exact path="/servis/ekle" render={props => (<ProcessAdd {...props} />)} />
-        <Route exact path="/servis/guncelle" render={props => (<ProcessUpdate {...props} getCustomer={this.state.selectedProcessCustomer} getProcess={this.state.selectedProcess} setConsumedPart={this.setConsumedPart} />)} />
-        <Route exact path="/servis/guncelle/urun/guncelle" render={props => (<ConsumedPartUpdate {...props} getConsumedPart={this.state.consumedPart} />)} />
+        <Route exact path="/servis/guncelle" render={props => (<ProcessUpdate {...props} getCustomer={this.state.selectedProcessCustomer} getProcess={this.state.selectedProcess} setConsumedProduct={this.setConsumedProduct} />)} />
+        <Route exact path="/servis/guncelle/urun/guncelle" render={props => (<ConsumedProductUpdate {...props} getConsumedProduct={this.state.consumedProduct} />)} />
 
         {/* EMPLOYEE İLE İLGİLİ YÖNLENDİRMELER */}
         <Route exact path="/personel/listele" render={props => (<Employees {...props} setEmployee={this.setEmployee} />)} />

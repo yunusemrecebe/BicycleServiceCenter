@@ -21,7 +21,7 @@ namespace DataAccess.Concrete.EntityFramework.Abstract
         public DbSet<Bicycle> Bicycles { get; set; }
         public DbSet<BicycleBrand> BicycleBrands { get; set; }
         public DbSet<BicycleModel> BicycleModels { get; set; }
-        public DbSet<ConsumedPart> ConsumedParts { get; set; }
+        public DbSet<ConsumedProduct> ConsumedProducts { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Process> Processes { get; set; }

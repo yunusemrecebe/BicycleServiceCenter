@@ -16,8 +16,8 @@ namespace DataAccess.Concrete.EntityFramework
             {
                 var result = from processCharge in context.ProcessCharges
 
-                             join consumedPart in context.ConsumedParts
-                             on processCharge.ConsumedPartId equals consumedPart.ConsumedPartId
+                             join consumedProduct in context.ConsumedProducts
+                             on processCharge.ConsumedProductId equals consumedProduct.ConsumedProductId
 
                              where processCharge.ProcessId == processId
 
@@ -25,8 +25,8 @@ namespace DataAccess.Concrete.EntityFramework
                              {
                                  ProcessChargeId = processCharge.ProcessChargeId,
                                  ProcessId = processCharge.ProcessId,
-                                 ConsumedPartId = consumedPart.ConsumedPartId,
-                                 Charge = consumedPart.UnitPrice * consumedPart.Quantity
+                                 ConsumedProductId = consumedProduct.ConsumedProductId,
+                                 Charge = consumedProduct.UnitPrice * consumedProduct.Quantity
                              };
 
                 result.ToList();

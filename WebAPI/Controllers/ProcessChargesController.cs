@@ -83,7 +83,7 @@ namespace WebAPI.Controllers
         [HttpGet]
         public IActionResult GetByConsumedPartId(int id)
         {
-            var result = _processChargeService.GetByConsumedPartId(id);
+            var result = _processChargeService.GetByConsumedProductId(id);
 
             if (result.Success)
             {

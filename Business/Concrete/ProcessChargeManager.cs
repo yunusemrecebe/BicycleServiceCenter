@@ -26,11 +26,11 @@ namespace Business.Concrete
         [CacheRemoveAspect("IProcessChargeService.Get")]
         public IResult Add(ProcessCharge processCharge)
         {
-            var result = BusinessRules.Run(CheckChargeRecordIsExists(processCharge.ConsumedPartId));
+            var result = BusinessRules.Run(CheckChargeRecordIsExists(processCharge.ConsumedProductId));
 
             if (result != null)
             {
-                var updatedProcessCharge = GetByConsumedPartId(processCharge.ConsumedPartId).Data;
+                var updatedProcessCharge = GetByConsumedProductId(processCharge.ConsumedProductId).Data;
                 updatedProcessCharge.Charge += processCharge.Charge;
                 Update(updatedProcessCharge);
                 return new ErrorResult();
@@ -58,9 +58,9 @@ namespace Business.Concrete
             return new SuccessDataResult<ProcessCharge>(_processChargeDal.Get(p => p.ProcessChargeId == id));
         }
 
-        public IDataResult<ProcessCharge> GetByConsumedPartId(int id)
+        public IDataResult<ProcessCharge> GetByConsumedProductId(int id)
         {
-            return new SuccessDataResult<ProcessCharge>(_processChargeDal.Get(p => p.ConsumedPartId == id));
+            return new SuccessDataResult<ProcessCharge>(_processChargeDal.Get(p => p.ConsumedProductId == id));
         }
 
         [CacheAspect]
@@ -71,7 +71,7 @@ namespace Business.Concrete
 
         public IDataResult<List<ProcessCharge>> GetListByProcessId(int processId)
         {
-            return new SuccessDataResult<List<ProcessCharge>>(_processChargeDal.GetList(p => p.ConsumedPartId == processId).ToList());
+            return new SuccessDataResult<List<ProcessCharge>>(_processChargeDal.GetList(p => p.ConsumedProductId == processId).ToList());
         }
 
         [ValidationAspect(typeof(ProcessChargeValidator))]

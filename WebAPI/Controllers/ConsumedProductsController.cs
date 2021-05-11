@@ -6,19 +6,19 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ConsumedPartsController : ControllerBase
+    public class ConsumedProductsController : ControllerBase
     {
-        IConsumedPartService _consumedPartService;
+        IConsumedProductService _consumedProductService;
 
-        public ConsumedPartsController(IConsumedPartService consumedPartService)
+        public ConsumedProductsController(IConsumedProductService consumedProductService)
         {
-            _consumedPartService = consumedPartService;
+            _consumedProductService = consumedProductService;
         }
 
         [HttpPost("add")]
-        public IActionResult Add(ConsumedPart consumedPart)
+        public IActionResult Add(ConsumedProduct consumedProduct)
         {
-            var result = _consumedPartService.Add(consumedPart);
+            var result = _consumedProductService.Add(consumedProduct);
 
             if (result.Success)
             {
@@ -30,7 +30,7 @@ namespace WebAPI.Controllers
         [HttpPost("delete")]
         public IActionResult Delete(int id)
         {
-            var result = _consumedPartService.Delete(id);
+            var result = _consumedProductService.Delete(id);
 
             if (result.Success)
             {
@@ -40,9 +40,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update(ConsumedPart consumedPart)
+        public IActionResult Update(ConsumedProduct consumedProduct)
         {
-            var result = _consumedPartService.Update(consumedPart);
+            var result = _consumedProductService.Update(consumedProduct);
 
             if (result.Success)
             {
@@ -54,7 +54,7 @@ namespace WebAPI.Controllers
         [HttpGet("get")]
         public IActionResult Get(int id)
         {
-            var result = _consumedPartService.GetById(id);
+            var result = _consumedProductService.GetById(id);
 
             if (result.Success)
             {
@@ -66,7 +66,7 @@ namespace WebAPI.Controllers
         [HttpGet("getall")]
         public IActionResult GetList()
         {
-            var result = _consumedPartService.GetList();
+            var result = _consumedProductService.GetList();
 
             if (result.Success)
             {
@@ -76,9 +76,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getdetails")]
-        public IActionResult GetConsumedPartDetailsList()
+        public IActionResult GetConsumedProductDetailsList()
         {
-            var result = _consumedPartService.GetConsumedPartDetailsList();
+            var result = _consumedProductService.GetConsumedProductDetailsList();
 
             if (result.Success)
             {
@@ -88,9 +88,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getdetailsbyprocessid")]
-        public IActionResult GetConsumedPartDetailsListByProcessId(int id)
+        public IActionResult GetConsumedProductDetailsListByProcessId(int id)
         {
-            var result = _consumedPartService.GetConsumedPartDetailsListByProcessId(id);
+            var result = _consumedProductService.GetConsumedProductDetailsListByProcessId(id);
 
             if (result.Success)
             {
@@ -100,9 +100,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getdetailsbyid")]
-        public IActionResult GetConsumedPartDetailsListById(int id)
+        public IActionResult GetConsumedProductDetailsListById(int id)
         {
-            var result = _consumedPartService.GetConsumedPartDetailsById(id);
+            var result = _consumedProductService.GetConsumedProductDetailsById(id);
 
             if (result.Success)
             {
