@@ -53,16 +53,16 @@ namespace Business.Concrete
             return new SuccessDataResult<List<ReportForEmployeeDto>>(_reportDal.GetReportForEmployeeList());
         }
 
-        public IDataResult<ReportForProductDto> GetReportForProduct(int productId)
+        public IDataResult<List<ReportForProductDto>> GetReportForProduct(int productId)
         {
             var result = _productService.GetById(productId).Data;
 
             if (result == null)
             {
-                return new ErrorDataResult<ReportForProductDto>(Messages.IdValueIsInvalid);
+                return new ErrorDataResult<List<ReportForProductDto>>(Messages.IdValueIsInvalid);
             }
 
-            return new SuccessDataResult<ReportForProductDto>(_reportDal.GetReportForProduct(productId));
+            return new SuccessDataResult<List<ReportForProductDto>>(_reportDal.GetReportForProduct(productId,null,null));
         }
 
         public IDataResult<List<ReportForProductDto>> GetReportForProductList()

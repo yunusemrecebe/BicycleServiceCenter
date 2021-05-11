@@ -50,7 +50,7 @@ namespace DataAccess.Concrete.EntityFramework
                                             UnitPrice = consumedProduct.UnitPrice,
                                             TotalPrice = consumedProduct.UnitPrice * consumedProduct.Quantity,
                                             DateOfUse = consumedProduct.DateOfUse
-                                            
+
                                         };
 
                 return new ReportForCustomerDto
@@ -104,28 +104,32 @@ namespace DataAccess.Concrete.EntityFramework
             return employees;
         }
 
-        public ReportForProductDto GetReportForProduct(int productId)
+        public List<ReportForProductDto> GetReportForProduct(int productId, DateTime? begin, DateTime? end)
         {
             using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
             {
-                int TotalQuantityOfSale = context.ConsumedProducts.Where(p => p.ProductId == productId).Sum(p => p.Quantity);
-                decimal TotalPriceOfSale = context.ConsumedProducts.Where(p => p.ProductId == productId).Sum(p => p.UnitPrice * p.Quantity);
-
                 var result = from product in context.Products
 
                              join productBrand in context.ProductBrands
                              on product.BrandId equals productBrand.ProductBrandId
+
+                             join consumedProduct in context.ConsumedProducts
+                             on product.ProductId equals consumedProduct.ProductId
+
+                             where product.ProductId == productId
 
                              select new ReportForProductDto
                              {
                                  ProductId = product.ProductId,
                                  ProductCode = product.ProductCode,
                                  Product = $"{productBrand.Name} {product.Name}",
-                                 TotalQuantityOfSale = TotalQuantityOfSale,
-                                 TotalPriceOfSale = TotalPriceOfSale
+                                 DateOfSale = consumedProduct.DateOfUse,
+                                 QuantityOfSaleByDate = consumedProduct.Quantity,
+                                 TotalQuantityOfSale = context.ConsumedProducts.Where(p => p.ProductId == productId).Sum(p => p.Quantity),
+                                 TotalPriceOfSale = context.ConsumedProducts.Where(p => p.ProductId == productId).Sum(p => p.UnitPrice * p.Quantity)
                              };
 
-                return result.Where(p => p.ProductId == productId).SingleOrDefault();
+                return result.ToList();
             }
         }
 
@@ -139,6 +143,7 @@ namespace DataAccess.Concrete.EntityFramework
                 {
 
                     BicycleServiceCenterContext context1 = new BicycleServiceCenterContext();
+
                     int TotalQuantityOfSale = context1.ConsumedProducts.Where(p => p.ProductId == product.ProductId).Sum(p => p.Quantity);
                     decimal TotalPriceOfSale = context1.ConsumedProducts.Where(p => p.ProductId == product.ProductId).Sum(p => p.UnitPrice * p.Quantity);
                     var productBrand = context1.ProductBrands.Where(p => p.ProductBrandId == product.BrandId).SingleOrDefault();
