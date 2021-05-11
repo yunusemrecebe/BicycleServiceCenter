@@ -110,11 +110,12 @@ export default  class ReportForCustomer extends Component {
                         <th>Birim Fiyat</th>
                         <th>Toplam Fiyat</th>
                         <th>İndirim Oranı</th>
+                        <th>Satıl Alma Tarihi</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    {this.state.consumedProducts.map((consumedProduct) => (
+                    {this.state.consumedProducts.sort((a, b) => a.dateOfUse < b.dateOfUse ? 1:-1).map((consumedProduct) => (
                         <tr key={consumedProduct.consumedProductId}>
                             <td>{consumedProduct.productCode}</td>
                             <td>{consumedProduct.product}</td>
@@ -122,6 +123,7 @@ export default  class ReportForCustomer extends Component {
                             <td>{consumedProduct.unitPrice}</td>
                             <td>{consumedProduct.totalPrice}</td>
                             <td>{consumedProduct.discount}</td>
+                            <td>{consumedProduct.dateOfUse.replace('T', ' ').slice(0, -3)}</td>
                         </tr>
                     ))}
                 </tbody>

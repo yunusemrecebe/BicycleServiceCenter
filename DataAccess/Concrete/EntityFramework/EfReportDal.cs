@@ -48,7 +48,9 @@ namespace DataAccess.Concrete.EntityFramework
                                             Quantity = consumedProduct.Quantity,
                                             Discount = consumedProduct.Discount,
                                             UnitPrice = consumedProduct.UnitPrice,
-                                            TotalPrice = consumedProduct.UnitPrice * consumedProduct.Quantity
+                                            TotalPrice = consumedProduct.UnitPrice * consumedProduct.Quantity,
+                                            DateOfUse = consumedProduct.DateOfUse
+                                            
                                         };
 
                 return new ReportForCustomerDto

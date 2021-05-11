@@ -104,7 +104,7 @@ export default class Process extends Component {
                             <td>{process.employeeName}</td>
                             <td>{process.customerName}</td>
                             <td>{process.bicycle}</td>
-                            <td>{process.startingDate.replace('T', ' ')}</td>
+                            <td>{process.startingDate.replace('T', ' ').slice(0, -3)}</td>
                             <td>{process.competitionDate}</td>
                             <td>{process.status}</td>
                             <td><Button onClick={this.deleteProcess.bind(this, process.processId)} color="danger">Sil</Button></td>
