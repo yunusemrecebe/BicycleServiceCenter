@@ -75,6 +75,12 @@ export default class Process extends Component {
             })
     };
 
+    sa(){
+        this.state.data.sort((a, b) => a.item.timeM > b.item.timeM ? 1:-1).map(
+            (item, i) => <div key={i}> {item.matchID} {item.timeM} {item.description}</div>
+        )
+    }
+
     //Db'Den çekilmiş servis hizmetlerini listeleme
     ListProcesses() {
         return (
@@ -93,7 +99,7 @@ export default class Process extends Component {
                 </thead>
 
                 <tbody>
-                    {this.state.processes.map((process) => (
+                    {this.state.processes.sort((a, b) => a.startingDate < b.startingDate ? 1:-1).map((process) => (
                         <tr key={process.processId}>
                             <td>{process.employeeName}</td>
                             <td>{process.customerName}</td>
