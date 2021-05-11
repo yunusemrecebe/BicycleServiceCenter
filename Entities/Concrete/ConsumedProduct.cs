@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using System;
 
 namespace Entities.Concrete
 {
@@ -10,5 +11,6 @@ namespace Entities.Concrete
         public decimal UnitPrice { get; set; }
         public int Quantity { get; set; }
         public double Discount { get; set; }
+        public DateTime DateOfUse { get; set; }
     }
 }

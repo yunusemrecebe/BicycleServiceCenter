@@ -10,6 +10,7 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos;
 using FluentValidation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -51,6 +52,7 @@ namespace Business.Concrete
                 consumedProduct.UnitPrice = inventory.SellPrice;
             }
 
+            consumedProduct.DateOfUse = DateTime.Now;
             _consumedProductDal.Add(consumedProduct);
 
             _processChargeService.Add(new ProcessCharge 
@@ -151,6 +153,7 @@ namespace Business.Concrete
 
             var inventory = _inventoryService.GetByProductId(consumedProduct.ProductId).Data;
             consumedProduct.UnitPrice = inventory.SellPrice - (inventory.SellPrice / 100) * (decimal)consumedProduct.Discount;
+            consumedProduct.DateOfUse = currentConsumedProduct.DateOfUse;
 
             var processCharge = _processChargeService.GetByConsumedProductId(consumedProduct.ConsumedProductId).Data;
             processCharge.Charge = consumedProduct.Quantity * consumedProduct.UnitPrice;

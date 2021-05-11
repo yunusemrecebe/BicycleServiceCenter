@@ -40,7 +40,8 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                                  UnitPrice = inventory.SellPrice,
                                  TotalPrice = inventory.SellPrice * consumedProduct.Quantity,
                                  Quantity = consumedProduct.Quantity,
-                                 Discount = consumedProduct.Discount
+                                 Discount = consumedProduct.Discount,
+                                 DateOfUse = consumedProduct.DateOfUse
                              };
                 return result.Where(filter).SingleOrDefault();
             }
@@ -74,7 +75,8 @@ namespace DataAccess.Concrete.EntityFramework.Concrete
                                  UnitPrice = inventory.SellPrice,
                                  TotalPrice = consumedProduct.UnitPrice * consumedProduct.Quantity,
                                  Quantity = consumedProduct.Quantity,
-                                 Discount = consumedProduct.Discount
+                                 Discount = consumedProduct.Discount,
+                                 DateOfUse = consumedProduct.DateOfUse
                              };
                 return filter == null ? result.ToList() : result.Where(filter).ToList();
             }
