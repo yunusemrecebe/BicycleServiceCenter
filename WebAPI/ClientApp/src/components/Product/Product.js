@@ -2,6 +2,11 @@ import React, { Component, useState } from "react";
 import alertify from "alertifyjs";
 import { Button, Table, Row, Col, Form, FormGroup, Label, Input } from "reactstrap";
 import Select from 'react-select';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'jquery/dist/jquery.min.js';
+import "datatables.net-dt/js/dataTables.dataTables"
+import "datatables.net-dt/css/jquery.dataTables.min.css"
+import $ from 'jquery';
 
 export default class ProductCategory extends Component {
     state = {
@@ -13,6 +18,12 @@ export default class ProductCategory extends Component {
         selectedBrand: 0,
         selectedCategory: 0,
     };
+
+    componentDidUpdate(){
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+        });
+    }
 
 
     handleChangeBrand = (event) => {
@@ -296,7 +307,7 @@ export default class ProductCategory extends Component {
     //Db'Den çekilmiş kategorileri listeleme
     ListProducts() {
         return (
-            <Table hover>
+            <Table hover id="dataTable">
                 <thead>
                     <tr>
                         <th>Ürün Kodu</th>

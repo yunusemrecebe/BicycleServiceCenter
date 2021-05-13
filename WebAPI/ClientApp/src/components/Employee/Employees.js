@@ -1,6 +1,11 @@
 import React, { Component, useState } from "react";
 import alertify from "alertifyjs";
 import { Button, Table, Row, Col, Form, FormGroup, Label, Input } from "reactstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'jquery/dist/jquery.min.js';
+import "datatables.net-dt/js/dataTables.dataTables"
+import "datatables.net-dt/css/jquery.dataTables.min.css"
+import $ from 'jquery';
 
 export default class Employees extends Component {
     state = {
@@ -9,6 +14,12 @@ export default class Employees extends Component {
         lastName: "",
         phone: "",
     };
+
+    componentDidUpdate(){
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+        });
+    }
 
     componentDidMount() {
         this.getEmployees();
@@ -175,7 +186,7 @@ export default class Employees extends Component {
     //Db'Den çekilmiş personelleri listeleme
     ListEmployees() {
         return (
-            <Table hover>
+            <Table hover id="dataTable">
                 <thead>
                     <tr>
                         <th>Ad Soyad</th>

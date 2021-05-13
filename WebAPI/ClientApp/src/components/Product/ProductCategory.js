@@ -1,12 +1,23 @@
 import React, { Component, useState } from "react";
 import alertify from "alertifyjs";
 import { Button, Label, Input, Table, FormGroup, Row, Col } from "reactstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'jquery/dist/jquery.min.js';
+import "datatables.net-dt/js/dataTables.dataTables"
+import "datatables.net-dt/css/jquery.dataTables.min.css"
+import $ from 'jquery';
 
 export default class ProductCategory extends Component {
     state = {
         productCategories: [],
         name: "",
     };
+
+    componentDidUpdate(){
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+        });
+    }
 
     componentDidMount() {
         this.getProductCategories();
@@ -175,7 +186,7 @@ export default class ProductCategory extends Component {
     //Db'Den çekilmiş kategorileri listeleme
     ListProductCategory() {
         return (
-            <Table hover>
+            <Table hover id="dataTable">
                 <thead>
                     <tr>
                         <th>Ürün Kategorileri</th>

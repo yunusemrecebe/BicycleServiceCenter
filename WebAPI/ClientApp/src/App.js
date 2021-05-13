@@ -32,7 +32,6 @@ import Register from "./components/Authentication/Register";
 import ReportForCustomer from "./components/Report/ReportForCustomer";
 import ReportForEmployee from "./components/Report/ReportForEmployee";
 import ReportForProduct from "./components/Report/ReportForProduct";
-import Test from "./components/test";
 import Navbar from "./components/NavBar";
 
 let result = false;
@@ -275,7 +274,6 @@ export default class App extends Component {
   render() {
     return (
       <Layout>
-        <Route exact path='/test' component={Test} />
         <Route exact path='/navbar' component={Navbar} />
 
         <Route exact path='/' component={Home} />

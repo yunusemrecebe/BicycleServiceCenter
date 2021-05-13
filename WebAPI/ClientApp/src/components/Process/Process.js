@@ -1,11 +1,22 @@
 import React, { Component, useState } from "react";
 import alertify from "alertifyjs";
-import { Button, Table, Row, Col, Form, FormGroup, Label, Input } from "reactstrap";
+import { Button, Table, Row, Col} from "reactstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'jquery/dist/jquery.min.js';
+import "datatables.net-dt/js/dataTables.dataTables"
+import "datatables.net-dt/css/jquery.dataTables.min.css"
+import $ from 'jquery';
 
 export default class Process extends Component {
     state = {
         processes: [],
     };
+
+    componentDidUpdate(){
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+        });
+    }
 
     componentDidMount() {
         this.getProcesses();
@@ -78,7 +89,7 @@ export default class Process extends Component {
     //Db'Den çekilmiş servis hizmetlerini listeleme
     ListProcesses() {
         return (
-            <Table hover>
+            <Table hover id="dataTable">
                 <thead>
                     <tr>
                         <th>Personel</th>

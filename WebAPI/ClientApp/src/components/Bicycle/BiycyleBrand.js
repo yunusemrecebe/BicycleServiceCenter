@@ -1,12 +1,23 @@
 import React, { Component, useState } from "react";
 import alertify from "alertifyjs";
 import { Button, Table, Row, Col, Form, FormGroup, Label, Input } from "reactstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'jquery/dist/jquery.min.js';
+import "datatables.net-dt/js/dataTables.dataTables"
+import "datatables.net-dt/css/jquery.dataTables.min.css"
+import $ from 'jquery';
 
 export default class BicycleBrand extends Component {
     state = {
         bicycleBrands: [],
         name: "",
     };
+
+    componentDidUpdate(){
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+        });
+    }
 
     componentDidMount() {
         this.getBicycleBrands();
@@ -147,7 +158,7 @@ export default class BicycleBrand extends Component {
     //Db'Den çekilmiş marka isimlerini listeleme
     ListBicycleBrands() {
         return (
-            <Table hover>
+            <Table hover id="dataTable">
                 <thead>
                     <tr>
                         <th>Bisiklet Markası İsmi</th>

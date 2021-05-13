@@ -2,6 +2,11 @@ import React, { Component, useState } from "react";
 import alertify from "alertifyjs";
 import { Button, Table, Row, Col, Form, FormGroup, Label, Input } from "reactstrap";
 import Select from 'react-select';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'jquery/dist/jquery.min.js';
+import "datatables.net-dt/js/dataTables.dataTables"
+import "datatables.net-dt/css/jquery.dataTables.min.css"
+import $ from 'jquery';
 
 export default class Bicycle extends Component {
     state = {
@@ -15,6 +20,12 @@ export default class Bicycle extends Component {
         productionDate: 0,
         serialNumber: "",
     };
+
+    componentDidUpdate(){
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+        });
+    }
 
     componentDidMount() {
         this.getBicycles();
@@ -298,7 +309,7 @@ export default class Bicycle extends Component {
     //Db'Den çekilmiş biikletleri listeleme
     ListBicycles() {
         return (
-            <Table hover>
+            <Table hover id="dataTable">
                 <thead>
                     <tr>
                         <th>Markası İsmi</th>
