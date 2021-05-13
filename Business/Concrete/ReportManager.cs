@@ -34,6 +34,30 @@ namespace Business.Concrete
             return new SuccessDataResult<ReportForCustomerDto>(_reportDal.GetFilteredReportForCustomerByDateRange(customerId, begin, end));
         }
 
+        public IDataResult<List<ReportForEmployeeDto>> GetFilteredReportForEmployeeByDateRange(int employeeId, string begin, string end)
+        {
+            var result = _employeeService.GetById(employeeId).Data;
+
+            if (result == null)
+            {
+                return new ErrorDataResult<List<ReportForEmployeeDto>>(Messages.IdValueIsInvalid);
+            }
+
+            return new SuccessDataResult<List<ReportForEmployeeDto>>(_reportDal.GetFilteredReportForEmployeeByDateRange(employeeId, begin, end));
+        }
+
+        public IDataResult<List<ReportForProductDto>> GetFilteredReportForProductByDateRange(int productId, string begin, string end)
+        {
+            var result = _productService.GetById(productId).Data;
+
+            if (result == null)
+            {
+                return new ErrorDataResult<List<ReportForProductDto>>(Messages.IdValueIsInvalid);
+            }
+
+            return new SuccessDataResult<List<ReportForProductDto>>(_reportDal.GetFilteredReportForProductByDateRange(productId, begin, end));
+        }
+
         public IDataResult<ReportForCustomerDto> GetReportForCustomer(int customerId)
         {
             var result = _customerService.GetById(customerId).Data;
@@ -72,7 +96,7 @@ namespace Business.Concrete
                 return new ErrorDataResult<List<ReportForProductDto>>(Messages.IdValueIsInvalid);
             }
 
-            return new SuccessDataResult<List<ReportForProductDto>>(_reportDal.GetReportForProduct(productId,null,null));
+            return new SuccessDataResult<List<ReportForProductDto>>(_reportDal.GetReportForProduct(productId));
         }
 
         public IDataResult<List<ReportForProductDto>> GetReportForProductList()

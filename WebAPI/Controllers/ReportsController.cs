@@ -51,6 +51,18 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
+        public IActionResult GetFilteredReportForEmployeeByDateRange(int employeeId, string begin, string end)
+        {
+            var result = _reportService.GetFilteredReportForEmployeeByDateRange(employeeId, begin, end);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet]
         public IActionResult GetReportForEmployeeList()
         {
             var result = _reportService.GetReportForEmployeeList();
@@ -66,6 +78,18 @@ namespace WebAPI.Controllers
         public IActionResult GetReportForProduct(int productId)
         {
             var result = _reportService.GetReportForProduct(productId);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet]
+        public IActionResult GetFilteredReportForProductByDateRange(int productId, string begin, string end)
+        {
+            var result = _reportService.GetFilteredReportForProductByDateRange(productId, begin, end);
 
             if (result.Success)
             {
