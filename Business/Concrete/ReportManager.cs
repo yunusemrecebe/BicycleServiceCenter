@@ -3,9 +3,7 @@ using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Dtos;
-using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace Business.Concrete
 {
@@ -36,16 +34,16 @@ namespace Business.Concrete
             return new SuccessDataResult<ReportForCustomerDto>(_reportDal.GetReportForCustomer(customerId));
         }
 
-        public IDataResult<ReportForEmployeeDto> GetReportForEmployee(int employeeId)
+        public IDataResult<List<ReportForEmployeeDto>> GetReportForEmployee(int employeeId)
         {
             var result = _employeeService.GetById(employeeId).Data;
 
             if (result == null)
             {
-                return new ErrorDataResult<ReportForEmployeeDto>(Messages.IdValueIsInvalid);
+                return new ErrorDataResult<List<ReportForEmployeeDto>>(Messages.IdValueIsInvalid);
             }
 
-            return new SuccessDataResult<ReportForEmployeeDto>(_reportDal.GetReportForEmployee(employeeId));
+            return new SuccessDataResult<List<ReportForEmployeeDto>>(_reportDal.GetReportForEmployee(employeeId));
         }
 
         public IDataResult<List<ReportForEmployeeDto>> GetReportForEmployeeList()

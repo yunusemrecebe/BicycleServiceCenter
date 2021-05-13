@@ -1,5 +1,6 @@
 import React from "react";
 import GridTable from '@nadavshaar/react-grid-table';
+import { Button } from "reactstrap";
 
 //Servis Hizmetlerini Db'den çekme
 let processes = [];
@@ -70,7 +71,7 @@ const MyAwesomeTable = () => {
             id: 6,
             field: 'status',
             label: 'Durum',
-        }
+        },
     ];
     
     return (

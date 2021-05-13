@@ -64,19 +64,26 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
 
-        public ReportForEmployeeDto GetReportForEmployee(int employeeId)
+        public List<ReportForEmployeeDto> GetReportForEmployee(int employeeId)
         {
             using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
             {
-                int TotalQuantityOfHandledService = context.Processes.Where(p => p.EmployeeId == employeeId).Count();
-                var employee = context.Employees.Where(e => e.EmployeeId == employeeId).SingleOrDefault();
+                var result = from employee in context.Employees
 
-                return new ReportForEmployeeDto
-                {
-                    EmployeeId = employee.EmployeeId,
-                    Employee = $"{employee.FirstName} {employee.LastName}",
-                    TotalQuantityOfHandledService = TotalQuantityOfHandledService
-                };
+                             join process in context.Processes
+                             on employee.EmployeeId equals process.EmployeeId
+
+                             where employee.EmployeeId == employeeId
+
+                             select new ReportForEmployeeDto
+                             {
+                                 EmployeeId = employee.EmployeeId,
+                                 Employee = $"{employee.FirstName} {employee.LastName}",
+                                 DateOfProcess = process.StartingDate,
+                                 TotalQuantityOfHandledService = context.Processes.Where(p => p.EmployeeId == employeeId).Count()
+                             };
+
+                return result.ToList();
             }
         }
 

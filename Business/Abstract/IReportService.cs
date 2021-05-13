@@ -8,7 +8,7 @@ namespace Business.Abstract
     {
         IDataResult<List<ReportForProductDto>> GetReportForProduct(int productId);
         IDataResult<List<ReportForProductDto>> GetReportForProductList();
-        IDataResult<ReportForEmployeeDto> GetReportForEmployee(int employeeId);
+        IDataResult<List<ReportForEmployeeDto>> GetReportForEmployee(int employeeId);
         IDataResult<List<ReportForEmployeeDto>> GetReportForEmployeeList();
         IDataResult<ReportForCustomerDto> GetReportForCustomer(int customerId);
     }

@@ -9,7 +9,7 @@ namespace DataAccess.Abstract
     {
         List<ReportForProductDto> GetReportForProduct(int productId, DateTime? begin, DateTime? end);
         List<ReportForProductDto> GetReportForProductList(Expression<Func<bool, ReportForProductDto>> filter = null);
-        ReportForEmployeeDto GetReportForEmployee(int employeeId);
+        List<ReportForEmployeeDto> GetReportForEmployee(int employeeId);
         List<ReportForEmployeeDto> GetReportForEmployeeList(Expression<Func<bool, ReportForEmployeeDto>> filter = null);
         ReportForCustomerDto GetReportForCustomer(int customerId);
     }

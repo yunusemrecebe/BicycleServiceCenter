@@ -26,7 +26,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult GetReportForEmployee(int employeeId)
         {
             var result = _reportService.GetReportForEmployee(employeeId);
