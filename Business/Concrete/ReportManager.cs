@@ -22,6 +22,18 @@ namespace Business.Concrete
             _productService = productService;
         }
 
+        public IDataResult<ReportForCustomerDto> GetFilteredReportForCustomerByDateRange(int customerId, string begin, string end)
+        {
+            var result = _customerService.GetById(customerId).Data;
+
+            if (result == null)
+            {
+                return new ErrorDataResult<ReportForCustomerDto>(Messages.IdValueIsInvalid);
+            }
+
+            return new SuccessDataResult<ReportForCustomerDto>(_reportDal.GetFilteredReportForCustomerByDateRange(customerId, begin, end));
+        }
+
         public IDataResult<ReportForCustomerDto> GetReportForCustomer(int customerId)
         {
             var result = _customerService.GetById(customerId).Data;

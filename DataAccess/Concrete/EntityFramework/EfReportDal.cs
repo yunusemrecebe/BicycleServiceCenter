@@ -64,6 +64,60 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
 
+        public ReportForCustomerDto GetFilteredReportForCustomerByDateRange(int customerId, string begin, string end)
+        {
+            using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
+            {
+                int TotalQuantityOfReceivedProcesses = context.Processes.Where(p => p.CustomerId == customerId && p.StartingDate.Day >= Convert.ToDateTime(begin).Day && p.StartingDate.Day <= Convert.ToDateTime(end).Day).Count();
+
+                var OverallCharge = from processCharge in context.ProcessCharges
+
+                                    join process in context.Processes
+                                    on processCharge.ProcessId equals process.ProcessId
+
+                                    where process.CustomerId == customerId && (process.StartingDate.Day >= Convert.ToDateTime(begin).Day && process.StartingDate.Day <= Convert.ToDateTime(end).Day)
+
+                                    select processCharge.Charge;
+
+                var PurchasedProducts = from consumedProduct in context.ConsumedProducts
+
+                                        join product in context.Products
+                                        on consumedProduct.ProductId equals product.ProductId
+
+                                        join productBrand in context.ProductBrands
+                                        on product.BrandId equals productBrand.ProductBrandId
+
+                                        join process in context.Processes
+                                        on consumedProduct.ProcessId equals process.ProcessId
+
+                                        where process.CustomerId == customerId && (consumedProduct.DateOfUse.Day >= Convert.ToDateTime(begin).Day && consumedProduct.DateOfUse.Day <= Convert.ToDateTime(end).Day)
+
+                                        select new ConsumedProductDetailDto
+                                        {
+                                            ConsumedProductId = consumedProduct.ConsumedProductId,
+                                            ProcessId = process.ProcessId,
+                                            ProductId = product.ProductId,
+                                            ProductCode = product.ProductCode,
+                                            Product = $"{productBrand.Name} {product.Name}",
+                                            Quantity = consumedProduct.Quantity,
+                                            Discount = consumedProduct.Discount,
+                                            UnitPrice = consumedProduct.UnitPrice,
+                                            TotalPrice = consumedProduct.UnitPrice * consumedProduct.Quantity,
+                                            DateOfUse = consumedProduct.DateOfUse
+
+                                        };
+
+                return new ReportForCustomerDto
+                {
+                    CustomerId = customerId,
+                    OverallCharge = OverallCharge.Sum(),
+                    PurchasedProducts = PurchasedProducts.ToList(),
+                    TotalQuantityOfReceivedProcesses = TotalQuantityOfReceivedProcesses
+                };
+
+            }
+        }
+
         public List<ReportForEmployeeDto> GetReportForEmployee(int employeeId)
         {
             using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())

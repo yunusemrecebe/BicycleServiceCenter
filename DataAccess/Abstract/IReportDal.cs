@@ -12,5 +12,6 @@ namespace DataAccess.Abstract
         List<ReportForEmployeeDto> GetReportForEmployee(int employeeId);
         List<ReportForEmployeeDto> GetReportForEmployeeList(Expression<Func<bool, ReportForEmployeeDto>> filter = null);
         ReportForCustomerDto GetReportForCustomer(int customerId);
+        ReportForCustomerDto GetFilteredReportForCustomerByDateRange(int customerId, string begin, string end);
     }
 }

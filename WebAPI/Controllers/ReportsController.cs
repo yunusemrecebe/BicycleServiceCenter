@@ -14,10 +14,22 @@ namespace WebAPI.Controllers
             _reportService = reportService;
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult GetReportForCustomer(int customerId)
         {
             var result = _reportService.GetReportForCustomer(customerId);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet]
+        public IActionResult GetFilteredReportForCustomerByDateRange(int customerId, string begin, string end)
+        {
+            var result = _reportService.GetFilteredReportForCustomerByDateRange(customerId, begin, end);
 
             if (result.Success)
             {
@@ -50,7 +62,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-       [HttpGet]
+        [HttpGet]
         public IActionResult GetReportForProduct(int productId)
         {
             var result = _reportService.GetReportForProduct(productId);

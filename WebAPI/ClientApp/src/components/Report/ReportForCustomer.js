@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Row, Col, FormGroup, Label } from "reactstrap";
+import { Table, Row, Col, FormGroup, Label, Button } from "reactstrap";
 import Select from 'react-select';
 
 export default  class ReportForCustomer extends Component {
@@ -75,7 +75,41 @@ export default  class ReportForCustomer extends Component {
 
         let url = "/api/reports/GetReportForCustomer?customerId=" + id;
         fetch(url, {
-            method: 'post',
+            method: 'get',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(async (response) => {
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                this.setState({ reportDetails: data.data, consumedProducts: data.data.purchasedProducts });
+
+            })
+            .catch((responseError) => {
+                if (responseError.Message == "Token Bulunamadı!") {
+                    this.CreateTokenByRefreshToken();
+                }
+            })
+    }
+
+    GetFilteredReportByDateRange(id, begin, end){
+        begin = "2021-04-01";
+        end = "2021-05-13";
+        id = 2;
+
+        console.log(begin,end);
+
+        let token = localStorage.getItem('token');
+
+        let url = "/api/reports/GetFilteredReportForCustomerByDateRange?customerId=" + id +"&begin="+begin+"&end="+end;
+        fetch(url, {
+            method: 'get',
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -169,10 +203,12 @@ export default  class ReportForCustomer extends Component {
                     <Col md="6"><h3>Toplam Servis Hizmeti Sayısı: {this.state.reportDetails.totalQuantityOfReceivedProcesses}</h3></Col>
                     <Col md="6"><h3>Ödediği Toplam Ücret: {this.state.reportDetails.overallCharge}</h3></Col>
                 </Row>
+                
                 <hr></hr>
                 <h1>Satın Aldığı Ürünler </h1>
                 <br></br>
                 {this.ListToReport()}
+                <Button onClick={this.GetFilteredReportByDateRange.bind(this)} color="danger">Sil</Button>
             </div>
         );
     }
