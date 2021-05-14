@@ -101,7 +101,7 @@ export default class ReportForCustomer extends Component {
                     const error = data;
                     return Promise.reject(error);
                 }
-                console.log(data);
+                
                 if(data.data[0] == null){
                     this.setState({ reportDetails: null, totalQuantityOfSale: null, totalPriceOfSale: null, });    
                 }

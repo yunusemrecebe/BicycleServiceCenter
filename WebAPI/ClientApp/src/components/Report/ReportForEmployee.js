@@ -17,7 +17,6 @@ export default class ReportForCustomer extends Component {
     }
 
     handleChangeEmployee = (event) => {
-        this.state.reportDetails = null;
         this.state.selectedEmployee = event.value;
         this.getReport(this.state.selectedEmployee);
     }
@@ -103,7 +102,7 @@ export default class ReportForCustomer extends Component {
                     const error = result;
                     return Promise.reject(error);
                 }
-
+                this.state.reportDetails = null;
                 this.setState({ reportDetails: result.data });
 
             })
@@ -132,9 +131,14 @@ export default class ReportForCustomer extends Component {
                     return Promise.reject(error);
                 }
 
-                this.setState({ reportDetails: data.data, begin:null, end:null });
-                Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
-
+                if(data.data[0] == null){
+                    this.setState({ reportDetails: null });    
+                }
+                else{
+                    this.setState({ reportDetails: data.data, begin:null, end:null });
+                    Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
+                }
+                this.getReport();
             })
             .catch((responseError) => {
                 if (responseError.Message == "Token Bulunamadı!") {
@@ -174,12 +178,14 @@ export default class ReportForCustomer extends Component {
                 </thead>
 
                 <tbody>
-                    {this.state.reportDetails.map((reportDetail) => (
+                    {this.state.reportDetails!= null ? this.state.reportDetails.map((reportDetail) => (
+                        
                         <tr key={reportDetail.employeeId}>
                             <td>{reportDetail.employee}</td>
                             <td>{reportDetail.totalQuantityOfHandledService}</td>
                         </tr>
-                    ))}
+                    ))
+                    : <h3 className="text-center mt-5">Belirtilen kriterlere göre kayıt bulunamadı!</h3>}
                 </tbody>
             </Table>
         )
