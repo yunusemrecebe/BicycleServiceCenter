@@ -125,19 +125,19 @@ export default class ReportForCustomer extends Component {
                     const error = data;
                     return Promise.reject(error);
                 }
-
-                this.setState({ reportDetails: data.data, consumedProducts: data.data.purchasedProducts, begin:null, end:null });
+                
+                if(data.data.purchasedProducts[0] == null){
+                    this.setState({ reportDetails: null, consumedProducts: null });
+                }
+                else{
+                    this.setState({ reportDetails: data.data, consumedProducts: data.data.purchasedProducts, begin:null, end:null });
+                    Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
+                }
                 this.ListToReport();
-                Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
-
             })
             .catch((responseError) => {
                 if (responseError.Message == "Token Bulunamadı!") {
                     this.CreateTokenByRefreshToken();
-                }
-                else{
-                    console.log(responseError.Message);
-                    alertify.error(responseError.Message);
                 }
             })
     }
@@ -178,7 +178,7 @@ export default class ReportForCustomer extends Component {
                 </thead>
 
                 <tbody>
-                    {this.state.consumedProducts.sort((a, b) => a.dateOfUse < b.dateOfUse ? 1 : -1).map((consumedProduct) => (
+                    {this.state.consumedProducts != null ? this.state.consumedProducts.sort((a, b) => a.dateOfUse < b.dateOfUse ? 1 : -1).map((consumedProduct) => (
                         <tr key={consumedProduct.consumedProductId}>
                             <td>{consumedProduct.productCode}</td>
                             <td>{consumedProduct.product}</td>
@@ -188,7 +188,8 @@ export default class ReportForCustomer extends Component {
                             <td>{consumedProduct.discount}</td>
                             <td>{consumedProduct.dateOfUse.replace('T', ' ').slice(0, -3)}</td>
                         </tr>
-                    ))}
+                    ))
+                    : <h3 className="text-center mt-5">Belirtilen kriterlere göre kayıt bulunamadı!</h3>}
                 </tbody>
             </Table>
         )
@@ -232,9 +233,9 @@ export default class ReportForCustomer extends Component {
                 <br></br>
                 <Row>
                 <Col md="2"></Col>
-                    <Col md="4"><h3>Toplam Servis Hizmeti Sayısı: {this.state.reportDetails.totalQuantityOfReceivedProcesses}</h3></Col>
+                    <Col md="4"><h3>Toplam Servis Hizmeti Sayısı: {this.state.reportDetails != null ? this.state.reportDetails.totalQuantityOfReceivedProcesses : 0}</h3></Col>
                     
-                    <Col md="4"><h3>Ödediği Toplam Ücret: {this.state.reportDetails.overallCharge}</h3></Col>
+                    <Col md="4"><h3>Ödediği Toplam Ücret: {this.state.reportDetails != null ? this.state.reportDetails.overallCharge : 0}</h3></Col>
                     
                 </Row>
 
