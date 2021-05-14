@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import { Table, Row, Col, FormGroup, Label } from "reactstrap";
+import { Table, Row, Col, Form, FormGroup, Label, Button, Input } from "reactstrap";
 import Select from 'react-select';
+import '../../css/date.css'
 
-export default  class ReportForCustomer extends Component {
+export default class ReportForCustomer extends Component {
     state = {
         reportDetails: [],
         products: [],
-        selectedProduct:0,
-        totalPriceOfSale:0,
-        totalQuantityOfSale:0
+        selectedProduct: 0,
+        totalPriceOfSale: 0,
+        totalQuantityOfSale: 0
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.getProducts();
     }
 
@@ -19,6 +20,12 @@ export default  class ReportForCustomer extends Component {
         this.state.selectedProduct = event.value;
         this.getReport(this.state.selectedProduct);
     }
+
+    handleChange = (event) => {
+        let name = event.target.name;
+        let value = event.target.value;
+        this.setState({ [name]: value });
+    };
 
     CreateTokenByRefreshToken() {
         const requestOptions = {
@@ -66,16 +73,64 @@ export default  class ReportForCustomer extends Component {
                 'Authorization': `Bearer ${token}`
             }
         })
-        .then(async (response) => {
-            const data = await response.json();
-            
-            if (!response.ok) {
-                const error = data;
-                return Promise.reject(error);
-            }
-            this.setState({ products: data });
-        })
+            .then(async (response) => {
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+                this.setState({ products: data });
+            })
     };
+
+    GetFilteredReportByDateRange(id, begin, end) {
+        let token = localStorage.getItem('token');
+
+        let url = "/api/reports/GetFilteredReportForProductByDateRange?productId=" + id + "&begin=" + begin + "&end=" + end;
+        fetch(url, {
+            method: 'get',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(async (response) => {
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                this.setState({ reportDetails: data.data, totalQuantityOfSale: data.data[0].totalQuantityOfSale, totalPriceOfSale: data.data[0].totalPriceOfSale, begin: null, end: null });
+                Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
+
+            })
+            .catch((responseError) => {
+                if (responseError.Message == "Token Bulunamadı!") {
+                    this.CreateTokenByRefreshToken();
+                }
+            })
+    }
+
+    DateRangePicker() {
+        return (
+            <div id="datePickerContainer">
+                <Label>Tarihe Göre Filtrele</Label>
+                <Form inline id="datePicker">
+                    <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                        <Label for="begin">Başlangıç Tarihi</Label>
+                        <Input className="ml-2" type="date" id="begin" name="begin" onChange={this.handleChange}></Input>
+                    </FormGroup>
+                    <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                        <Label for="end">Bitiş Tarihi</Label>
+                        <Input className="ml-2" type="date" id="end" name="end" onChange={this.handleChange}></Input>
+                    </FormGroup>
+                    <Button onClick={this.GetFilteredReportByDateRange.bind(this, this.state.selectedProduct, this.state.begin, this.state.end)} color="success">Filtrele</Button>
+                </Form>
+            </div>
+        );
+    }
 
     //Raporu ilgili kullanıcıya göre db'den çekme
     getReport(id) {
@@ -95,12 +150,12 @@ export default  class ReportForCustomer extends Component {
                     const error = data;
                     return Promise.reject(error);
                 }
-                
-                if(data.data.length < 1){
-                    this.setState({ reportDetails: [], totalQuantityOfSale:0, totalPriceOfSale:0 });
+
+                if (data.data.length < 1) {
+                    this.setState({ reportDetails: [], totalQuantityOfSale: 0, totalPriceOfSale: 0 });
                 }
-                else{
-                    this.setState({ reportDetails: data.data, totalQuantityOfSale: data.data[0].totalQuantityOfSale , totalPriceOfSale: data.data[0].totalPriceOfSale  });
+                else {
+                    this.setState({ reportDetails: data.data, totalQuantityOfSale: data.data[0].totalQuantityOfSale, totalPriceOfSale: data.data[0].totalPriceOfSale });
                 }
             })
             .catch((responseError) => {
@@ -121,9 +176,9 @@ export default  class ReportForCustomer extends Component {
                         <th>Satış Tarihi</th>
                     </tr>
                 </thead>
-                
+
                 <tbody>
-                    {this.state.reportDetails.sort((a, b) => a.dateOfSale < b.dateOfSale ? 1:-1).map((reportDetail) => (
+                    {this.state.reportDetails.sort((a, b) => a.dateOfSale < b.dateOfSale ? 1 : -1).map((reportDetail) => (
                         <tr key={reportDetail.productId}>
                             <td>{reportDetail.productCode}</td>
                             <td>{reportDetail.product}</td>
@@ -161,22 +216,23 @@ export default  class ReportForCustomer extends Component {
             <div>
                 <center><h1> Ürün Hakkında Rapor Oluşturma</h1></center>
                 <Row>
-                    <Col md={4}>
+                    <Col md={2}>
                         <FormGroup>
                             {this.ProductSelect(this.state.products)}
                         </FormGroup>
                     </Col>
+                    {this.DateRangePicker()}
                 </Row>
                 <br></br>
                 <Row>
-                    <Col md="6"><h3>Toplam Birim Satış Miktarı: {this.state.totalQuantityOfSale}</h3></Col>
-                    <Col md="6"><h3>Toplam Satış Ücreti: {this.state.totalPriceOfSale}</h3></Col>
+                    <Col md="2"></Col>
+                    <Col md="4"><h3>Toplam Birim Satış Miktarı: {this.state.totalQuantityOfSale}</h3></Col>
+                    <Col md="4"><h3>Toplam Satış Ücreti: {this.state.totalPriceOfSale}</h3></Col>
                 </Row>
                 <hr></hr>
-                <h1>Satın Aldığı Ürünler </h1>
-                <br></br>
+                <h1>Ürünün Satış Geçmişi</h1>
                 {this.ListToReport()}
             </div>
         );
     }
-} 
+}
