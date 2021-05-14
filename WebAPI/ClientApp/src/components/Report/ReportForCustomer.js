@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Table, Row, Col, Form, FormGroup, Label, Button, Input } from "reactstrap";
 import Select from 'react-select';
 import '../../css/date.css'
+import alertify from "alertifyjs";
 
 export default class ReportForCustomer extends Component {
     state = {
@@ -126,12 +127,17 @@ export default class ReportForCustomer extends Component {
                 }
 
                 this.setState({ reportDetails: data.data, consumedProducts: data.data.purchasedProducts, begin:null, end:null });
+                this.ListToReport();
                 Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
 
             })
             .catch((responseError) => {
                 if (responseError.Message == "Token Bulunamadı!") {
                     this.CreateTokenByRefreshToken();
+                }
+                else{
+                    console.log(responseError.Message);
+                    alertify.error(responseError.Message);
                 }
             })
     }

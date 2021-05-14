@@ -3,6 +3,7 @@ using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Dtos;
+using FluentValidation;
 using System.Collections.Generic;
 
 namespace Business.Concrete
@@ -28,7 +29,7 @@ namespace Business.Concrete
 
             if (result == null)
             {
-                return new ErrorDataResult<ReportForCustomerDto>(Messages.IdValueIsInvalid);
+                throw new ValidationException(Messages.IdValueIsInvalid);
             }
 
             return new SuccessDataResult<ReportForCustomerDto>(_reportDal.GetFilteredReportForCustomerByDateRange(customerId, begin, end));

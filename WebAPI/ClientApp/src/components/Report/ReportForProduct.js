@@ -101,9 +101,15 @@ export default class ReportForCustomer extends Component {
                     const error = data;
                     return Promise.reject(error);
                 }
-
-                this.setState({ reportDetails: data.data, totalQuantityOfSale: data.data[0].totalQuantityOfSale, totalPriceOfSale: data.data[0].totalPriceOfSale, begin: null, end: null });
-                Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
+                console.log(data);
+                if(data.data[0] == null){
+                    this.setState({ reportDetails: null, totalQuantityOfSale: null, totalPriceOfSale: null, });    
+                }
+                else{
+                    this.setState({ reportDetails: data.data, totalQuantityOfSale: data.data[0].totalQuantityOfSale, totalPriceOfSale: data.data[0].totalPriceOfSale, begin: null, end: null });
+                    Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
+                }
+                this.getReport();
 
             })
             .catch((responseError) => {
@@ -178,13 +184,14 @@ export default class ReportForCustomer extends Component {
                 </thead>
 
                 <tbody>
-                    {this.state.reportDetails.sort((a, b) => a.dateOfSale < b.dateOfSale ? 1 : -1).map((reportDetail) => (
+                    {this.state.reportDetails != null ? this.state.reportDetails.sort((a, b) => a.dateOfSale < b.dateOfSale ? 1 : -1).map((reportDetail) => (
                         <tr key={reportDetail.productId}>
                             <td>{reportDetail.productCode}</td>
                             <td>{reportDetail.product}</td>
                             <td>{reportDetail.dateOfSale.replace('T', ' ').slice(0, -3)}</td>
                         </tr>
-                    ))}
+                    )) 
+                : <h3 className="text-center mt-5">Belirtilen kriterlere göre kayıt bulunamadı!</h3>}
                 </tbody>
             </Table>
         )

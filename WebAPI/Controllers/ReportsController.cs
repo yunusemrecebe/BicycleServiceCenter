@@ -27,7 +27,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetFilteredReportForCustomerByDateRange(int customerId, string begin, string end)
+        public IActionResult GetFilteredReportForCustomerByDateRange(int customerId = 0, string begin = null, string end = null)
         {
             var result = _reportService.GetFilteredReportForCustomerByDateRange(customerId, begin, end);
 
