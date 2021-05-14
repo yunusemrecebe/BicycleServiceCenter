@@ -19,6 +19,7 @@ import BicycleBrandUpdate from './components/Bicycle/UpdateBicycleBrand';
 import BicycleModel from './components/Bicycle/BicycleModel';
 import BicycleModelUpdate from './components/Bicycle/UpdateBicycleModel';
 import Bicycle from './components/Bicycle/Bicycle';
+import BicycleAdd from './components/Bicycle/AddBicycle';
 import BicycleUpdate from './components/Bicycle/UpdateBicycle';
 import Process from './components/Process/Process';
 import ProcessAdd from './components/Process/AddProcess';
@@ -33,6 +34,7 @@ import ReportForCustomer from "./components/Report/ReportForCustomer";
 import ReportForEmployee from "./components/Report/ReportForEmployee";
 import ReportForProduct from "./components/Report/ReportForProduct";
 import Navbar from "./components/NavBar";
+import AddBicycle from './components/Bicycle/AddBicycle';
 
 let result = false;
 
@@ -294,6 +296,7 @@ export default class App extends Component {
         <Route exact path="/stok/guncelle" render={props => (<InventoryUpdate {...props} getInventory={this.state.selectedInventory} />)} />
 
         {/* BICYCLE İLE İLGİLİ YÖNLENDİRMELER */}
+        <Route exact path="/bisiklet/ekle" render={props => (<AddBicycle {...props} />)} />
         <Route exact path="/bisiklet/listele" render={props => (<Bicycle {...props} setBicycle={this.setBicycle} />)} />
         <Route exact path="/bisiklet/guncelle" render={props => (<BicycleUpdate {...props} getBicycle={this.state.selectedBicycle} />)} />
         <Route exact path="/bisiklet/marka/listele" render={props => (<BicycleBrand {...props} setBicycleBrand={this.setBicycleBrand} />)} />
