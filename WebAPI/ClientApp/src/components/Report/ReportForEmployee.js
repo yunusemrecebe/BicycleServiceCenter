@@ -138,7 +138,7 @@ export default class ReportForCustomer extends Component {
                     this.setState({ reportDetails: data.data, begin:null, end:null });
                     Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
                 }
-                this.getReport();
+                this.ListToReport();
             })
             .catch((responseError) => {
                 if (responseError.Message == "Token Bulunamadı!") {

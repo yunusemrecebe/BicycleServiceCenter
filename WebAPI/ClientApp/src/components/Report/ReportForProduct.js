@@ -109,7 +109,7 @@ export default class ReportForCustomer extends Component {
                     this.setState({ reportDetails: data.data, totalQuantityOfSale: data.data[0].totalQuantityOfSale, totalPriceOfSale: data.data[0].totalPriceOfSale, begin: null, end: null });
                     Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
                 }
-                this.getReport();
+                this.ListToReport();
 
             })
             .catch((responseError) => {
