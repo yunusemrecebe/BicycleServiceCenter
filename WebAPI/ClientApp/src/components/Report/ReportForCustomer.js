@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
-import { Table, Row, Col, FormGroup, Label, Button } from "reactstrap";
+import { Table, Row, Col, Form, FormGroup, Label, Button, Input } from "reactstrap";
 import Select from 'react-select';
+import '../../css/date.css'
 
-export default  class ReportForCustomer extends Component {
+export default class ReportForCustomer extends Component {
     state = {
         reportDetails: [],
         consumedProducts: [],
         customers: [],
-        selectedCustomer:0
+        selectedCustomer: 0,
+        begin: null,
+        end: null
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.getCustomers();
     }
 
@@ -18,6 +21,12 @@ export default  class ReportForCustomer extends Component {
         this.state.selectedCustomer = event.value;
         this.getReport(this.state.selectedCustomer);
     }
+
+    handleChange = (event) => {
+        let name = event.target.name;
+        let value = event.target.value;
+        this.setState({ [name]: value });
+    };
 
     CreateTokenByRefreshToken() {
         const requestOptions = {
@@ -98,16 +107,10 @@ export default  class ReportForCustomer extends Component {
             })
     }
 
-    GetFilteredReportByDateRange(id, begin, end){
-        begin = "2021-04-01";
-        end = "2021-05-13";
-        id = 2;
-
-        console.log(begin,end);
-
+    GetFilteredReportByDateRange(id, begin, end) {
         let token = localStorage.getItem('token');
 
-        let url = "/api/reports/GetFilteredReportForCustomerByDateRange?customerId=" + id +"&begin="+begin+"&end="+end;
+        let url = "/api/reports/GetFilteredReportForCustomerByDateRange?customerId=" + id + "&begin=" + begin + "&end=" + end;
         fetch(url, {
             method: 'get',
             headers: {
@@ -122,7 +125,8 @@ export default  class ReportForCustomer extends Component {
                     return Promise.reject(error);
                 }
 
-                this.setState({ reportDetails: data.data, consumedProducts: data.data.purchasedProducts });
+                this.setState({ reportDetails: data.data, consumedProducts: data.data.purchasedProducts, begin:null, end:null });
+                Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
 
             })
             .catch((responseError) => {
@@ -130,6 +134,25 @@ export default  class ReportForCustomer extends Component {
                     this.CreateTokenByRefreshToken();
                 }
             })
+    }
+
+    DateRangePicker() {
+        return (
+            <div id="datePickerContainer">
+                <Label>Tarihe Göre Filtrele</Label>
+                <Form inline id="datePicker">
+                    <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                        <Label for="begin">Başlangıç Tarihi</Label>
+                        <Input className="ml-2" type="date" id="begin" name="begin" onChange={this.handleChange}></Input>
+                    </FormGroup>
+                    <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                        <Label for="end">Bitiş Tarihi</Label>
+                        <Input className="ml-2" type="date" id="end" name="end" onChange={this.handleChange}></Input>
+                    </FormGroup>
+                    <Button onClick={this.GetFilteredReportByDateRange.bind(this,this.state.selectedCustomer,this.state.begin,this.state.end)} color="success">Filtrele</Button>
+                </Form>
+            </div>
+        );
     }
 
     //Rapordan gelen satın alınmış ürünleri listeleme
@@ -149,7 +172,7 @@ export default  class ReportForCustomer extends Component {
                 </thead>
 
                 <tbody>
-                    {this.state.consumedProducts.sort((a, b) => a.dateOfUse < b.dateOfUse ? 1:-1).map((consumedProduct) => (
+                    {this.state.consumedProducts.sort((a, b) => a.dateOfUse < b.dateOfUse ? 1 : -1).map((consumedProduct) => (
                         <tr key={consumedProduct.consumedProductId}>
                             <td>{consumedProduct.productCode}</td>
                             <td>{consumedProduct.product}</td>
@@ -190,25 +213,28 @@ export default  class ReportForCustomer extends Component {
         return (
             <div>
                 <center><h1> Müşteri Hakkında Rapor Oluşturma</h1></center>
+                <hr></hr>
                 <Row>
-                    <Col md={4}>
+                    <Col md={2}>
                         <FormGroup>
                             {this.CustomerSelect(this.state.customers)}
                         </FormGroup>
                     </Col>
+                    {this.DateRangePicker()}
                 </Row>
 
                 <br></br>
                 <Row>
-                    <Col md="6"><h3>Toplam Servis Hizmeti Sayısı: {this.state.reportDetails.totalQuantityOfReceivedProcesses}</h3></Col>
-                    <Col md="6"><h3>Ödediği Toplam Ücret: {this.state.reportDetails.overallCharge}</h3></Col>
+                <Col md="2"></Col>
+                    <Col md="4"><h3>Toplam Servis Hizmeti Sayısı: {this.state.reportDetails.totalQuantityOfReceivedProcesses}</h3></Col>
+                    
+                    <Col md="4"><h3>Ödediği Toplam Ücret: {this.state.reportDetails.overallCharge}</h3></Col>
+                    
                 </Row>
-                
+
                 <hr></hr>
                 <h1>Satın Aldığı Ürünler </h1>
-                <br></br>
                 {this.ListToReport()}
-                <Button onClick={this.GetFilteredReportByDateRange.bind(this)} color="danger">Sil</Button>
             </div>
         );
     }

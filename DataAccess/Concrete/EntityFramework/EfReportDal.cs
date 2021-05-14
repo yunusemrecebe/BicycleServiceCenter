@@ -181,7 +181,10 @@ namespace DataAccess.Concrete.EntityFramework
                                     join process in context.Processes
                                     on processCharge.ProcessId equals process.ProcessId
 
-                                    where process.CustomerId == customerId && (process.StartingDate.Day >= Convert.ToDateTime(begin).Day && process.StartingDate.Day <= Convert.ToDateTime(end).Day)
+                                    join consumedProduct in context.ConsumedProducts
+                                    on processCharge.ConsumedProductId equals consumedProduct.ConsumedProductId
+
+                                    where process.CustomerId == customerId && (consumedProduct.DateOfUse.Day >= Convert.ToDateTime(begin).Day && consumedProduct.DateOfUse.Day <= Convert.ToDateTime(end).Day)
 
                                     select processCharge.Charge;
 

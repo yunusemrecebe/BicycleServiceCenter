@@ -11,10 +11,10 @@ export class Layout extends Component {
       <div>
         <Row>
           <Col md="2"><Menu /></Col>
-          <Col md="8">
+          <Col md="10" className="pr-5">
             {this.props.children}
           </Col>
-          <Col md="1"></Col>
+          
         </Row>
 
 

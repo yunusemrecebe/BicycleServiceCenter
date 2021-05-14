@@ -1,0 +1,10 @@
+#datePicker{
+  padding: 2px;
+  border: 0.5px solid #c9c9c9;
+  border-radius: 5px;
+ 
+}
+
+#datePickerContainer{
+  margin-right: -20%;
+}
