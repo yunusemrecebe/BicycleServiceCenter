@@ -102,7 +102,7 @@ export default class ReportForCustomer extends Component {
                     const error = result;
                     return Promise.reject(error);
                 }
-                this.state.reportDetails = null;
+
                 this.setState({ reportDetails: result.data });
 
             })
@@ -131,11 +131,11 @@ export default class ReportForCustomer extends Component {
                     return Promise.reject(error);
                 }
 
-                if(data.data[0] == null){
-                    this.setState({ reportDetails: null });    
+                if (data.data[0] == null) {
+                    this.setState({ reportDetails: null });
                 }
-                else{
-                    this.setState({ reportDetails: data.data, begin:null, end:null });
+                else {
+                    this.setState({ reportDetails: data.data, begin: null, end: null });
                     Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
                 }
                 this.ListToReport();
@@ -160,7 +160,7 @@ export default class ReportForCustomer extends Component {
                         <Label for="end">Bitiş Tarihi</Label>
                         <Input className="ml-2" type="date" id="end" name="end" onChange={this.handleChange}></Input>
                     </FormGroup>
-                    <Button onClick={this.GetFilteredReportByDateRange.bind(this,this.state.selectedEmployee,this.state.begin,this.state.end)} color="success">Filtrele</Button>
+                    <Button onClick={this.GetFilteredReportByDateRange.bind(this, this.state.selectedEmployee, this.state.begin, this.state.end)} color="success">Filtrele</Button>
                 </Form>
             </div>
         );
@@ -222,7 +222,9 @@ export default class ReportForCustomer extends Component {
                             {this.EmployeeSelect(this.state.employees)}
                         </FormGroup>
                     </Col>
-                    {this.DateRangePicker()}
+                    <Col>
+                        {this.DateRangePicker()}
+                    </Col>
                 </Row>
 
                 <hr></hr>

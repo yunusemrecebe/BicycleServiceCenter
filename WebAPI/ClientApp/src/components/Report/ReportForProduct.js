@@ -101,11 +101,11 @@ export default class ReportForCustomer extends Component {
                     const error = data;
                     return Promise.reject(error);
                 }
-                
-                if(data.data[0] == null){
-                    this.setState({ reportDetails: null, totalQuantityOfSale: null, totalPriceOfSale: null, });    
+
+                if (data.data[0] == null) {
+                    this.setState({ reportDetails: null, totalQuantityOfSale: null, totalPriceOfSale: null, });
                 }
-                else{
+                else {
                     this.setState({ reportDetails: data.data, totalQuantityOfSale: data.data[0].totalQuantityOfSale, totalPriceOfSale: data.data[0].totalPriceOfSale, begin: null, end: null });
                     Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
                 }
@@ -190,8 +190,8 @@ export default class ReportForCustomer extends Component {
                             <td>{reportDetail.product}</td>
                             <td>{reportDetail.dateOfSale.replace('T', ' ').slice(0, -3)}</td>
                         </tr>
-                    )) 
-                : <h3 className="text-center mt-5">Belirtilen kriterlere göre kayıt bulunamadı!</h3>}
+                    ))
+                        : <h3 className="text-center mt-5">Belirtilen kriterlere göre kayıt bulunamadı!</h3>}
                 </tbody>
             </Table>
         )
@@ -228,7 +228,9 @@ export default class ReportForCustomer extends Component {
                             {this.ProductSelect(this.state.products)}
                         </FormGroup>
                     </Col>
-                    {this.DateRangePicker()}
+                    <Col>
+                        {this.DateRangePicker()}
+                    </Col>
                 </Row>
                 <br></br>
                 <Row>
@@ -238,7 +240,9 @@ export default class ReportForCustomer extends Component {
                 </Row>
                 <hr></hr>
                 <h1>Ürünün Satış Geçmişi</h1>
-                {this.ListToReport()}
+                <Col>
+                    {this.ListToReport()}
+                </Col>
             </div>
         );
     }

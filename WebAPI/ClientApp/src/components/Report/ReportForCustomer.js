@@ -126,7 +126,7 @@ export default class ReportForCustomer extends Component {
                     return Promise.reject(error);
                 }
                 
-                if(data.data.purchasedProducts[0] == null){
+                if(data.data.purchasedProducts.length == 0){
                     this.setState({ reportDetails: null, consumedProducts: null });
                 }
                 else{
@@ -227,7 +227,9 @@ export default class ReportForCustomer extends Component {
                             {this.CustomerSelect(this.state.customers)}
                         </FormGroup>
                     </Col>
+                    <Col>
                     {this.DateRangePicker()}
+                    </Col>
                 </Row>
 
                 <br></br>
