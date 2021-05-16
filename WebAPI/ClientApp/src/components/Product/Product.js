@@ -1,7 +1,6 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import alertify from "alertifyjs";
-import { Button, Table, Row, Col, Form, FormGroup, Label, Input } from "reactstrap";
-import Select from 'react-select';
+import { Button, Table, Row, Col } from "reactstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'jquery/dist/jquery.min.js';
 import "datatables.net-dt/js/dataTables.dataTables"
