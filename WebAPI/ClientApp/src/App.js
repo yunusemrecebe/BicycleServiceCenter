@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router';
 import { Layout } from './components/Layout';
-import alertify from "alertifyjs";
 import { Home } from './components/Home';
 import Employees from './components/Employee/Employees';
 import EmployeeUpdate from './components/Employee/UpdateEmployee';
@@ -48,7 +47,6 @@ export default class App extends Component {
   static displayName = App.name;
 
   state = {
-    customers: [],
     selectedBrand: undefined,
     selectedCategory: undefined,
     selectedProduct: undefined,
@@ -62,10 +60,6 @@ export default class App extends Component {
     selectedProcessCustomer: undefined,
     consumedProduct: undefined,
   };
-
-  componentDidMount() {
-    this.getCustomers();
-  }
 
   setProductBrand = async (brand) => {
     await this.setState({ selectedBrand: brand });
@@ -115,168 +109,6 @@ export default class App extends Component {
 
   setConsumedProduct = async (consumedProduct) => {
     await this.setState({ consumedProduct: consumedProduct });
-  };
-
-  CreateTokenByRefreshToken() {
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        token: localStorage.getItem('refreshToken'),
-      }),
-    };
-
-    fetch("/api/auth/CreateTokenByRefreshToken", requestOptions)
-      .then(async (response) => {
-        const data = await response.json();
-
-        if (!response.ok) {
-          const error = data;
-          return Promise.reject(error);
-        }
-
-        localStorage.setItem('token', data.data.accessToken);
-        localStorage.setItem('refreshToken', data.data.refreshToken);
-
-        this.componentDidMount();
-      })
-
-      .catch((responseError) => {
-
-        if (responseError.message == "Refresh Token Bulunamadı!") {
-          alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
-          this.props.history.push("/kullanici/giris")
-        }
-      });
-  }
-
-  //Müşterileri Db'den Çekme
-  getCustomers() {
-    let token = localStorage.getItem('token');
-
-    let url = "/api/customers/getall";
-    fetch(url, {
-      method: 'get',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
-      .then(async (response) => {
-        const data = await response.json();
-
-        if (!response.ok) {
-          const error = data;
-          return Promise.reject(error);
-        }
-
-        this.setState({ customers: data });
-
-      })
-      .catch((responseError) => {
-        if (responseError.Message == "Token Bulunamadı!") {
-          this.CreateTokenByRefreshToken();
-        }
-      })
-  };
-
-  // Müşteri Ekleme
-  addCustomer = (firstName, lastName, phone, eMail, adress) => {
-    let token = localStorage.getItem('token');
-
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        firstName: firstName,
-        lastName: lastName,
-        phone: phone,
-        eMail: eMail,
-        adress: adress,
-      }),
-    };
-
-    fetch("/api/customers/add", requestOptions)
-      .then(async (response) => {
-        const data = await response.json();
-
-        if (!response.ok) {
-          const error = data;
-          return Promise.reject(error);
-        }
-
-        this.getCustomers();
-
-        Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
-        this.setState({
-          firstName: "",
-          lastName: "",
-          phone: "",
-          eMail: "",
-          adress: "",
-        });
-
-        alertify.success(data.message);      
-        result = true;
-      })
-
-      .catch((responseError) => {
-        if (responseError.Errors) {
-          if (responseError.Errors.length > 0) {
-            for (let i = 0; i < responseError.Errors.length; i++) {
-              alertify.error(responseError.Errors[i].ErrorMessage);
-            }
-          }
-          else {
-            alertify.error(responseError);
-          }
-        }
-        else {
-          alertify.error(responseError.message);
-        }
-      });
-  };
-
-  //Müşteri Silme
-  deleteCustomer = (id) => {
-    let token = localStorage.getItem('token');
-
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        'Authorization': `Bearer ${token}`
-      },
-    };
-
-    fetch("/api/customers/delete?id=" + id, requestOptions)
-      .then(async (response) => {
-        const data = await response.json();
-
-        if (!response.ok) {
-          const error = data;
-          alertify.error(data.message);
-          return Promise.reject(error);
-        }
-
-        this.getCustomers();
-
-        alertify.warning(data.message);
-      })
-
-      .catch((responseError) => {
-        if (responseError.Errors) {
-          if (responseError.Errors.length > 0) {
-            for (let i = 0; i < responseError.Errors.length; i++) {
-              alertify.error(responseError.Errors[i].ErrorMessage);
-            }
-          }
-        }
-      });
   };
 
   render() {
