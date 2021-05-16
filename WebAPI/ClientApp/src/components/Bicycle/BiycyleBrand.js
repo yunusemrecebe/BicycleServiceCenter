@@ -1,6 +1,6 @@
-import React, { Component, useState } from "react";
+import React, { Component} from "react";
 import alertify from "alertifyjs";
-import { Button, Table, Row, Col, Form, FormGroup, Label, Input } from "reactstrap";
+import { Button, Table, Row, Col} from "reactstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'jquery/dist/jquery.min.js';
 import "datatables.net-dt/js/dataTables.dataTables"
@@ -65,7 +65,7 @@ export default class BicycleBrand extends Component {
         fetch("/api/auth/CreateTokenByRefreshToken", requestOptions)
             .then(async (response) => {
                 const data = await response.json();
-                console.log(data);
+
                 if (!response.ok) {
                     const error = data;
                     return Promise.reject(error);

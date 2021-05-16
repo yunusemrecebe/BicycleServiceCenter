@@ -18,6 +18,7 @@ import BicycleBrand from './components/Bicycle/BiycyleBrand';
 import BicycleBrandAdd from './components/Bicycle/AddBicycleBrand';
 import BicycleBrandUpdate from './components/Bicycle/UpdateBicycleBrand';
 import BicycleModel from './components/Bicycle/BicycleModel';
+import BicycleModelAdd from './components/Bicycle/AddBicycleModel';
 import BicycleModelUpdate from './components/Bicycle/UpdateBicycleModel';
 import Bicycle from './components/Bicycle/Bicycle';
 import BicycleAdd from './components/Bicycle/AddBicycle';
@@ -303,6 +304,7 @@ export default class App extends Component {
         <Route exact path="/bisiklet/marka/ekle" render={props => (<BicycleBrandAdd {...props} />)} />
         <Route exact path="/bisiklet/marka/listele" render={props => (<BicycleBrand {...props} setBicycleBrand={this.setBicycleBrand} />)} />
         <Route exact path="/bisiklet/marka/guncelle" render={props => (<BicycleBrandUpdate {...props} getBicycleBrand={this.state.selectedBicycleBrand} />)} />
+        <Route exact path="/bisiklet/model/ekle" render={props => (<BicycleModelAdd {...props} />)} />
         <Route exact path="/bisiklet/model/listele" render={props => (<BicycleModel {...props} setBicycleModel={this.setBicycleModel} />)} />
         <Route exact path="/bisiklet/model/guncelle" render={props => (<BicycleModelUpdate {...props} getBicycleModel={this.state.selectedBicycleModel} />)} />
 
