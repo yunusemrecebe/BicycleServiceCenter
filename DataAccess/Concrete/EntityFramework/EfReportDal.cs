@@ -180,7 +180,7 @@ namespace DataAccess.Concrete.EntityFramework
         {
             using (BicycleServiceCenterContext context = new BicycleServiceCenterContext())
             {
-                int TotalQuantityOfReceivedProcesses = context.Processes.Where(p => p.CustomerId == customerId && p.StartingDate.Day >= Convert.ToDateTime(begin).Day && p.StartingDate.Day <= Convert.ToDateTime(end).Day).Count();
+                int TotalQuantityOfReceivedProcesses = context.Processes.Where(p => p.CustomerId == customerId && p.StartingDate.Date >= Convert.ToDateTime(begin).Date && p.StartingDate.Date <= Convert.ToDateTime(end).Date).Count();
 
                 var OverallCharge = from processCharge in context.ProcessCharges
 
@@ -190,7 +190,7 @@ namespace DataAccess.Concrete.EntityFramework
                                     join consumedProduct in context.ConsumedProducts
                                     on processCharge.ConsumedProductId equals consumedProduct.ConsumedProductId
 
-                                    where process.CustomerId == customerId && (consumedProduct.DateOfUse.Day >= Convert.ToDateTime(begin).Day && consumedProduct.DateOfUse.Day <= Convert.ToDateTime(end).Day)
+                                    where process.CustomerId == customerId && (consumedProduct.DateOfUse.Date >= Convert.ToDateTime(begin).Date && consumedProduct.DateOfUse.Date <= Convert.ToDateTime(end).Date)
 
                                     select processCharge.Charge;
 
@@ -205,7 +205,7 @@ namespace DataAccess.Concrete.EntityFramework
                                         join process in context.Processes
                                         on consumedProduct.ProcessId equals process.ProcessId
 
-                                        where process.CustomerId == customerId && (consumedProduct.DateOfUse.Day >= Convert.ToDateTime(begin).Day && consumedProduct.DateOfUse.Day <= Convert.ToDateTime(end).Day)
+                                        where process.CustomerId == customerId && (consumedProduct.DateOfUse.Date >= Convert.ToDateTime(begin).Date && consumedProduct.DateOfUse.Date <= Convert.ToDateTime(end).Date)
 
                                         select new ConsumedProductDetailDto
                                         {
@@ -245,7 +245,7 @@ namespace DataAccess.Concrete.EntityFramework
                              join consumedProduct in context.ConsumedProducts
                              on product.ProductId equals consumedProduct.ProductId
 
-                             where product.ProductId == productId && (consumedProduct.DateOfUse.Day >= Convert.ToDateTime(begin).Day && consumedProduct.DateOfUse.Day <= Convert.ToDateTime(end).Day)
+                             where product.ProductId == productId && (consumedProduct.DateOfUse.Date >= Convert.ToDateTime(begin).Date && consumedProduct.DateOfUse.Date <= Convert.ToDateTime(end).Date)
 
                              select new ReportForProductDto
                              {
@@ -254,9 +254,9 @@ namespace DataAccess.Concrete.EntityFramework
                                  Product = $"{productBrand.Name} {product.Name}",
                                  DateOfSale = consumedProduct.DateOfUse,
                                  QuantityOfSaleByDate = consumedProduct.Quantity,
-                                 TotalQuantityOfSale = context.ConsumedProducts.Where(p => p.ProductId == productId && (p.DateOfUse.Day >= Convert.ToDateTime(begin).Day && p.DateOfUse.Day <= Convert.ToDateTime(end).Day))
+                                 TotalQuantityOfSale = context.ConsumedProducts.Where(p => p.ProductId == productId && (p.DateOfUse.Date >= Convert.ToDateTime(begin).Date && p.DateOfUse.Date <= Convert.ToDateTime(end).Date))
                                  .Sum(p => p.Quantity),
-                                 TotalPriceOfSale = context.ConsumedProducts.Where(p => p.ProductId == productId && (p.DateOfUse.Day >= Convert.ToDateTime(begin).Day && p.DateOfUse.Day <= Convert.ToDateTime(end).Day))
+                                 TotalPriceOfSale = context.ConsumedProducts.Where(p => p.ProductId == productId && (p.DateOfUse.Date >= Convert.ToDateTime(begin).Date && p.DateOfUse.Date <= Convert.ToDateTime(end).Date))
                                  .Sum(p => p.UnitPrice * p.Quantity)
                              };
 
@@ -273,14 +273,20 @@ namespace DataAccess.Concrete.EntityFramework
                              join process in context.Processes
                              on employee.EmployeeId equals process.EmployeeId
 
-                             where employee.EmployeeId == employeeId && (process.StartingDate.Day >= Convert.ToDateTime(begin).Day && process.StartingDate.Day <= Convert.ToDateTime(end).Day)
+                             join customer in context.Customers
+                             on process.CustomerId equals customer.CustomerId
+
+                             where employee.EmployeeId == employeeId && (process.StartingDate.Date >= Convert.ToDateTime(begin).Date && process.StartingDate.Date <= Convert.ToDateTime(end).Date)
 
                              select new ReportForEmployeeDto
                              {
                                  EmployeeId = employee.EmployeeId,
                                  Employee = $"{employee.FirstName} {employee.LastName}",
+                                 ServedCustomer = $"{customer.FirstName} {customer.LastName}",
                                  DateOfProcess = process.StartingDate,
-                                 TotalQuantityOfHandledService = context.Processes.Where(p => p.EmployeeId == employeeId && (p.StartingDate.Day >= Convert.ToDateTime(begin).Day && p.StartingDate.Day <= Convert.ToDateTime(end).Day))
+                                 ChargeOfHandledService = context.ProcessCharges.Where(p => p.ProcessId == process.ProcessId).Select(p => p.Charge).Sum(),
+                                 TotalChargeOfHandledServices = context.ProcessCharges.Join(context.Processes, charge => charge.ProcessId, process => process.ProcessId, (charge, process) => new { ProcessCharge = charge, Process = process }).Where(p => p.Process.EmployeeId == employeeId && (p.Process.StartingDate.Date >= Convert.ToDateTime(begin).Date && p.Process.StartingDate.Date <= Convert.ToDateTime(end).Date)).Select(p => p.ProcessCharge.Charge).Sum(),
+                                 TotalQuantityOfHandledService = context.Processes.Where(p => p.EmployeeId == employeeId && (p.StartingDate.Date >= Convert.ToDateTime(begin).Date && p.StartingDate.Date <= Convert.ToDateTime(end).Date))
                                  .Count()
                              };
 
