@@ -15,6 +15,7 @@ import ProductBrandUpdate from './components/Product/UpdateProductBrand';
 import ProductCategory from './components/Product/ProductCategory';
 import ProductCategoryUpdate from './components/Product/UpdateProductCategory';
 import BicycleBrand from './components/Bicycle/BiycyleBrand';
+import BicycleBrandAdd from './components/Bicycle/AddBicycleBrand';
 import BicycleBrandUpdate from './components/Bicycle/UpdateBicycleBrand';
 import BicycleModel from './components/Bicycle/BicycleModel';
 import BicycleModelUpdate from './components/Bicycle/UpdateBicycleModel';
@@ -34,7 +35,7 @@ import ReportForCustomer from "./components/Report/ReportForCustomer";
 import ReportForEmployee from "./components/Report/ReportForEmployee";
 import ReportForProduct from "./components/Report/ReportForProduct";
 import Navbar from "./components/NavBar";
-import AddBicycle from './components/Bicycle/AddBicycle';
+
 
 let result = false;
 
@@ -296,9 +297,10 @@ export default class App extends Component {
         <Route exact path="/stok/guncelle" render={props => (<InventoryUpdate {...props} getInventory={this.state.selectedInventory} />)} />
 
         {/* BICYCLE İLE İLGİLİ YÖNLENDİRMELER */}
-        <Route exact path="/bisiklet/ekle" render={props => (<AddBicycle {...props} />)} />
+        <Route exact path="/bisiklet/ekle" render={props => (<BicycleAdd {...props} />)} />
         <Route exact path="/bisiklet/listele" render={props => (<Bicycle {...props} setBicycle={this.setBicycle} />)} />
         <Route exact path="/bisiklet/guncelle" render={props => (<BicycleUpdate {...props} getBicycle={this.state.selectedBicycle} />)} />
+        <Route exact path="/bisiklet/marka/ekle" render={props => (<BicycleBrandAdd {...props} />)} />
         <Route exact path="/bisiklet/marka/listele" render={props => (<BicycleBrand {...props} setBicycleBrand={this.setBicycleBrand} />)} />
         <Route exact path="/bisiklet/marka/guncelle" render={props => (<BicycleBrandUpdate {...props} getBicycleBrand={this.state.selectedBicycleBrand} />)} />
         <Route exact path="/bisiklet/model/listele" render={props => (<BicycleModel {...props} setBicycleModel={this.setBicycleModel} />)} />
