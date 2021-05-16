@@ -285,8 +285,11 @@ namespace DataAccess.Concrete.EntityFramework
                                  ServedCustomer = $"{customer.FirstName} {customer.LastName}",
                                  DateOfProcess = process.StartingDate,
                                  ChargeOfHandledService = context.ProcessCharges.Where(p => p.ProcessId == process.ProcessId).Select(p => p.Charge).Sum(),
+
                                  TotalChargeOfHandledServices = context.ProcessCharges.Join(context.Processes, charge => charge.ProcessId, process => process.ProcessId, (charge, process) => new { ProcessCharge = charge, Process = process }).Where(p => p.Process.EmployeeId == employeeId && (p.Process.StartingDate.Date >= Convert.ToDateTime(begin).Date && p.Process.StartingDate.Date <= Convert.ToDateTime(end).Date)).Select(p => p.ProcessCharge.Charge).Sum(),
-                                 TotalQuantityOfHandledService = context.Processes.Where(p => p.EmployeeId == employeeId && (p.StartingDate.Date >= Convert.ToDateTime(begin).Date && p.StartingDate.Date <= Convert.ToDateTime(end).Date))
+
+                                 TotalQuantityOfHandledService = context.Processes.Where(p => p.EmployeeId == employeeId && 
+                                 (p.StartingDate.Date >= Convert.ToDateTime(begin).Date && p.StartingDate.Date <= Convert.ToDateTime(end).Date))
                                  .Count()
                              };
 

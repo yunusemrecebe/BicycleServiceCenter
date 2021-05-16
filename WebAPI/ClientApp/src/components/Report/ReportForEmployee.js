@@ -45,7 +45,7 @@ export default class ReportForCustomer extends Component {
         fetch("/api/auth/CreateTokenByRefreshToken", requestOptions)
             .then(async (response) => {
                 const data = await response.json();
-                console.log(data);
+                
                 if (!response.ok) {
                     const error = data;
                     return Promise.reject(error);
@@ -137,17 +137,17 @@ export default class ReportForCustomer extends Component {
         })
             .then(async (response) => {
                 const data = await response.json();
-
+                console.log(data);
                 if (!response.ok) {
                     const error = data;
                     return Promise.reject(error);
                 }
 
                 if (data.data[0] == null) {
-                    this.setState({ reportDetails: null });
+                    this.setState({ reportDetails: null, totalQuantityOfHandledService: 0, totalChargeOfHandledServices: 0, dataFiltered: true });
                 }
                 else {
-                    this.setState({ reportDetails: data.data, dataFiltered: true });
+                    this.setState({ reportDetails: data.data,  totalQuantityOfHandledService: data.data[0].totalQuantityOfHandledService, totalChargeOfHandledServices: data.data[0].totalChargeOfHandledServices, dataFiltered: true });
                 }
                 this.ListToReport();
             })

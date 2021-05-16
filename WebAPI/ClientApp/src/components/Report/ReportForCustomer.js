@@ -142,7 +142,7 @@ export default class ReportForCustomer extends Component {
                 }
 
                 if (data.data.purchasedProducts.length == 0) {
-                    this.setState({ reportDetails: null, consumedProducts: null });
+                    this.setState({ reportDetails: null, consumedProducts: null, dataFiltered: true });
                 }
                 else {
                     this.setState({ reportDetails: data.data, consumedProducts: data.data.purchasedProducts, dataFiltered: true });
