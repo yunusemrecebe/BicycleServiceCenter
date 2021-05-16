@@ -10,6 +10,7 @@ export default class ReportForCustomer extends Component {
         selectedEmployee: 0,
         totalQuantityOfHandledService: 0,
         totalChargeOfHandledServices: 0,
+        dataFiltered: false,
         begin: null,
         end: null
     }
@@ -83,7 +84,14 @@ export default class ReportForCustomer extends Component {
                     const error = data;
                     return Promise.reject(error);
                 }
+
                 this.setState({ employees: data });
+
+            })
+            .catch((responseError) => {
+                if (responseError.Message == "Token Bulunamadı!") {
+                    this.CreateTokenByRefreshToken();
+                }
             })
     };
 
@@ -100,13 +108,14 @@ export default class ReportForCustomer extends Component {
         })
             .then(async (response) => {
                 const result = await response.json();
-                console.log(result);
+                
                 if (!response.ok) {
                     const error = result;
                     return Promise.reject(error);
                 }
 
-                this.setState({ reportDetails: result.data, totalQuantityOfHandledService: result.data[0].totalQuantityOfHandledService, totalChargeOfHandledServices: result.data[0].totalChargeOfHandledServices });
+                this.setState({ reportDetails: result.data, totalQuantityOfHandledService: result.data[0].totalQuantityOfHandledService, totalChargeOfHandledServices: result.data[0].totalChargeOfHandledServices, begin: null, end: null, dataFiltered: false });
+                Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
 
             })
             .catch((responseError) => {
@@ -138,8 +147,7 @@ export default class ReportForCustomer extends Component {
                     this.setState({ reportDetails: null });
                 }
                 else {
-                    this.setState({ reportDetails: data.data, begin: null, end: null });
-                    Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
+                    this.setState({ reportDetails: data.data, dataFiltered: true });
                 }
                 this.ListToReport();
             })
@@ -163,7 +171,8 @@ export default class ReportForCustomer extends Component {
                         <Label for="end">Bitiş Tarihi</Label>
                         <Input className="ml-2" type="date" id="end" name="end" onChange={this.handleChange}></Input>
                     </FormGroup>
-                    <Button onClick={this.GetFilteredReportByDateRange.bind(this, this.state.selectedEmployee, this.state.begin, this.state.end)} color="success">Filtrele</Button>
+                    <Button onClick={this.GetFilteredReportByDateRange.bind(this, this.state.selectedEmployee, this.state.begin, this.state.end)} color="success" className="mr-2">Filtrele</Button>
+                    {this.state.dataFiltered != false ? <Button onClick={this.getReport.bind(this, this.state.selectedEmployee)} color="primary">Sıfırla</Button> : null }
                 </Form>
             </div>
         );

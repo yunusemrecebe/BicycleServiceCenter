@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Table, Row, Col, Form, FormGroup, Label, Button, Input } from "reactstrap";
 import Select from 'react-select';
 import '../../css/date.css'
-import alertify from "alertifyjs";
 
 export default class ReportForCustomer extends Component {
     state = {
@@ -10,6 +9,7 @@ export default class ReportForCustomer extends Component {
         consumedProducts: [],
         customers: [],
         selectedCustomer: 0,
+        dataFiltered: false,
         begin: null,
         end: null
     }
@@ -64,7 +64,7 @@ export default class ReportForCustomer extends Component {
             });
     }
 
-    //Müşterileri Db'den çekme
+    //Müşterileri Db'den Çekme
     getCustomers() {
         let token = localStorage.getItem('token');
 
@@ -75,8 +75,22 @@ export default class ReportForCustomer extends Component {
                 'Authorization': `Bearer ${token}`
             }
         })
-            .then((response) => response.json())
-            .then((data) => this.setState({ customers: data }));
+            .then(async (response) => {
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const error = data;
+                    return Promise.reject(error);
+                }
+
+                this.setState({ customers: data });
+
+            })
+            .catch((responseError) => {
+                if (responseError.Message == "Token Bulunamadı!") {
+                    this.CreateTokenByRefreshToken();
+                }
+            })
     };
 
     //Raporu ilgili kullanıcıya göre db'den çekme
@@ -98,7 +112,8 @@ export default class ReportForCustomer extends Component {
                     return Promise.reject(error);
                 }
 
-                this.setState({ reportDetails: data.data, consumedProducts: data.data.purchasedProducts });
+                this.setState({ reportDetails: data.data, consumedProducts: data.data.purchasedProducts, begin: null, end: null, dataFiltered: false });
+                Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
 
             })
             .catch((responseError) => {
@@ -125,13 +140,12 @@ export default class ReportForCustomer extends Component {
                     const error = data;
                     return Promise.reject(error);
                 }
-                
-                if(data.data.purchasedProducts.length == 0){
+
+                if (data.data.purchasedProducts.length == 0) {
                     this.setState({ reportDetails: null, consumedProducts: null });
                 }
-                else{
-                    this.setState({ reportDetails: data.data, consumedProducts: data.data.purchasedProducts, begin:null, end:null });
-                    Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
+                else {
+                    this.setState({ reportDetails: data.data, consumedProducts: data.data.purchasedProducts, dataFiltered: true });
                 }
                 this.ListToReport();
             })
@@ -155,7 +169,8 @@ export default class ReportForCustomer extends Component {
                         <Label for="end">Bitiş Tarihi</Label>
                         <Input className="ml-2" type="date" id="end" name="end" onChange={this.handleChange}></Input>
                     </FormGroup>
-                    <Button onClick={this.GetFilteredReportByDateRange.bind(this,this.state.selectedCustomer,this.state.begin,this.state.end)} color="success">Filtrele</Button>
+                    <Button onClick={this.GetFilteredReportByDateRange.bind(this, this.state.selectedCustomer, this.state.begin, this.state.end)} color="success" className="mr-2">Filtrele</Button>
+                    {this.state.dataFiltered != false ? <Button onClick={this.getReport.bind(this, this.state.selectedCustomer)} color="primary">Sıfırla</Button> : null }
                 </Form>
             </div>
         );
@@ -189,7 +204,7 @@ export default class ReportForCustomer extends Component {
                             <td>{consumedProduct.dateOfUse.replace('T', ' ').slice(0, -3)}</td>
                         </tr>
                     ))
-                    : <h3 className="text-center mt-5">Belirtilen kriterlere göre kayıt bulunamadı!</h3>}
+                        : <h3 className="text-center mt-5">Belirtilen kriterlere göre kayıt bulunamadı!</h3>}
                 </tbody>
             </Table>
         )
@@ -228,17 +243,17 @@ export default class ReportForCustomer extends Component {
                         </FormGroup>
                     </Col>
                     <Col>
-                    {this.DateRangePicker()}
+                        {this.DateRangePicker()}
                     </Col>
                 </Row>
 
                 <br></br>
                 <Row>
-                <Col md="2"></Col>
+                    <Col md="2"></Col>
                     <Col md="4"><h3>Toplam Servis Hizmeti Sayısı: {this.state.reportDetails != null ? this.state.reportDetails.totalQuantityOfReceivedProcesses : 0}</h3></Col>
-                    
+
                     <Col md="4"><h3>Ödediği Toplam Ücret: {this.state.reportDetails != null ? this.state.reportDetails.overallCharge : 0}</h3></Col>
-                    
+
                 </Row>
 
                 <hr></hr>

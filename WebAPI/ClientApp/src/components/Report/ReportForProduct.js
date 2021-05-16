@@ -9,7 +9,10 @@ export default class ReportForCustomer extends Component {
         products: [],
         selectedProduct: 0,
         totalPriceOfSale: 0,
-        totalQuantityOfSale: 0
+        totalQuantityOfSale: 0,
+        dataFiltered: false,
+        begin: null,
+        end: null
     }
 
     componentDidMount() {
@@ -18,7 +21,7 @@ export default class ReportForCustomer extends Component {
 
     handleChangeProduct = (event) => {
         this.state.selectedProduct = event.value;
-        this.setState({reportDetails: []});
+        this.setState({ reportDetails: [] });
         this.getReport(this.state.selectedProduct);
     }
 
@@ -81,7 +84,14 @@ export default class ReportForCustomer extends Component {
                     const error = data;
                     return Promise.reject(error);
                 }
+
                 this.setState({ products: data });
+
+            })
+            .catch((responseError) => {
+                if (responseError.Message == "Token Bulunamadı!") {
+                    this.CreateTokenByRefreshToken();
+                }
             })
     };
 
@@ -107,8 +117,7 @@ export default class ReportForCustomer extends Component {
                     this.setState({ reportDetails: null, totalQuantityOfSale: null, totalPriceOfSale: null, });
                 }
                 else {
-                    this.setState({ reportDetails: data.data, totalQuantityOfSale: data.data[0].totalQuantityOfSale, totalPriceOfSale: data.data[0].totalPriceOfSale, begin: null, end: null });
-                    Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
+                    this.setState({ reportDetails: data.data, totalQuantityOfSale: data.data[0].totalQuantityOfSale, totalPriceOfSale: data.data[0].totalPriceOfSale, dataFiltered: true });
                 }
                 this.ListToReport();
 
@@ -133,7 +142,8 @@ export default class ReportForCustomer extends Component {
                         <Label for="end">Bitiş Tarihi</Label>
                         <Input className="ml-2" type="date" id="end" name="end" onChange={this.handleChange}></Input>
                     </FormGroup>
-                    <Button onClick={this.GetFilteredReportByDateRange.bind(this, this.state.selectedProduct, this.state.begin, this.state.end)} color="success">Filtrele</Button>
+                    <Button onClick={this.GetFilteredReportByDateRange.bind(this, this.state.selectedProduct, this.state.begin, this.state.end)} color="success" className="mr-2">Filtrele</Button>
+                    {this.state.dataFiltered != false ? <Button onClick={this.getReport.bind(this, this.state.selectedProduct)} color="primary">Sıfırla</Button> : null }
                 </Form>
             </div>
         );
@@ -152,7 +162,7 @@ export default class ReportForCustomer extends Component {
         })
             .then(async (response) => {
                 const data = await response.json();
-                console.log(data.data);
+                
                 if (!response.ok) {
                     const error = data;
                     return Promise.reject(error);
@@ -162,7 +172,8 @@ export default class ReportForCustomer extends Component {
                     this.setState({ reportDetails: [], totalQuantityOfSale: 0, totalPriceOfSale: 0 });
                 }
                 else {
-                    this.setState({ reportDetails: data.data, totalQuantityOfSale: data.data[0].totalQuantityOfSale, totalPriceOfSale: data.data[0].totalPriceOfSale });
+                    this.setState({ reportDetails: data.data, totalQuantityOfSale: data.data[0].totalQuantityOfSale, totalPriceOfSale: data.data[0].totalPriceOfSale, begin: null, end: null, dataFiltered: false });
+                    Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
                 }
             })
             .catch((responseError) => {
