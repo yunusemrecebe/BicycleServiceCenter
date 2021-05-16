@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import alertify from "alertifyjs";
 import { Button, Label, Input, Table, FormGroup, Row, Col } from "reactstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -10,10 +10,9 @@ import $ from 'jquery';
 export default class ProductCategory extends Component {
     state = {
         productCategories: [],
-        name: "",
     };
 
-    componentDidUpdate(){
+    componentDidUpdate() {
         $(document).ready(function () {
             $('#dataTable').DataTable();
         });
@@ -23,12 +22,6 @@ export default class ProductCategory extends Component {
         this.getProductCategories();
     }
 
-    //form verilerini state içerisine aktaran fonksiyon
-    handleChange = (event) => {
-        let name = event.target.name;
-        let value = event.target.value;
-        this.setState({ [name]: value });
-    };
 
     CreateTokenByRefreshToken() {
         const requestOptions = {
@@ -44,7 +37,7 @@ export default class ProductCategory extends Component {
         fetch("/api/auth/CreateTokenByRefreshToken", requestOptions)
             .then(async (response) => {
                 const data = await response.json();
-                console.log(data);
+
                 if (!response.ok) {
                     const error = data;
                     return Promise.reject(error);
@@ -64,52 +57,6 @@ export default class ProductCategory extends Component {
                 }
             });
     }
-
-    // Ürün Kategorisi Ekleme
-    addProductCategory = (event) => {
-        event.preventDefault();
-
-        const requestOptions = {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                name: this.state.name,
-            }),
-        };
-
-        fetch("/api/productcategories/add", requestOptions)
-            .then(async (response) => {
-                const data = await response.json();
-
-                if (!response.ok) {
-                    const error = data;
-                    return Promise.reject(error);
-                }
-
-                this.getProductCategories();
-                
-                Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
-                this.setState({ name: "" });
-
-                alertify.success(data.message);
-            })
-
-            .catch((responseError) => {
-                if (responseError.Errors) {
-                    if (responseError.Errors.length > 0) {
-                        for (let i = 0; i < responseError.Errors.length; i++) {
-                            alertify.error(responseError.Errors[i].ErrorMessage);
-                        }
-                    }
-                    else {
-                        alertify.error(responseError);
-                    }
-                }
-                else {
-                    alertify.error(responseError.message);
-                }
-            });
-    };
 
     //Ürün Kategorilerini Db'den Çekme
     getProductCategories() {
@@ -211,20 +158,6 @@ export default class ProductCategory extends Component {
     render() {
         return (
             <div>
-                <Row>
-                    <Col md="3">
-                        <form onSubmit={this.addProductCategory}>
-                            <h1> Marka Ekle</h1>
-                            <FormGroup>
-                                <Label for="name">Kategori Adı</Label>
-                                <Input type="text" name="name" id="name" onChange={this.handleChange} />
-                            </FormGroup>
-                            <Button type="submit">Ekle</Button>
-                        </form>
-                    </Col>
-                    <Col md="9"></Col>
-                </Row>
-
                 <Row>
                     <h1 className="text-center">Sistemde Kayıtlı Olan Ürün Kategorileri</h1>
                 </Row>

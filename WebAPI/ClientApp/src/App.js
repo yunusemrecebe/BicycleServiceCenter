@@ -38,6 +38,7 @@ import ReportForEmployee from "./components/Report/ReportForEmployee";
 import ReportForProduct from "./components/Report/ReportForProduct";
 import Navbar from "./components/NavBar";
 import AddProductBrand from './components/Product/AddProductBrand';
+import AddProductCategory from './components/Product/AddProductCategory';
 
 
 let result = false;
@@ -294,6 +295,7 @@ export default class App extends Component {
         <Route exact path="/urun/marka/ekle" render={props => (<AddProductBrand {...props} />)} />
         <Route exact path="/urun/marka/listele" render={props => (<ProductBrand {...props} setProductBrand={this.setProductBrand} />)} />
         <Route exact path="/urun/marka/guncelle" render={props => (<ProductBrandUpdate {...props} getProductBrand={this.state.selectedBrand} />)} />
+        <Route exact path="/urun/kategori/ekle" render={props => (<AddProductCategory {...props} />)} />
         <Route exact path="/urun/kategori/listele" render={props => (<ProductCategory {...props} setProductCategory={this.setProductCategory} />)} />
         <Route exact path="/urun/kategori/guncelle" render={props => (<ProductCategoryUpdate {...props} getProductCategory={this.state.selectedCategory} />)} />
 
