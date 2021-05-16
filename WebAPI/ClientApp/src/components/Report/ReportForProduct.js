@@ -18,6 +18,7 @@ export default class ReportForCustomer extends Component {
 
     handleChangeProduct = (event) => {
         this.state.selectedProduct = event.value;
+        this.setState({reportDetails: []});
         this.getReport(this.state.selectedProduct);
     }
 
@@ -222,6 +223,7 @@ export default class ReportForCustomer extends Component {
         return (
             <div>
                 <center><h1> Ürün Hakkında Rapor Oluşturma</h1></center>
+                <hr></hr>
                 <Row>
                     <Col md={2}>
                         <FormGroup>

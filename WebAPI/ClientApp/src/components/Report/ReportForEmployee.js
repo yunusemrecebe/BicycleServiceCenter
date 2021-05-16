@@ -8,6 +8,8 @@ export default class ReportForCustomer extends Component {
         reportDetails: [],
         employees: [],
         selectedEmployee: 0,
+        totalQuantityOfHandledService: 0,
+        totalChargeOfHandledServices: 0,
         begin: null,
         end: null
     }
@@ -18,6 +20,7 @@ export default class ReportForCustomer extends Component {
 
     handleChangeEmployee = (event) => {
         this.state.selectedEmployee = event.value;
+        this.setState({reportDetails: []});
         this.getReport(this.state.selectedEmployee);
     }
 
@@ -97,13 +100,13 @@ export default class ReportForCustomer extends Component {
         })
             .then(async (response) => {
                 const result = await response.json();
-
+                console.log(result);
                 if (!response.ok) {
                     const error = result;
                     return Promise.reject(error);
                 }
 
-                this.setState({ reportDetails: result.data });
+                this.setState({ reportDetails: result.data, totalQuantityOfHandledService: result.data[0].totalQuantityOfHandledService, totalChargeOfHandledServices: result.data[0].totalChargeOfHandledServices });
 
             })
             .catch((responseError) => {
@@ -173,19 +176,23 @@ export default class ReportForCustomer extends Component {
                 <thead>
                     <tr>
                         <th>Personel</th>
-                        <th>Verdiği Servis Hizmeti Sayısı</th>
+                        <th>Hizmet Verdiği Müşteri</th>
+                        <th>Verdiği Servis Hizmetinin Ücreti</th>
+                        <th>Verdiği Servis Hizmetinin Tarihi</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    {this.state.reportDetails!= null ? this.state.reportDetails.map((reportDetail) => (
-                        
+                    {this.state.reportDetails != null ? this.state.reportDetails.sort((a, b) => a.dateOfProcess < b.dateOfProcess ? 1 : -1).map((reportDetail) => (
+
                         <tr key={reportDetail.employeeId}>
                             <td>{reportDetail.employee}</td>
-                            <td>{reportDetail.totalQuantityOfHandledService}</td>
+                            <td>{reportDetail.servedCustomer}</td>
+                            <td>{reportDetail.chargeOfHandledService}</td>
+                            <td>{reportDetail.dateOfProcess.replace('T', ' ').slice(0, -3)}</td>
                         </tr>
                     ))
-                    : <h3 className="text-center mt-5">Belirtilen kriterlere göre kayıt bulunamadı!</h3>}
+                        : <h3 className="text-center mt-5">Belirtilen kriterlere göre kayıt bulunamadı!</h3>}
                 </tbody>
             </Table>
         )
@@ -216,6 +223,7 @@ export default class ReportForCustomer extends Component {
         return (
             <div>
                 <center><h1> Personel Hakkında Rapor Oluşturma</h1></center>
+                <hr></hr>
                 <Row>
                     <Col md={2}>
                         <FormGroup>
@@ -226,9 +234,14 @@ export default class ReportForCustomer extends Component {
                         {this.DateRangePicker()}
                     </Col>
                 </Row>
-
+                <br></br>
+                <Row>
+                    <Col md="1"></Col>
+                    <Col md="4"><h3>Verdiği Servis Hizmeti Sayısı: {this.state.totalQuantityOfHandledService}</h3></Col>
+                    <Col md="7"><h3>Verdiği Servis Hizmetlerinin Toplam Ücreti: {this.state.totalChargeOfHandledServices}</h3></Col>
+                </Row>
                 <hr></hr>
-                <h1>Satın Aldığı Ürünler </h1>
+                <h1>Verdiği Servis Hizmetleri </h1>
                 <br></br>
                 {this.ListToReport()}
             </div>

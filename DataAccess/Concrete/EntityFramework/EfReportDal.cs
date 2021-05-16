@@ -73,13 +73,19 @@ namespace DataAccess.Concrete.EntityFramework
                              join process in context.Processes
                              on employee.EmployeeId equals process.EmployeeId
 
-                             where employee.EmployeeId == employeeId
+                             join customer in context.Customers
+                             on process.CustomerId equals customer.CustomerId
+
+                             where process.EmployeeId == employeeId
 
                              select new ReportForEmployeeDto
                              {
                                  EmployeeId = employee.EmployeeId,
                                  Employee = $"{employee.FirstName} {employee.LastName}",
+                                 ServedCustomer = $"{customer.FirstName} {customer.LastName}",
                                  DateOfProcess = process.StartingDate,
+                                 ChargeOfHandledService = context.ProcessCharges.Where(p => p.ProcessId == process.ProcessId).Select(p => p.Charge).Sum(),
+                                 TotalChargeOfHandledServices = context.ProcessCharges.Join(context.Processes, charge => charge.ProcessId, process => process.ProcessId, (charge, process) => new { ProcessCharge = charge, Process = process } ).Where(p => p.Process.EmployeeId == employeeId).Select(p=> p.ProcessCharge.Charge).Sum(),
                                  TotalQuantityOfHandledService = context.Processes.Where(p => p.EmployeeId == employeeId).Count()
                              };
 
