@@ -9,6 +9,7 @@ import Customers from './components/Customer/Customers';
 import CustomerAdd from './components/Customer/AddCustomer';
 import CustomerUpdate from './components/Customer/UpdateCustomer';
 import Products from './components/Product/Product';
+import ProductAdd from './components/Product/AddProduct';
 import ProductUpdate from './components/Product/UpdateProduct';
 import ProductBrand from './components/Product/ProductBrand';
 import ProductBrandUpdate from './components/Product/UpdateProductBrand';
@@ -286,6 +287,7 @@ export default class App extends Component {
         <Route exact path='/kullanici/kayit' component={Register} />
 
         {/* PRODUCT İLE İLGİLİ YÖNLENDİRMELER */}
+        <Route exact path="/urun/ekle" render={props => (<ProductAdd {...props} />)} />
         <Route exact path="/urun/listele" render={props => (<Products {...props} setProduct={this.setProduct} />)} />
         <Route exact path="/urun/guncelle" render={props => (<ProductUpdate {...props} getProduct={this.state.selectedProduct} />)} />
         <Route exact path="/urun/marka/listele" render={props => (<ProductBrand {...props} setProductBrand={this.setProductBrand} />)} />
