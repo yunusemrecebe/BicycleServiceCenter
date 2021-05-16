@@ -1,6 +1,6 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import alertify from "alertifyjs";
-import { Button, Table, Row, Col, Form, FormGroup, Label, Input } from "reactstrap";
+import { Button, Table, Row, Col } from "reactstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'jquery/dist/jquery.min.js';
 import "datatables.net-dt/js/dataTables.dataTables"
@@ -10,9 +10,6 @@ import $ from 'jquery';
 export default class Employees extends Component {
     state = {
         employees: [],
-        firstName: "",
-        lastName: "",
-        phone: "",
     };
 
     componentDidUpdate(){
@@ -23,100 +20,6 @@ export default class Employees extends Component {
 
     componentDidMount() {
         this.getEmployees();
-    }
-
-    //form verilerini state içerisine aktaran fonksiyon
-    handleChange = (event) => {
-        let name = event.target.name;
-        let value = event.target.value;
-        this.setState({ [name]: value });
-    };
-
-    // Personel Ekleme
-    addEmployee = (event) => {
-        event.preventDefault();
-        console.log(this.state.firstName + "\n" + this.state.lastName + "\n" + this.state.phone + "\n");
-
-        let token = localStorage.getItem('token');
-        if (token == null) {
-            alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
-            this.props.history.push("/girisYap")
-        }
-
-        const requestOptions = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                firstName: this.state.firstName,
-                lastName: this.state.lastName,
-                phone: this.state.phone,
-            }),
-        };
-
-        fetch("/api/employees/add", requestOptions)
-            .then(async (response) => {
-                const data = await response.json();
-
-                if (!response.ok) {
-                    const error = data;
-                    return Promise.reject(error);
-                }
-
-                this.getEmployees();
-
-                Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
-                this.setState({
-                    firstName: "",
-                    lastName: "",
-                    phone: "",
-                });
-
-                alertify.success(data.message);
-            })
-
-            .catch((responseError) => {
-                if (responseError.Errors) {
-                    if (responseError.Errors.length > 0) {
-                        for (let i = 0; i < responseError.Errors.length; i++) {
-                            alertify.error(responseError.Errors[i].ErrorMessage);
-                        }
-                    }
-                    else {
-                        alertify.error(responseError);
-                    }
-                }
-                else {
-                    alertify.error(responseError.message);
-                }
-            });
-    };
-
-    // Personel Ekleme Formu
-    addEmployeeForm() {
-        return (
-            <Form onSubmit={this.addEmployee}>
-                <h1> Personel Ekle</h1>
-                <FormGroup>
-                    <Label for="firstName">Adı</Label>
-                    <Input type="text" name="firstName" id="firstName" onChange={this.handleChange} />
-                </FormGroup>
-
-                <FormGroup>
-                    <Label for="lastName">Soyadı</Label>
-                    <Input type="text" name="lastName" id="lastName" onChange={this.handleChange} />
-                </FormGroup>
-
-                <FormGroup>
-                    <Label for="phone">Telefon</Label>
-                    <Input type="text" name="phone" id="phone" onChange={this.handleChange} />
-                </FormGroup>
-
-                <Button>Ekle</Button>
-            </Form>
-        )
     }
 
     //Personelleri Db'den Çekme
@@ -162,7 +65,7 @@ export default class Employees extends Component {
         fetch("/api/auth/CreateTokenByRefreshToken", requestOptions)
             .then(async (response) => {
                 const data = await response.json();
-                console.log(data);
+
                 if (!response.ok) {
                     const error = data;
                     return Promise.reject(error);
@@ -269,8 +172,6 @@ export default class Employees extends Component {
     render() {
         return (
             <div>
-                {this.addEmployeeForm()}
-
                 <Row>
                     <h1 className="text-center">Sistemde Kayıtlı Olan Personeller</h1>
                 </Row>

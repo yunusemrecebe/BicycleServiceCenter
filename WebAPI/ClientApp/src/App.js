@@ -39,6 +39,7 @@ import ReportForProduct from "./components/Report/ReportForProduct";
 import Navbar from "./components/NavBar";
 import AddProductBrand from './components/Product/AddProductBrand';
 import AddProductCategory from './components/Product/AddProductCategory';
+import AddEmployee from './components/Employee/AddEmployee';
 
 
 let result = false;
@@ -321,6 +322,7 @@ export default class App extends Component {
         <Route exact path="/servis/guncelle/urun/guncelle" render={props => (<ConsumedProductUpdate {...props} getConsumedProduct={this.state.consumedProduct} />)} />
 
         {/* EMPLOYEE İLE İLGİLİ YÖNLENDİRMELER */}
+        <Route exact path="/personel/ekle" render={props => (<AddEmployee {...props} />)} />
         <Route exact path="/personel/listele" render={props => (<Employees {...props} setEmployee={this.setEmployee} />)} />
         <Route exact path="/personel/guncelle" render={props => (<EmployeeUpdate {...props} getEmployee={this.state.selectedEmployee} />)} />
 

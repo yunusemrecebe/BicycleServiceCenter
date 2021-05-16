@@ -118,7 +118,7 @@ const NavSidebar = () => {
               itemId: "/personel/listele",
               subNav: [
                 {
-                  title: "Ürün Ekle",
+                  title: "Personel Ekle",
                   itemId: "/personel/ekle"
                 },
               ]
