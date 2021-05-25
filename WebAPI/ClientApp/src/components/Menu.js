@@ -136,6 +136,41 @@ const NavSidebar = () => {
             }
           ]}
         />
+
+        {localStorage.getItem("token") != null ?
+
+          <div className="position-absolute fixed-bottom">
+            <Navigation
+              activeItemId={location.pathname}
+              items={[
+                {
+                  title: "Çıkış Yap",
+                  itemId: "/kullanici/cikis"
+                }
+              ]}
+              onSelect={({ itemId }) => {
+                history.push(itemId);
+              }}
+            />
+          </div>
+          :
+          <div className="position-absolute fixed-bottom">
+            <Navigation
+              activeItemId={location.pathname}
+              items={[
+                {
+                  title: "Giriş Yap",
+                  itemId: "/kullanici/giris"
+                }
+              ]}
+              onSelect={({ itemId }) => {
+                history.push(itemId);
+              }}
+            />
+          </div>
+
+        }
+
       </div>
     </React.Fragment>
   );
