@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import alertify from "alertifyjs";
-import { Button, Label, Input, FormGroup, Row, Col } from "reactstrap";
+import { Button, Label, Input, FormGroup } from "reactstrap";
+import '../../css/style.css';
 
 export default class AddProductCategory extends Component {
     state = {
@@ -97,19 +98,15 @@ export default class AddProductCategory extends Component {
     render() {
         return (
             <div>
-                <Row>
-                    <Col md="3">
-                        <form onSubmit={this.addProductCategory}>
-                            <h1> Kategori Ekle</h1>
-                            <FormGroup>
-                                <Label for="name">Kategori Adı</Label>
-                                <Input type="text" name="name" id="name" onChange={this.handleChange} />
-                            </FormGroup>
-                            <Button type="submit">Ekle</Button>
-                        </form>
-                    </Col>
-                    <Col md="9"></Col>
-                </Row>
+                <form onSubmit={this.addProductCategory}>
+                    <h1> Kategori Ekle</h1>
+                    <FormGroup>
+                        <Label for="name">*Kategori Adı</Label>
+                        <Input type="text" name="name" id="name" onChange={this.handleChange} />
+                    </FormGroup>
+                    <Button type="submit">Ekle</Button>
+                    <h6 className="RequiredField">Not: * ile işaretlenen alanların doldurulması zorunludur</h6>
+                </form>
             </div>
         );
     }

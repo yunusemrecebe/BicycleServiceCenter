@@ -53,7 +53,7 @@ export default class ProductBrand extends Component {
 
                 if (responseError.message == "Refresh Token Bulunamadı!") {
                     alert('Bu işlemi gerçekleştirebilmek için giriş yapmalısınız!');
-                    this.props.history.push("/girisYap")
+                    this.props.history.push("/kullanici/giris")
                 }
             });
     }

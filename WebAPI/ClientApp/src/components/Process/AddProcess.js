@@ -1,7 +1,8 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import alertify from "alertifyjs";
-import { Button, Table, Row, Col, Form, FormGroup, Label, Input } from "reactstrap";
+import { Button, Table, Form, Input } from "reactstrap";
 import Select from 'react-select';
+import '../../css/style.css';
 
 export default class AddProcess extends Component {
     state = {
@@ -198,7 +199,7 @@ export default class AddProcess extends Component {
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Müşteri</th>
+                            <th scope="row">*Müşteri</th>
 
                             <td>
                                 {this.CustomerSelect(this.state.customers)}
@@ -206,7 +207,7 @@ export default class AddProcess extends Component {
                         </tr>
 
                         <tr>
-                            <th scope="row">Bisiklet</th>
+                            <th scope="row">*Bisiklet</th>
 
                             <td>
                                 {this.BicycleSelect(this.state.bicycles)}
@@ -214,7 +215,7 @@ export default class AddProcess extends Component {
                         </tr>
 
                         <tr>
-                            <th scope="row">Personel</th>
+                            <th scope="row">*Personel</th>
 
                             <td>
                                 {this.EmployeeSelect(this.state.employees)}
@@ -222,7 +223,7 @@ export default class AddProcess extends Component {
                         </tr>
 
                         <tr>
-                            <th scope="row">Öngörülen Teslim Tarihi</th>
+                            <th scope="row">*Öngörülen Teslim Tarihi</th>
 
                             <td>
                                 {this.CompletionDateSelect()}
@@ -241,6 +242,7 @@ export default class AddProcess extends Component {
                 </Table>
 
                 <Button>Ekle</Button>
+                <h6 className="RequiredField">Not: * ile işaretlenen alanların doldurulması zorunludur</h6>
             </Form>
         </div>
     }

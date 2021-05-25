@@ -35,11 +35,9 @@ import Register from "./components/Authentication/Register";
 import ReportForCustomer from "./components/Report/ReportForCustomer";
 import ReportForEmployee from "./components/Report/ReportForEmployee";
 import ReportForProduct from "./components/Report/ReportForProduct";
-import Navbar from "./components/NavBar";
 import AddProductBrand from './components/Product/AddProductBrand';
 import AddProductCategory from './components/Product/AddProductCategory';
 import AddEmployee from './components/Employee/AddEmployee';
-
 
 let result = false;
 
@@ -114,8 +112,6 @@ export default class App extends Component {
   render() {
     return (
       <Layout>
-        <Route exact path='/navbar' component={Navbar} />
-
         <Route exact path='/' component={Home} />
         <Route exact path="/kullanici/giris" render={props => (<Login {...props} setAuth={this.setAuth} />)} />
         <Route exact path="/kullanici/cikis" render={props => (<Logout {...props} setAuth={this.setAuth} />)} />

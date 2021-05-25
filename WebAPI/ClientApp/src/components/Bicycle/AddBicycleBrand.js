@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import alertify from "alertifyjs";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+import '../../css/style.css';
 
 export default class AddBicycleBrand extends Component {
     state = {
@@ -65,11 +66,12 @@ export default class AddBicycleBrand extends Component {
             <Form onSubmit={this.addBicycleBrand}>
                 <h1> Bisiklet Markası Ekle</h1>
                 <FormGroup>
-                    <Label for="name">Adı</Label>
+                    <Label for="name">*Adı</Label>
                     <Input type="text" name="name" id="name" onChange={this.handleChange} />
                 </FormGroup>
 
                 <Button>Ekle</Button>
+                <h6 className="RequiredField">Not: * ile işaretlenen alanların doldurulması zorunludur</h6>
             </Form>
         )
     }

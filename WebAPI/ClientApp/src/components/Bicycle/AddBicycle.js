@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import alertify from "alertifyjs";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import Select from 'react-select';
+import '../../css/style.css';
 
 export default class AddBicycle extends Component {
     state = {
@@ -107,7 +108,7 @@ export default class AddBicycle extends Component {
                     {this.BicycleModelSelect(this.state.bicycleModels)}
                 </FormGroup>
                 <FormGroup>
-                    <Label for="productionDate">Üretim Yılı</Label>
+                    <Label for="productionDate">*Üretim Yılı</Label>
                     <Input type="number" name="productionDate" id="productionDate" onChange={this.handleChange} />
                 </FormGroup>
                 <FormGroup>
@@ -115,6 +116,7 @@ export default class AddBicycle extends Component {
                     <Input type="text" name="serialNumber" id="serialNumber" onChange={this.handleChange} />
                 </FormGroup>
                 <Button>Ekle</Button>
+                <h6 className="RequiredField">Not: * ile işaretlenen alanların doldurulması zorunludur</h6>
             </Form>
         )
     }
@@ -128,7 +130,7 @@ export default class AddBicycle extends Component {
         }
 
         return <div>
-            <Label for="customerSelect">Müşteri</Label>
+            <Label for="customerSelect">*Müşteri</Label>
             <Select
                 id="customerSelect"
                 placeholder="Seçiniz"
@@ -147,7 +149,7 @@ export default class AddBicycle extends Component {
         }
 
         return <div>
-            <Label for="bicycleBrand">Ait Olduğu Marka</Label>
+            <Label for="bicycleBrand">*Ait Olduğu Marka</Label>
             <Select
                 id="bicycleBrand"
                 placeholder="Seçiniz"
@@ -166,7 +168,7 @@ export default class AddBicycle extends Component {
         }
 
         return <div>
-            <Label for="bicycleBrand">Model</Label>
+            <Label for="bicycleBrand">*Model</Label>
             <Select
                 id="bicycleModel"
                 placeholder="Seçiniz"

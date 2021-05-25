@@ -1,7 +1,8 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import alertify from "alertifyjs";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import Select from 'react-select';
+import '../../css/style.css';
 
 export default class AddProduct extends Component {
     state = {
@@ -157,12 +158,12 @@ export default class AddProduct extends Component {
             <Form onSubmit={this.addProduct}>
                 <h1> Ürün Ekle</h1>
                 <FormGroup>
-                    <Label for="productCode">Ürün Kodu</Label>
+                    <Label for="productCode">*Ürün Kodu</Label>
                     <Input type="text" name="productCode" id="productCode" onChange={this.handleChange} />
                 </FormGroup>
 
                 <FormGroup>
-                    <Label for="productName">Ürün Adı</Label>
+                    <Label for="productName">*Ürün Adı</Label>
                     <Input type="text" name="productName" id="productName" onChange={this.handleChange} />
                 </FormGroup>
 
@@ -175,6 +176,7 @@ export default class AddProduct extends Component {
                 </FormGroup>
 
                 <Button>Ekle</Button>
+                <h6 className="RequiredField">Not: * ile işaretlenen alanların doldurulması zorunludur</h6>
             </Form>
         )
     }
@@ -188,7 +190,7 @@ export default class AddProduct extends Component {
         }
 
         return <div>
-            <Label for="brand">Ürün Markası</Label>
+            <Label for="brand">*Ürün Markası</Label>
             <Select
                 id="brand"
                 placeholder="Seçiniz"
@@ -207,7 +209,7 @@ export default class AddProduct extends Component {
         }
 
         return <div>
-            <Label for="category">Ürün Kategorisi</Label>
+            <Label for="category">*Ürün Kategorisi</Label>
             <Select
                 id="category"
                 placeholder="Seçiniz"

@@ -16,10 +16,8 @@ export default class Logout extends Component {
 
     localStorage.clear();
 
-    this.props.setAuth(false);
-
     alert('Başarıyla çıkış yaptınız!');
-    this.props.history.push("/girisYap");
+    this.props.history.push("/kullanici/giris");
   }
 
   render() {

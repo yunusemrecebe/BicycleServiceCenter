@@ -105,13 +105,7 @@ const NavSidebar = () => {
             },
             {
               title: "Stok Yonetimi",
-              itemId: "/stok/listele",
-              subNav: [
-                {
-                  title: "Ürün Ekle",
-                  itemId: "/stok/ekle"
-                },
-              ]
+              itemId: "/stok/listele"
             },
             {
               title: "Personeller",

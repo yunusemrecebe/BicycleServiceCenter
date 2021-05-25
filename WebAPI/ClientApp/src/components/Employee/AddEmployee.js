@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import alertify from "alertifyjs";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+import '../../css/style.css';
 
 export default class AddEmployee extends Component {
     state = {
@@ -77,21 +78,22 @@ export default class AddEmployee extends Component {
             <Form onSubmit={this.addEmployee}>
                 <h1> Personel Ekle</h1>
                 <FormGroup>
-                    <Label for="firstName">Adı</Label>
+                    <Label for="firstName">*Adı</Label>
                     <Input type="text" name="firstName" id="firstName" onChange={this.handleChange} />
                 </FormGroup>
 
                 <FormGroup>
-                    <Label for="lastName">Soyadı</Label>
+                    <Label for="lastName">*Soyadı</Label>
                     <Input type="text" name="lastName" id="lastName" onChange={this.handleChange} />
                 </FormGroup>
 
                 <FormGroup>
-                    <Label for="phone">Telefon</Label>
+                    <Label for="phone">*Telefon</Label>
                     <Input type="text" name="phone" id="phone" onChange={this.handleChange} />
                 </FormGroup>
 
                 <Button>Ekle</Button>
+                <h6 className="RequiredField">Not: * ile işaretlenen alanların doldurulması zorunludur</h6>
             </Form>
         )
     }
@@ -130,7 +132,6 @@ export default class AddEmployee extends Component {
                 }
             });
     }
-
 
     render() {
         return (

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button, Form, Table, Input } from "reactstrap";
 import alertify from "alertifyjs";
+import '../../css/style.css';
 
 export default class Customers extends Component {
     state = {
@@ -92,7 +93,7 @@ export default class Customers extends Component {
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Adı</th>
+                            <th scope="row">*Adı</th>
 
                             <td>
                                 <Input type="text" name="firstName" id="firstName" onChange={this.handleChange} />
@@ -100,7 +101,7 @@ export default class Customers extends Component {
                         </tr>
 
                         <tr>
-                            <th scope="row">Soyadı</th>
+                            <th scope="row">*Soyadı</th>
 
                             <td>
                                 <Input type="text" name="lastName" id="lastName" onChange={this.handleChange} />
@@ -108,7 +109,7 @@ export default class Customers extends Component {
                         </tr>
 
                         <tr>
-                            <th scope="row">Telefon</th>
+                            <th scope="row">*Telefon</th>
 
                             <td>
                                 <Input type="text" name="phone" id="phone" onChange={this.handleChange} />
@@ -135,6 +136,7 @@ export default class Customers extends Component {
                 </Table>
 
                 <Button>Ekle</Button>
+                <h6 className="RequiredField">Not: * ile işaretlenen alanların doldurulması zorunludur</h6>
             </Form>
         );
     }
