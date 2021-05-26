@@ -1,3 +1,4 @@
+
 # Bicycle Service Center
 Bisikletler için bakım ve onarım hizmeti sunan işletmelerin kullanımına sunmak amacıyla hazırlanmış bir teknik servis otomasyonu
 
@@ -15,7 +16,7 @@ Bir bisiklet firmasının teknik servis bölümünde hizmet verdiği bisikletler
 
 takip etmeyi sağlar.
 
-###Detaylı Tasarım ve Analiz Dökümanı
+### Detaylı Tasarım ve Analiz Dökümanı
 https://drive.google.com/file/d/1W6fvAPbtzhBqZwLRNEaDtvyfHC2F0lZe/view?usp=sharing
 
 ## Kullanılan Teknolojiler ve Yapılar
