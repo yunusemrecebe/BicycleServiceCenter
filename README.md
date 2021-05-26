@@ -2,10 +2,7 @@
 # Bicycle Service Center
 Bisikletler için bakım ve onarım hizmeti sunan işletmelerin kullanımına sunmak amacıyla hazırlanmış bir teknik servis otomasyonu
 
-## Proje Tanımı Proje Tanımı
-Bir bisiklet firmasının teknik servis bölümünde hizmet verdiği bisikletlerin takibinin yapılmasını sağlayan bir yazılımdır. 
-
-#### Yazılım üzerinde;
+### Yazılım üzerinde;
 - Servis hizmetini sağlayan personel hakkında bilgileri 
 - Servis hizmeti verilen müşteri hakkında bilgileri
 - Servis hizmeti verilen müşterinin bisikleti ya da bisikletleri hakkında bilgileri 
