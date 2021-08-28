@@ -15,53 +15,53 @@ namespace Business.DependencyResolvers.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<BicycleBrandManager>().As<IBicycleBrandService>();
-            builder.RegisterType<EfBicycleBrandDal>().As<IBicycleBrandDal>();
+            builder.RegisterType<BicycleBrandManager>().As<IBicycleBrandService>().SingleInstance();
+            builder.RegisterType<EfBicycleBrandDal>().As<IBicycleBrandDal>().SingleInstance();
 
-            builder.RegisterType<BicycleModelManager>().As<IBicycleModelService>();
-            builder.RegisterType<EfBicycleModelDal>().As<IBicycleModelDal>();
+            builder.RegisterType<BicycleModelManager>().As<IBicycleModelService>().SingleInstance();
+            builder.RegisterType<EfBicycleModelDal>().As<IBicycleModelDal>().SingleInstance();
 
-            builder.RegisterType<BicycleManager>().As<IBicycleService>();
-            builder.RegisterType<EfBicycleDal>().As<IBicycleDal>();
+            builder.RegisterType<BicycleManager>().As<IBicycleService>().SingleInstance();
+            builder.RegisterType<EfBicycleDal>().As<IBicycleDal>().SingleInstance();
 
-            builder.RegisterType<ConsumedProductManager>().As<IConsumedProductService>();
-            builder.RegisterType<EfConsumedProductDal>().As<IConsumedProductDal>();
+            builder.RegisterType<ConsumedProductManager>().As<IConsumedProductService>().SingleInstance();
+            builder.RegisterType<EfConsumedProductDal>().As<IConsumedProductDal>().SingleInstance();
 
-            builder.RegisterType<CustomerManager>().As<ICustomerService>();
-            builder.RegisterType<EfCustomerDal>().As<ICustomerDal>();
+            builder.RegisterType<CustomerManager>().As<ICustomerService>().SingleInstance();
+            builder.RegisterType<EfCustomerDal>().As<ICustomerDal>().SingleInstance();
 
-            builder.RegisterType<EmployeeManager>().As<IEmployeeService>();
-            builder.RegisterType<EfEmployeeDal>().As<IEmpoloyeeDal>();
+            builder.RegisterType<EmployeeManager>().As<IEmployeeService>().SingleInstance();
+            builder.RegisterType<EfEmployeeDal>().As<IEmpoloyeeDal>().SingleInstance();
 
-            builder.RegisterType<ProcessManager>().As<IProcessService>();
-            builder.RegisterType<EfProcessDal>().As<IProcessDal>();
+            builder.RegisterType<ProcessManager>().As<IProcessService>().SingleInstance();
+            builder.RegisterType<EfProcessDal>().As<IProcessDal>().SingleInstance();
 
-            builder.RegisterType<ProcessChargeManager>().As<IProcessChargeService>();
-            builder.RegisterType<EfProcessChargeDal>().As<IProcessChargeDal>();
+            builder.RegisterType<ProcessChargeManager>().As<IProcessChargeService>().SingleInstance();
+            builder.RegisterType<EfProcessChargeDal>().As<IProcessChargeDal>().SingleInstance();
 
-            builder.RegisterType<InventoryManager>().As<IInventoryService>();
-            builder.RegisterType<EfInventoryDal>().As<IInventoryDal>();
+            builder.RegisterType<InventoryManager>().As<IInventoryService>().SingleInstance();
+            builder.RegisterType<EfInventoryDal>().As<IInventoryDal>().SingleInstance();
 
-            builder.RegisterType<ProductManager>().As<IProductService>();
-            builder.RegisterType<EfProductDal>().As<IProductDal>();
+            builder.RegisterType<ProductManager>().As<IProductService>().SingleInstance();
+            builder.RegisterType<EfProductDal>().As<IProductDal>().SingleInstance();
 
-            builder.RegisterType<ProductBrandManager>().As<IProductBrandService>();
-            builder.RegisterType<EfProductBrandDal>().As<IProductBrandDal>();
+            builder.RegisterType<ProductBrandManager>().As<IProductBrandService>().SingleInstance();
+            builder.RegisterType<EfProductBrandDal>().As<IProductBrandDal>().SingleInstance();
 
-            builder.RegisterType<ProductCategoryManager>().As<IProductCategoryService>();
-            builder.RegisterType<EfProductCategoryDal>().As<IProductCategoryDal>();
+            builder.RegisterType<ProductCategoryManager>().As<IProductCategoryService>().SingleInstance();
+            builder.RegisterType<EfProductCategoryDal>().As<IProductCategoryDal>().SingleInstance();
 
-            builder.RegisterType<ReportManager>().As<IReportService>();
-            builder.RegisterType<EfReportDal>().As<IReportDal>();
+            builder.RegisterType<ReportManager>().As<IReportService>().SingleInstance();
+            builder.RegisterType<EfReportDal>().As<IReportDal>().SingleInstance();
 
-            builder.RegisterType<UserManager>().As<IUserService>();
-            builder.RegisterType<EfUserDal>().As<IUserDal>();
+            builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();
+            builder.RegisterType<EfUserDal>().As<IUserDal>().SingleInstance();
 
-            builder.RegisterType<AuthManager>().As<IAuthService>();
-            builder.RegisterType<JwtHelper>().As<ITokenHelper>();
+            builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
+            builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();
 
-            builder.RegisterType<RefreshTokenManager>().As<IRefreshTokenService>();
-            builder.RegisterType<EfRefreshTokenDal>().As<IRefreshTokenDal>();
+            builder.RegisterType<RefreshTokenManager>().As<IRefreshTokenService>().SingleInstance();
+            builder.RegisterType<EfRefreshTokenDal>().As<IRefreshTokenDal>().SingleInstance();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

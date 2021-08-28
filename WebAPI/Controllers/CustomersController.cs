@@ -1,7 +1,6 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
-using NLog;
 
 namespace WebAPI.Controllers
 {
@@ -10,7 +9,7 @@ namespace WebAPI.Controllers
     public class CustomersController : ControllerBase
     {
         ICustomerService _customerService;
-        
+
         public CustomersController(ICustomerService customerService)
         {
             _customerService = customerService;

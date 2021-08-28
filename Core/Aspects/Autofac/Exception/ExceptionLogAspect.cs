@@ -1,5 +1,6 @@
 ﻿using Castle.DynamicProxy;
 using Core.CrossCuttingConcerns.Logging;
+using Core.CrossCuttingConcerns.Logging.Log4Net;
 using Core.Utilities.Interceptors.Autofac;
 using Core.Utilities.Messages;
 using System;
@@ -12,15 +13,26 @@ namespace Core.Aspects.Autofac.Exception
 {
     public class ExceptionLogAspect : MethodInterception
     {
-        private LoggerServiceBase _loggerServiceBase = new LoggerServiceBase();
+        LoggerServiceBase _loggerServiceBase;
+
+        public ExceptionLogAspect(Type loggerService)
+        {
+            if (loggerService.BaseType != typeof(LoggerServiceBase))
+            {
+                throw new System.Exception(AspectMessages.WrongLoggerType);
+            }
+
+            _loggerServiceBase = (LoggerServiceBase)Activator.CreateInstance(loggerService);
+        }
 
         protected override void OnException(IInvocation invocation, System.Exception e)
         {
-            var logInfo = GetLogDetail(invocation, e.Message);
-            _loggerServiceBase.Error($"{logInfo.MethodName} is failed. Reason: {e.InnerException.Message}");
+            LogDetailWithException logDetailWithException = GetLogDetail(invocation);
+            logDetailWithException.ExceptionMessage = e.Message;
+            _loggerServiceBase.Error(logDetailWithException);
         }
 
-        private LogDetailWithException GetLogDetail(IInvocation invocation, string exceptionMessage)
+        private LogDetailWithException GetLogDetail(IInvocation invocation)
         {
             var logParameters = new List<LogParameter>();
 
@@ -28,17 +40,15 @@ namespace Core.Aspects.Autofac.Exception
             {
                 logParameters.Add(new LogParameter
                 {
-                    ParameterName = invocation.GetConcreteMethod().GetParameters()[i].Name,
-                    ParameterValue = invocation.Arguments[i],
-                    ParameterType = invocation.Arguments[i].GetType().Name,
+                    Name = invocation.GetConcreteMethod().GetParameters()[i].Name,
+                    Value = invocation.Arguments[i],
+                    Type = invocation.Arguments[i].GetType().Name
                 });
             }
 
             var logDetailWithException = new LogDetailWithException
             {
-                MethodName = $"{invocation.Method.DeclaringType.Name}_{invocation.Method.Name}",
-                LogDate = $"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}",
-                ExceptionMessage = exceptionMessage,
+                MethodName = invocation.Method.Name,
                 LogParameters = logParameters
             };
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Castle.DynamicProxy;
 using Core.CrossCuttingConcerns.Logging;
+using Core.CrossCuttingConcerns.Logging.Log4Net;
 using Core.Utilities.Interceptors.Autofac;
 using Core.Utilities.Messages;
 
@@ -9,12 +10,21 @@ namespace Core.Aspects.Autofac.Logging
 {
     public class LogAspect : MethodInterception
     {
-        private LoggerServiceBase _loggerServiceBase = new LoggerServiceBase();
+        private LoggerServiceBase _loggerServiceBase;
+
+        public LogAspect(Type loggerService)
+        {
+            if (loggerService.BaseType != typeof(LoggerServiceBase))
+            {
+                throw new System.Exception(AspectMessages.WrongLoggerType);
+            }
+
+            _loggerServiceBase = (LoggerServiceBase)Activator.CreateInstance(loggerService);
+        }
 
         protected override void OnBefore(IInvocation invocation)
         {
-            var logInfo = GetLogDetail(invocation);
-            _loggerServiceBase.Info($"{logInfo.MethodName} was run.");
+            _loggerServiceBase.Info(GetLogDetail(invocation));
         }
 
         private LogDetail GetLogDetail(IInvocation invocation)
@@ -24,16 +34,15 @@ namespace Core.Aspects.Autofac.Logging
             {
                 logParameters.Add(new LogParameter
                 {
-                    ParameterName = invocation.GetConcreteMethod().GetParameters()[i].Name,
-                    ParameterValue = invocation.Arguments[i],
-                    ParameterType = invocation.Arguments[i].GetType().Name,
+                    Name = invocation.GetConcreteMethod().GetParameters()[i].Name,
+                    Value = invocation.Arguments[i],
+                    Type = invocation.Arguments[i].GetType().Name
                 });
             }
 
             var logDetail = new LogDetail
             {
-                MethodName = $"{invocation.Method.DeclaringType.Name}_{invocation.Method.Name}",
-                LogDate = $"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}",
+                MethodName = invocation.Method.Name,
                 LogParameters = logParameters
             };
 
