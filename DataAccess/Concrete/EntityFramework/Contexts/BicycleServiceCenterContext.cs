@@ -1,6 +1,7 @@
 ﻿using Core.Entities.Concrete;
 using Core.Utilities.Security.Jwt;
 using Entities.Concrete;
+using Entities.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Concrete.EntityFramework.Abstract
@@ -9,13 +10,14 @@ namespace DataAccess.Concrete.EntityFramework.Abstract
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=DESKTOP-63SM79K;Database=BicycleServiceCenter;Trusted_Connection=true");
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=BicycleServiceCenter;Trusted_Connection=true");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<RefreshToken>()
                 .HasKey(r => r.UserId);
+            modelBuilder.Entity<BicycleDetailDto>().HasNoKey();
         }
 
         public DbSet<Bicycle> Bicycles { get; set; }
@@ -34,5 +36,6 @@ namespace DataAccess.Concrete.EntityFramework.Abstract
         public DbSet<User> Users { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<BicycleDetailDto> VW_BicycleDetails { get; set; }
     }
 }
