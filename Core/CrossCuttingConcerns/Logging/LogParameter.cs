@@ -1,9 +1,11 @@
-﻿namespace Core.CrossCuttingConcerns.Logging
+﻿using System;
+
+namespace Core.CrossCuttingConcerns.Logging
 {
     public class LogParameter
     {
-        public string Name { get; set; }
-        public object Value { get; set; }
-        public string Type { get; set; }
+        public string ParameterName { get; set; }
+        public object ParameterValue { get; set; }
+        public string ParameterType { get; set; }
     }
 }
