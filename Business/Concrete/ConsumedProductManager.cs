@@ -52,7 +52,7 @@ namespace Business.Concrete
                 consumedProduct.UnitPrice = inventory.SellPrice;
             }
             
-            consumedProduct.DateOfUse = Convert.ToDateTime(DateTime.Now.ToString("MM/dd/yyyy HH:mm"));
+            consumedProduct.DateOfUse = DateTime.Now;
             _consumedProductDal.Add(consumedProduct);
 
             _processChargeService.Add(new ProcessCharge 

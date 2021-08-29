@@ -29,7 +29,7 @@ namespace Business.Concrete
         [CacheRemoveAspect("IProcessService.Get")]
         public IResult Add(Process process)
         {
-            process.StartingDate = Convert.ToDateTime(DateTime.Now.ToString("MM/dd/yyyy HH:mm"));
+            process.StartingDate = DateTime.Now;
             process.Status = "Beklemede";
             _processDal.Add(process);
             return new SuccessResult(Messages.ProcessAdded);

@@ -17,7 +17,7 @@ namespace Core.Aspects.Autofac.Exception
         protected override void OnException(IInvocation invocation, System.Exception e)
         {
             var logInfo = GetLogDetail(invocation, e.Message);
-            _loggerServiceBase.Error($"{logInfo.MethodName} is failed. Reason: {e.InnerException.Message}");
+            _loggerServiceBase.Error($"{logInfo.MethodName} is failed. Reason: {e}");
         }
 
         private LogDetailWithException GetLogDetail(IInvocation invocation, string exceptionMessage)
