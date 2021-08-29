@@ -14,7 +14,6 @@ using System.Linq;
 
 namespace Business.Concrete
 {
-    [SecuredOperation]
     public class BicycleModelManager : IBicycleModelService
     {
         IBicycleModelDal _bicycleModelDal;
@@ -54,6 +53,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.BicycleModelDeleted);
         }
 
+        [SecuredOperation]
         public IDataResult<BicycleModel> GetById(int id)
         {
             IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
@@ -66,6 +66,7 @@ namespace Business.Concrete
             return new SuccessDataResult<BicycleModel>(_bicycleModelDal.Get(m => m.BicycleModelId == id));
         }
 
+        [SecuredOperation]
         public IDataResult<BicycleModelDto> GetDetailsById(int id)
         {
             IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
@@ -78,12 +79,14 @@ namespace Business.Concrete
             return new SuccessDataResult<BicycleModelDto>(_bicycleModelDal.GetBicycleModelDetailsById(id));
         }
 
+        [SecuredOperation]
         [CacheAspect]
         public IDataResult<List<BicycleModelDto>> GetDetails()
         {
             return new SuccessDataResult<List<BicycleModelDto>>(_bicycleModelDal.GetBicycleModelDetails().ToList());
         }
 
+        [SecuredOperation]
         [CacheAspect]
         public IDataResult<List<BicycleModel>> GetList()
         {
@@ -91,6 +94,7 @@ namespace Business.Concrete
 
         }
 
+        [SecuredOperation]
         [CacheAspect]
         public IDataResult<List<BicycleModel>> GetListByBrand(int id)
         {

@@ -17,7 +17,6 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    [SecuredOperation]
     public class BicycleManager : IBicycleService
     {
         IBicycleDal _bicycleDal;
@@ -50,21 +49,25 @@ namespace Business.Concrete
             return new SuccessResult(Messages.BicycleDeleted);
         }
 
+        [SecuredOperation]
         public IDataResult<List<BicycleDetailDto>> GetBicycleDetails()
         {
             return new SuccessDataResult<List<BicycleDetailDto>>(_bicycleDal.GetBicycleDetailsList().ToList());
         }
 
+        [SecuredOperation]
         public IDataResult<List<BicycleDetailDto>> GetBicycleDetailsByCustomerId(int customerId)
         {
             return new SuccessDataResult<List<BicycleDetailDto>>(_bicycleDal.GetBicycleDetailsList(c => c.OwnerId == customerId));
         }
 
+        [SecuredOperation]
         public IDataResult<BicycleDetailDto> GetBicycleDetailsById(int id)
         {
             return new SuccessDataResult<BicycleDetailDto>(_bicycleDal.GetBicycleDetails(b => b.BicycleId == id));
         }
 
+        [SecuredOperation]
         public IDataResult<Bicycle> GetById(int id)
         {
             IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
@@ -77,6 +80,7 @@ namespace Business.Concrete
             return new SuccessDataResult<Bicycle>(_bicycleDal.Get(b => b.BicycleId == id));
         }
 
+        [SecuredOperation]
         [CacheAspect]
         public IDataResult<List<Bicycle>> GetList()
         {

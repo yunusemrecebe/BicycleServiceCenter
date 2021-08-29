@@ -16,7 +16,6 @@ using System.Linq;
 
 namespace Business.Concrete
 {
-    [SecuredOperation]
     public class ConsumedProductManager : IConsumedProductService
     {
         IConsumedProductDal _consumedProductDal;
@@ -99,6 +98,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.ConsumedProductDeleted);
         }
 
+        [SecuredOperation]
         public IDataResult<ConsumedProduct> GetById(int id)
         {
             IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
@@ -111,27 +111,32 @@ namespace Business.Concrete
             return new SuccessDataResult<ConsumedProduct>(_consumedProductDal.Get(c => c.ConsumedProductId == id));
         }
 
+        [SecuredOperation]
         public IDataResult<ConsumedProduct> GetByProductId(int id)
         {
             return new SuccessDataResult<ConsumedProduct>(_consumedProductDal.Get(p => p.ProductId == id));
         }
 
+        [SecuredOperation]
         public IDataResult<ConsumedProductDetailDto> GetConsumedProductDetailsById(int id)
         {
             return new SuccessDataResult<ConsumedProductDetailDto>(_consumedProductDal.GetConsumedProductDetails(c => c.ConsumedProductId == id));
         }
 
+        [SecuredOperation]
         [CacheAspect]
         public IDataResult<List<ConsumedProductDetailDto>> GetConsumedProductDetailsList()
         {
             return new SuccessDataResult<List<ConsumedProductDetailDto>>(_consumedProductDal.GetConsumedProductDetailsList().ToList());
         }
 
+        [SecuredOperation]
         public IDataResult<List<ConsumedProductDetailDto>> GetConsumedProductDetailsListByProcessId(int id)
         {
             return new SuccessDataResult<List<ConsumedProductDetailDto>>(_consumedProductDal.GetConsumedProductDetailsList(c => c.ProcessId == id).ToList());
         }
 
+        [SecuredOperation]
         [CacheAspect]
         public IDataResult<List<ConsumedProduct>> GetList()
         {

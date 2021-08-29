@@ -14,7 +14,6 @@ using System.Linq;
 
 namespace Business.Concrete
 {
-    [SecuredOperation]
     public class ProductCategoryManager : IProductCategoryService
     {
         IProductCategoryDal _productCategoryDal;
@@ -53,6 +52,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.ProductCategoryDeleted);
         }
 
+        [SecuredOperation]
         public IDataResult<ProductCategory> GetById(int id)
         {
             IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
@@ -65,6 +65,7 @@ namespace Business.Concrete
             return new SuccessDataResult<ProductCategory>(_productCategoryDal.Get(p => p.ProductCategoryId == id));
         }
 
+        [SecuredOperation]
         [CacheAspect]
         public IDataResult<List<ProductCategory>> GetList()
         {

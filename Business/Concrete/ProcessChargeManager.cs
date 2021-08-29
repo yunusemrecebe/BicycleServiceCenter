@@ -14,7 +14,6 @@ using System.Linq;
 
 namespace Business.Concrete
 {
-    [SecuredOperation]
     public class ProcessChargeManager : IProcessChargeService
     {
         IProcessChargeDal _processChargeDal;
@@ -55,22 +54,26 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation]
         public IDataResult<ProcessCharge> GetById(int id)
         {
             return new SuccessDataResult<ProcessCharge>(_processChargeDal.Get(p => p.ProcessChargeId == id));
         }
 
+        [SecuredOperation]
         public IDataResult<ProcessCharge> GetByConsumedProductId(int id)
         {
             return new SuccessDataResult<ProcessCharge>(_processChargeDal.Get(p => p.ConsumedProductId == id));
         }
 
+        [SecuredOperation]
         [CacheAspect]
         public IDataResult<List<ProcessCharge>> GetList()
         {
             return new SuccessDataResult<List<ProcessCharge>>(_processChargeDal.GetList().ToList());
         }
 
+        [SecuredOperation]
         public IDataResult<List<ProcessCharge>> GetListByProcessId(int processId)
         {
             return new SuccessDataResult<List<ProcessCharge>>(_processChargeDal.GetList(p => p.ConsumedProductId == processId).ToList());

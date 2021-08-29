@@ -14,8 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Business.Concrete
-{
-    [SecuredOperation]
+{ 
     public class EmployeeManager : IEmployeeService
     {
         IEmpoloyeeDal _empoloyeeDal;
@@ -57,12 +56,14 @@ namespace Business.Concrete
             return new SuccessResult(Messages.EmployeeDeleted);
         }
 
+        [SecuredOperation]
         [CacheAspect]
         public IDataResult<List<Employee>> GetList()
         {
             return new SuccessDataResult<List<Employee>>(_empoloyeeDal.GetList().ToList());
         }
 
+        [SecuredOperation]
         public IDataResult<Employee> GetById(int id)
         {
             IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));

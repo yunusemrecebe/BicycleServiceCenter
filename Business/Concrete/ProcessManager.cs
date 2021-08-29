@@ -16,7 +16,6 @@ using System.Linq.Expressions;
 
 namespace Business.Concrete
 {
-    [SecuredOperation]
     public class ProcessManager : IProcessService
     {
         IProcessDal _processDal;
@@ -51,6 +50,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.ProcessDeleted);
         }
 
+        [SecuredOperation]
         public IDataResult<Process> GetById(int id)
         {
             IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
@@ -63,24 +63,28 @@ namespace Business.Concrete
             return new SuccessDataResult<Process>(_processDal.Get(p => p.ProcessId == id));
         }
 
+        [SecuredOperation]
         [CacheAspect]
         public IDataResult<List<Process>> GetList()
         {
             return new SuccessDataResult<List<Process>>(_processDal.GetList().ToList());
         }
 
+        [SecuredOperation]
         [CacheAspect]
         public IDataResult<List<Process>> GetListByFilter(Expression<Func<Process, bool>> filter)
         {
             return new SuccessDataResult<List<Process>>(_processDal.GetList(filter).ToList());
         }
 
+        [SecuredOperation]
         [CacheAspect]
         public IDataResult<List<ProcessDetailDto>> GetProcessDetails()
         {
             return new SuccessDataResult<List<ProcessDetailDto>>(_processDal.GetProcessDetails().ToList());
         }
 
+        [SecuredOperation]
         public IDataResult<ProcessDetailDto> GetProcessDetailsById(int id)
         {
             return new SuccessDataResult<ProcessDetailDto>(_processDal.GetProcessDetailsById(id));

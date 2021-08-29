@@ -18,7 +18,6 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    [SecuredOperation]
     public class ProductBrandManager : IProductBrandService
     {
         IProductBrandDal _productBrandDal;
@@ -58,7 +57,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.ProductBrandDeleted);
         }
 
-        [SecuredOperation("Admin")]
+        [SecuredOperation]
         public IDataResult<ProductBrand> GetById(int id)
         {
             IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
@@ -71,6 +70,7 @@ namespace Business.Concrete
             return new SuccessDataResult<ProductBrand>(_productBrandDal.Get(p => p.ProductBrandId == id));
         }
 
+        [SecuredOperation]
         [CacheAspect]
         public IDataResult<List<ProductBrand>> GetList()
         {

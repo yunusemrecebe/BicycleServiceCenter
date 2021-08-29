@@ -9,7 +9,6 @@ using System.Collections.Generic;
 
 namespace Business.Concrete
 {
-    [SecuredOperation]
     public class ReportManager : IReportService
     {
         IReportDal _reportDal;
