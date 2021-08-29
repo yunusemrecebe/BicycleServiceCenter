@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Table, Row, Col, Form, FormGroup, Label, Button, Input } from "reactstrap";
 import Select from 'react-select';
-import '../../css/date.css'
+import '../../css/date.css';
+import alertify from "alertifyjs";
 
 export default class ReportForCustomer extends Component {
     state = {
@@ -124,6 +125,16 @@ export default class ReportForCustomer extends Component {
     }
 
     GetFilteredReportByDateRange(id, begin, end) {
+        if (id == 0) {
+            alertify.error("Müşteri seçilmeden önce filtreleme işlemi yapılamaz!!");
+            return;
+        }
+
+        if (begin == null || end == null) {
+            alertify.error("Başlangıç ve Bitiş tarihi belirtilmeden filtreleme işlemi gerçekleştirilemez!");
+            return;
+        }
+
         let token = localStorage.getItem('token');
 
         let url = "/api/reports/GetFilteredReportForCustomerByDateRange?customerId=" + id + "&begin=" + begin + "&end=" + end;
