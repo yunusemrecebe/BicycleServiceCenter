@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
+    [SecuredOperation]
     public class BicycleManager : IBicycleService
     {
         IBicycleDal _bicycleDal;
@@ -49,7 +50,6 @@ namespace Business.Concrete
             return new SuccessResult(Messages.BicycleDeleted);
         }
 
-        [SecuredOperation("Admin")]
         public IDataResult<List<BicycleDetailDto>> GetBicycleDetails()
         {
             return new SuccessDataResult<List<BicycleDetailDto>>(_bicycleDal.GetBicycleDetailsList().ToList());

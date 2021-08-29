@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Validation;
@@ -13,6 +14,7 @@ using System.Linq;
 
 namespace Business.Concrete
 {
+    [SecuredOperation]
     public class ProcessChargeManager : IProcessChargeService
     {
         IProcessChargeDal _processChargeDal;

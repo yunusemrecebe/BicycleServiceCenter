@@ -17,6 +17,7 @@ using Business.BusinessAspects.Autofac;
 
 namespace Business.Concrete
 {
+    [SecuredOperation]
     public class InventoryManager : IInventoryService
     {
         IInventoryDal _inventoryDal;
@@ -52,14 +53,12 @@ namespace Business.Concrete
             return new SuccessDataResult<Inventory>(_inventoryDal.Get(i => i.ProductId == id));
         }
 
-        [SecuredOperation("Admin")]
         [CacheAspect]
         public IDataResult<List<InventoryDetailDto>> GetInventoryDetails()
         {
             return new SuccessDataResult<List<InventoryDetailDto>>(_inventoryDal.GetInventoryDetails().ToList());
         }
 
-        [SecuredOperation("Admin")]
         public IDataResult<InventoryDetailDto> GetInventoryDetailsById(int id)
         {
             return new SuccessDataResult<InventoryDetailDto>(_inventoryDal.GetInventoryDetailsById(id));

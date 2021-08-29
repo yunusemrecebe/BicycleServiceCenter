@@ -16,6 +16,7 @@ using System.Linq;
 
 namespace Business.Concrete
 {
+    [SecuredOperation]
     public class ConsumedProductManager : IConsumedProductService
     {
         IConsumedProductDal _consumedProductDal;
@@ -115,13 +116,11 @@ namespace Business.Concrete
             return new SuccessDataResult<ConsumedProduct>(_consumedProductDal.Get(p => p.ProductId == id));
         }
 
-        [SecuredOperation("Admin")]
         public IDataResult<ConsumedProductDetailDto> GetConsumedProductDetailsById(int id)
         {
             return new SuccessDataResult<ConsumedProductDetailDto>(_consumedProductDal.GetConsumedProductDetails(c => c.ConsumedProductId == id));
         }
 
-        [SecuredOperation("Admin")]
         [CacheAspect]
         public IDataResult<List<ConsumedProductDetailDto>> GetConsumedProductDetailsList()
         {

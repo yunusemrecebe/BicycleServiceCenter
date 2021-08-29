@@ -13,6 +13,7 @@ using System.Linq;
 
 namespace Business.Concrete
 {
+    [SecuredOperation]
     public class BicycleBrandManager : IBicycleBrandService
     {
         IBicycleBrandDal _bicycleBrandDal;
@@ -52,7 +53,6 @@ namespace Business.Concrete
             return new SuccessResult(Messages.BicycleBrandDeleted);
         }
 
-        [SecuredOperation("Admin")]
         [CacheAspect]
         public IDataResult<List<BicycleBrand>> GetList()
         {

@@ -15,6 +15,7 @@ using System.Linq;
 
 namespace Business.Concrete
 {
+    [SecuredOperation]
     public class EmployeeManager : IEmployeeService
     {
         IEmpoloyeeDal _empoloyeeDal;
@@ -26,7 +27,6 @@ namespace Business.Concrete
             _processService = processService;
         }
 
-        //[SecuredOperation("Employee.Add")]
         [ValidationAspect(typeof(EmployeeValidator))]
         [CacheRemoveAspect("IEmployeeService.Get")]
         public IResult Add(Employee employee)
@@ -57,7 +57,6 @@ namespace Business.Concrete
             return new SuccessResult(Messages.EmployeeDeleted);
         }
 
-        [SecuredOperation("Employee.Get")]
         [CacheAspect]
         public IDataResult<List<Employee>> GetList()
         {

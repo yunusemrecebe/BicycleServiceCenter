@@ -16,6 +16,7 @@ using System.Linq;
 
 namespace Business.Concrete
 {
+    [SecuredOperation]
     public class CustomerManager : ICustomerService
     {
         ICustomerDal _customerDal;
@@ -59,7 +60,6 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CustomerDeleted);
         }
 
-        [SecuredOperation("Admin")]
         public IDataResult<Customer> GetById(int id)
         {
             IResult result = BusinessRules.Run(CheckIdValueIsTrue(id));
@@ -72,8 +72,6 @@ namespace Business.Concrete
             return new SuccessDataResult<Customer>(_customerDal.Get(c => c.CustomerId == id));
         }
 
-        [LogAspect]
-        [SecuredOperation("Admin")]
         [CacheAspect]
         public IDataResult<List<Customer>> GetList()
         {

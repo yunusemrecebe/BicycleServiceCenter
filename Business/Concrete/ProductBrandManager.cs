@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
+    [SecuredOperation]
     public class ProductBrandManager : IProductBrandService
     {
         IProductBrandDal _productBrandDal;
@@ -70,7 +71,6 @@ namespace Business.Concrete
             return new SuccessDataResult<ProductBrand>(_productBrandDal.Get(p => p.ProductBrandId == id));
         }
 
-        [SecuredOperation("Admin")]
         [CacheAspect]
         public IDataResult<List<ProductBrand>> GetList()
         {

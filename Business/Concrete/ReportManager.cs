@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 
 namespace Business.Concrete
 {
+    [SecuredOperation]
     public class ReportManager : IReportService
     {
         IReportDal _reportDal;
