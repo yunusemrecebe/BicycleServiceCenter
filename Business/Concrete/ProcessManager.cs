@@ -16,6 +16,7 @@ using System.Linq.Expressions;
 
 namespace Business.Concrete
 {
+    [SecuredOperation]
     public class ProcessManager : IProcessService
     {
         IProcessDal _processDal;
@@ -74,14 +75,12 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Process>>(_processDal.GetList(filter).ToList());
         }
 
-        [SecuredOperation("Admin")]
         [CacheAspect]
         public IDataResult<List<ProcessDetailDto>> GetProcessDetails()
         {
             return new SuccessDataResult<List<ProcessDetailDto>>(_processDal.GetProcessDetails().ToList());
         }
 
-        [SecuredOperation("Admin")]
         public IDataResult<ProcessDetailDto> GetProcessDetailsById(int id)
         {
             return new SuccessDataResult<ProcessDetailDto>(_processDal.GetProcessDetailsById(id));

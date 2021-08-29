@@ -16,33 +16,37 @@ namespace Business.BusinessAspects.Autofac
 {
     public class SecuredOperation : MethodInterception
     {
-        string[] _roles;
+        string[] _requiredRoles;
         IHttpContextAccessor _httpContextAccessor;
 
-        public SecuredOperation(string roles)
+        public SecuredOperation(string requiredRoles = null)
         {
-            _roles = roles.Split(',');
+            if (requiredRoles != null)
+                _requiredRoles = requiredRoles.Split(',');
+
             _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
         }
 
         protected override void OnBefore(IInvocation invocation)
         {
             var exp = _httpContextAccessor.HttpContext.User.GetAccessTokenExpiration();
-
             if (!exp)
-            {
                 throw new ValidationException(Messages.TokenNotFound);
-            }
 
             var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
 
-            foreach (var role in _roles)
-            {
-                if (roleClaims.Contains(role))
+            if (_requiredRoles == null && roleClaims.Count() > 0)
+                return;
+
+            if(_requiredRoles != null)
+                foreach (var role in _requiredRoles)
                 {
-                    return;
+                    if (roleClaims.Contains(role))
+                    {
+                        return;
+                    }
                 }
-            }
+
             throw new ValidationException(Messages.AuthorizationDenied);
         }
     }
